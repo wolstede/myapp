@@ -1,0 +1,37 @@
+
+// Carryng out computer turn
+// drawing card
+carryoutcomputerturn
+determinecomputerselection  (based on top discard)
+bestscoreusingtopdiscard
+completetimedbestscoreusingtopdiscard (timed - repeated)
+completetimeddeterminecomputerselection (after repeats of above complete - analyses results to give decision of stock or decision (stock default))
+completetimedcarryoutcomputerturn(decision)  - gives message 'I take from (stock or discard) pile'
+computerselect(decision) - calls selecttopstock or selecttopdiscard (having noted unavailablefordiscard card)
+		then calls computerdiscard(unavailablefordiscard)
+    	selecttopstock  used for user and computer go
+			makes adjustments to hand and packs, displays hands and selections,
+			transferdiscardtopack to stockpile if stockpile empty (all but top discard)
+			message to user if it's his go
+	selecttopdiscard used for user and computer go
+			makes adjustments to hand and packs, displays hands and selections,
+			message to user if it's his go
+
+// discarding card	
+computerdiscard			
+determinecomputerdiscard(hands[0], unavailablefordiscard, currentstate)
+completetimeddeterminecomputerdiscard (timed - repeated)
+completetimedcomputerdiscard (after repeats of above complete) - 
+	gives message 'I discard ...'
+	calls discardcomputerselection('+cardtodiscard+')' - after time
+discardcomputerselection(thisindex)
+	makes adjustments to hand and packs, displays hands
+	calls checktocontinue
+checktocontinue
+	used for user and computer go
+	used to check for winner - if so gives message and displays all cards
+	(if user just gone, calls carryoutcomputerturn)
+	
+
+Notes:
+Need to deal with transferdiscardtopack under new approach
