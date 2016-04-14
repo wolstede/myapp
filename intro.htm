@@ -1,0 +1,29 @@
+<html><head><title>
+</title>
+<script language="Javascript">
+
+var toptimer=null
+function doit()
+{
+
+toptimer = setTimeout("checksize()",2000);
+}
+
+function checksize()
+{
+parent.thefullwidth=document.getElementById('testsize').offsetWidth
+parent.thefullheight=document.getElementById('testsize').offsetHeight
+parent.loaddefault()
+
+// document.getElementById('testsize').innerHTML=thefullwidth+', '+thefullheight
+
+}
+
+
+
+
+</script>
+</head>
+<body style="background-color:black" onLoad="doit()">
+<table border=0 cellspacing=0 cellpadding=0 align=center valign=middle style="width:100%;height:100%;background-color:black;text-align:center;font-family:sans-serif" ><tr><td><table border=0 cellspacing=0 cellpadding=0 align=center valign=middle id="testsize" style="font-size:12px;width:50%;height:50%;background-color:black;text-align:center;color:purple" ><tr><td style="font-size:12px;background-color:black;text-align:center;color:purple" valign=middle><img src="xword4x4icon.png"><br><span style="color:red">XWord<sup>4x4</sup></span><br>TopAccolades</td></tr></table></td></tr></table>
+</body></html>
