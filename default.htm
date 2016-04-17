@@ -3,7 +3,7 @@
 
 <script language="Javascript">
 var appname='pentad'
-var appversion='2.0 (20160414)'
+var appversion='2.1 (20160417)'
 // localStorage.clear()
 var restartconfirmationrequired=1
 var adfrequency=1
@@ -672,12 +672,12 @@ if (pentadgametype==0)
 for (var player=1; player<=4; player++)
 {
 var sometext=''
-sometext=sometext+'<table align=center bgcolor=white>'
+sometext=sometext+'<table align=center border=2 bgcolor='+lightcolors[player-1]+'>'
 sometext=sometext+'<tr>'
 sometext=sometext+'<td onClick="showboard('+player+')">'+graphicfor('Back')+'</td>'
-sometext=sometext+'<td  width='+Math.floor(scalef*35)+'>Word</td>'
+sometext=sometext+'<td  width='+Math.floor(scalef*35)+'>Word&nbsp;&nbsp;</td>'
 sometext=sometext+'<td  width='+Math.floor(scalef*20)+'>Pts</td>'
-sometext=sometext+'<td  width='+Math.floor(scalef*35)+'>Word</td>'
+sometext=sometext+'<td  width='+Math.floor(scalef*35)+'>Word&nbsp;&nbsp;</td>'
 sometext=sometext+'<td  width='+Math.floor(scalef*20)+'>Pts</td>'
 sometext=sometext+'</tr>'
 sometext=sometext+'<tr>'
@@ -743,8 +743,11 @@ sometext=sometext+'<td><div id="p'+player+'col50word" ></div></td>'
 sometext=sometext+'<td><div id="p'+player+'col50score" ></div></td>'
 sometext=sometext+'<td><div id="p'+player+'col51word" ></div></td>'
 sometext=sometext+'<td><div id="p'+player+'col51score" ></div></td>'
+sometext=sometext+'</tr><tr>'
+sometext=sometext+'<td colspan=4><b>Total score</b></td>'
+sometext=sometext+'<td><div id="p'+player+'totalscorecard" style="font-weight:bold"></div></td>'
 sometext=sometext+'</tr>'
-sometext=sometext+'</table>'
+sometext=sometext+'</table><br>&nbsp;'
 changetextvalue('p'+player+'scoresdiv', sometext)
 changetextvalue('p'+player+'pentadleft', '<table border=0 cellpadding=0 cellspacing=0 width=100% height=100% ><tr><td align=left style="color:yellow;font-size:'+Math.floor(scalef*12)+'px">1-L</td><td style="color:white;font-size:'+Math.floor(scalef*12)+'px">1</td><td align=left style="color:yellow;font-size:'+Math.floor(scalef*12)+'px">2-L</td><td style="color:white;font-size:'+Math.floor(scalef*12)+'px">2</td></tr><tr><td align=left style="color:yellow;font-size:'+Math.floor(scalef*12)+'px">3-L</td><td style="color:white;font-size:'+Math.floor(scalef*12)+'px">3</td><td align=left style="color:yellow;font-size:'+Math.floor(scalef*12)+'px">4-L</td><td style="color:white;font-size:'+Math.floor(scalef*12)+'px">4</td></tr></table>')
 changetextvalue('p'+player+'pentadright', '<table border=0 cellpadding=0 cellspacing=0 width=100% height=100% ><tr><td colspan=2 align=left style="color:yellow;font-size:'+Math.floor(scalef*12)+'px">5-L</td><td colspan=2 style="color:white;font-size:'+Math.floor(scalef*12)+'px">10</td></tr><tr><td colspan=2 align=left style="color:green;font-size:'+Math.floor(scalef*12)+'px"><img src="centre.gif" height='+Math.floor(scalef*12)+'></td><td colspan=2 style="color:white;font-size:'+Math.floor(scalef*12)+'px">Wordx2</td></tr></table>')
@@ -755,10 +758,10 @@ else
 for (var player=1; player<=4; player++)
 {
 var sometext=''
-sometext=sometext+'<table align=center bgcolor=white>'
+sometext=sometext+'<table align=center border=2 bgcolor='+lightcolors[player-1]+'>'
 sometext=sometext+'<tr>'
 sometext=sometext+'<td onClick="showboard('+player+')">'+graphicfor('Back')+'</td>'
-sometext=sometext+'<td  width='+Math.floor(scalef*90)+'>Poker Hand</td>'
+sometext=sometext+'<td  width='+Math.floor(scalef*90)+'>Poker Hand&nbsp;</td>'
 sometext=sometext+'<td  width='+Math.floor(scalef*20)+'>Pts</td>'
 sometext=sometext+'</tr>'
 sometext=sometext+'<tr>'
@@ -804,8 +807,11 @@ sometext=sometext+'</tr><tr>'
 sometext=sometext+'<td >C5</td>'
 sometext=sometext+'<td><div id="p'+player+'col50word" ></div></td>'
 sometext=sometext+'<td><div id="p'+player+'col50score" ></div></td>'
+sometext=sometext+'</tr><tr>'
+sometext=sometext+'<td colspan=2><b>Total score</b></td>'
+sometext=sometext+'<td><div id="p'+player+'totalscorecard" style="font-weight:bold"></div></td>'
 sometext=sometext+'</tr>'
-sometext=sometext+'</table>'
+sometext=sometext+'</table><br>&nbsp;'
 changetextvalue('p'+player+'scoresdiv', sometext)
 changetextvalue('p'+player+'pentadleft', '<table border=0 cellpadding=0 cellspacing=0 width=100% height=100% ><tr><td align=left style="color:yellow;font-size:'+Math.floor(scalef*12)+'px">SF</td><td style="color:white;font-size:'+Math.floor(scalef*12)+'px">30</td><td align=left style="color:yellow;font-size:'+Math.floor(scalef*12)+'px">S</td><td style="color:white;font-size:'+Math.floor(scalef*12)+'px">12</td></tr><tr><td align=left style="color:yellow;font-size:'+Math.floor(scalef*12)+'px">4</td><td style="color:white;font-size:'+Math.floor(scalef*12)+'px">16</td><td align=left style="color:yellow;font-size:'+Math.floor(scalef*12)+'px">FH</td><td style="color:white;font-size:'+Math.floor(scalef*12)+'px">10</td></tr></table>')
 changetextvalue('p'+player+'pentadright', '<table border=0 cellpadding=0 cellspacing=0 width=100% height=100% ><tr><td align=left style="color:yellow;font-size:'+Math.floor(scalef*12)+'px">3</td><td style="color:white;font-size:'+Math.floor(scalef*12)+'px">6</td><td align=left style="color:yellow;font-size:'+Math.floor(scalef*12)+'px">2P</td><td style="color:white;font-size:'+Math.floor(scalef*12)+'px">3</td></tr><tr><td align=left style="color:yellow;font-size:'+Math.floor(scalef*12)+'px">F</td><td style="color:white;font-size:'+Math.floor(scalef*12)+'px">5</td><td align=left style="color:yellow;font-size:'+Math.floor(scalef*12)+'px">1P</td><td style="color:white;font-size:'+Math.floor(scalef*12)+'px">1</td></tr></table>')
@@ -873,7 +879,7 @@ if (phasearray[player-1]=="score")
 {
 var begorend=currentscore[player-1].length  // = 0 if next is beginning, 1 if next is end
 
-if (begorend==0) {changetextvalue('p'+player+'go', imagefor('beg'))} else {changetextvalue('p'+player+'go', imagefor('end'))}
+if (begorend==0) {changetextvalue('p'+player+'go', imagefor('beg')); if (pentadgametype==1) {changetextvalue('p'+player+'go', imagefor('empty'))}} else {changetextvalue('p'+player+'go', imagefor('end'))}
 }
 
 
@@ -1670,7 +1676,7 @@ changetextvalue(rs1, score1)
 ptotal=playername+'total'
 
 changetextvalue(ptotal, totalscore)
-
+changetextvalue(playername+'totalscorecard', totalscore)
 
 }
 
@@ -1970,8 +1976,8 @@ document.location.href=someurl
 var displayadnum=0
 var displayhelptexts=
 [
-'<table width=100% border=0 bgcolor=cyan  onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="rummyicon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*9)+'px"><b>Help</b> gives context-sensitive help.<br><b>New</b> starts a new series of games.<br><b>Deal</b> starts a new game.</td></tr></table>',
-'<table width=100% border=0 bgcolor=cyan  onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="rummyicon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*9)+'px"><span style="font-weight:bold">TopAccolades</span><br>Apps and web services</td></tr></table>',
+'<table width=100% border=0 bgcolor=cyan  onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="icon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*9)+'px"><b>Help</b> gives help.<br><b>New</b> starts a new game.<br><b>Hide</b> hides all boards.</td></tr></table>',
+'<table width=100% border=0 bgcolor=cyan  onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="icon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*9)+'px"><span style="font-weight:bold">TopAccolades</span><br>Apps and web services</td></tr></table>',
 '<table width=100% border=0 bgcolor="lightblue" onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="compactfuniconlarge.png" align=center valign=middle  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b> i.compactfun.com</b><br>This app and other apps are also accessible online from many devices at i.compactfun.com</td></tr></table>'
 
 ]
