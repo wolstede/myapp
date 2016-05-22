@@ -1342,7 +1342,7 @@ function imagefor(someletter)
 {
 var somebg='#FFFACD'
 // if (someletter===' ') {someletter='&nbsp;'; somebg='silver'}
-if (someletter==='') {someletter='&nbsp;'}
+if (someletter==='' || someletter===' ') {someletter='&nbsp;'}
 return '<table cellpadding=0 cellspacing=0 style="width:100%;height:100%;border:1px solid black"><tr><td valign=middle align=center style="background-color:'+somebg+';text-align:center;font-size:'+Math.floor(scalef*16)+'px;font-weight:bold">'+someletter+'</td></tr></table>'
 }
 
