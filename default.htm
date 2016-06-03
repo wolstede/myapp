@@ -1013,11 +1013,20 @@ if (member(i, somesetselection)==true) {somebgintensity='dark'}
 changetextvalue('word'+i, imagefor(somebgintensity, somebgcolor, somesetwords[i]))
 }
 // show scores and OK buttons
-var somebutton='<td width='+Math.floor(scalef*50)+' onClick="goto(4)">'+graphicfor('Accept')+'</td>'
+var somebutton='<td width='+Math.floor(scalef*50)+' onClick="goto(4)">'+graphicfor('OK')+'</td>'
 var somerejectbutton='<td width='+Math.floor(scalef*50)+' onClick="goto(10)">'+graphicfor('Reject')+'</td>'
-settextvalue('workpad', 'Accept or Reject the Linxem word, name or title')
+if (somestatus[0]==2)
+{
+settextvalue('workpad', 'State Linxem word then tap OK')
+changetextvalue('scoresbuttons', '<table border=0 cellspacing=0 cellpadding=0 width='+Math.floor(scalef*230)+'><tr>'+somebutton+'<td width='+Math.floor(scalef*3)+'><img src="empty.png" width='+Math.floor(scalef*3)+'></td><td style="text-align:center;font-weight:bold;color:black;background-color:lemonchiffon;font-size:'+Math.floor(scalef*8)+'px">'+scorecard()+'</td><td width='+Math.floor(scalef*3)+'><img src="empty.png" width='+Math.floor(scalef*3)+'></td>'+somebutton+'</tr></table>')
+
+}
+else
+{
+settextvalue('workpad', 'State Linxem word; Share it; Tap OK/Reject')
 changetextvalue('scoresbuttons', '<table border=0 cellspacing=0 cellpadding=0 width='+Math.floor(scalef*230)+'><tr>'+somerejectbutton+'<td width='+Math.floor(scalef*3)+'><img src="empty.png" width='+Math.floor(scalef*3)+'></td><td style="text-align:center;font-weight:bold;color:black;background-color:lemonchiffon;font-size:'+Math.floor(scalef*8)+'px">'+scorecard()+'</td><td width='+Math.floor(scalef*3)+'><img src="empty.png" width='+Math.floor(scalef*3)+'></td>'+somebutton+'</tr></table>')
-changebgcolor('timerdisplay', 'yellow')
+}
+changebgcolor('timerdisplay', 'red')
 changetextvalue('timerdisplay', '&nbsp;')
 
 document.getElementById('theboard').style.display='inline'
@@ -1356,7 +1365,7 @@ if (somesetselection.length>=2)
 {
 if (timer != null) {clearTimeout(timer)}
 
-goto(2)
+goto(3)
 }
 else
 {
@@ -1504,10 +1513,12 @@ if (somestatus[3]==1)
 if (GetLocalEval('setselection').length<2)
 {
 goto(9)
+return
 }
 else
 {
-goto(2)
+goto(3)
+return
 }
 }
 if (somestatus[3]==5) 
@@ -1515,10 +1526,12 @@ if (somestatus[3]==5)
 if (GetLocalEval('solveselection').length<GetLocalEval('setselection').length)
 {
 goto(11)
+return
 }
 else
 {
 goto(6)
+return
 }
 }
 }
@@ -2122,8 +2135,9 @@ var linxemwords=
 "Start",
 // Enter list from spreadsheet here
 
+
+
 "Abraham",
-"Aaron",
 "Accent",
 "Ace",
 "Achilles",
@@ -2136,13 +2150,10 @@ var linxemwords=
 "Adder",
 "Addition",
 "Admiral",
-"Admission",
 "Admit",
 "Advance",
 "Advocate",
 "Aerial",
-"Affair",
-"Affect",
 "Afghan",
 "Africa",
 "Age",
@@ -2151,7 +2162,6 @@ var linxemwords=
 "Amazon",
 "Ambulance",
 "America",
-"Amsterdam",
 "Anchor",
 "Angle",
 "Ankle",
@@ -2165,9 +2175,7 @@ var linxemwords=
 "Arab",
 "Arch",
 "Archer",
-"Archimedes",
 "Architect",
-"Aristotle",
 "Arm",
 "Army",
 "Arrow",
@@ -2180,7 +2188,7 @@ var linxemwords=
 "Ass",
 "Athens",
 "Atlantic",
-"Atmosphere",
+"Atlas",
 "Attack",
 "Aunt",
 "Austen",
@@ -2196,6 +2204,7 @@ var linxemwords=
 "Baker",
 "Balance",
 "Ball",
+"Balloon",
 "Banana",
 "Band",
 "Bank",
@@ -2206,7 +2215,6 @@ var linxemwords=
 "Base",
 "Baseball",
 "Basil",
-"Basketball",
 "Bass",
 "Bat",
 "Bath",
@@ -2218,7 +2226,6 @@ var linxemwords=
 "Beam",
 "Bean",
 "Bear",
-"Bearing",
 "Beat",
 "Beaver",
 "Bed",
@@ -2238,7 +2245,6 @@ var linxemwords=
 "Berlin",
 "Berry",
 "Big",
-"Bilbo",
 "Bill",
 "Bind",
 "Birch",
@@ -2246,7 +2252,6 @@ var linxemwords=
 "Birmingham",
 "Biscuit",
 "Bishop",
-"Bismark",
 "Bit",
 "Bitter",
 "Black",
@@ -2259,7 +2264,6 @@ var linxemwords=
 "Blow",
 "Blubber",
 "Blue",
-"Bluebell",
 "Bluff",
 "Blunt",
 "Blur",
@@ -2316,7 +2320,6 @@ var linxemwords=
 "Buck",
 "Bud",
 "Bug",
-"Builder",
 "Bulb",
 "Bull",
 "Bum",
@@ -2326,7 +2329,6 @@ var linxemwords=
 "Burns",
 "Bus",
 "Bush",
-"Business",
 "Bust",
 "Butcher",
 "Butter",
@@ -2456,29 +2458,17 @@ var linxemwords=
 "Combine",
 "Compact",
 "Company",
-"Compliment",
-"Composition",
 "Compound",
 "Condition",
 "Conductor",
 "Cone",
-"Congo",
 "Console",
 "Constable",
-"Construct",
-"Consult",
-"Contact",
-"Content",
-"Contract",
-"Control",
-"Convention",
 "Convert",
-"Convict",
 "Cook",
 "Cookie",
 "Cool",
 "Cooper",
-"Copernicus",
 "Copper",
 "Copy",
 "Cord",
@@ -2486,7 +2476,6 @@ var linxemwords=
 "Cork",
 "Corn",
 "Corporal",
-"Correspond",
 "Couch",
 "Cougar",
 "Council",
@@ -2521,7 +2510,6 @@ var linxemwords=
 "Cupid",
 "Curb",
 "Cure",
-"Curie",
 "Currant",
 "Current",
 "Curry",
@@ -2649,7 +2637,7 @@ var linxemwords=
 "Eros",
 "Euro",
 "Europe",
-"Evening",
+"Eve",
 "Everest",
 "Ewe",
 "Exam",
@@ -2679,9 +2667,7 @@ var linxemwords=
 "Fat",
 "Father",
 "Fault",
-"Favo(u)r",
 "Fawn",
-"Feature",
 "Felt",
 "Fence",
 "Fencing",
@@ -2730,7 +2716,6 @@ var linxemwords=
 "Form",
 "Fortune",
 "Foul",
-"Foundation",
 "Fox",
 "Foxtrot",
 "Frame",
@@ -2756,7 +2741,6 @@ var linxemwords=
 "Galileo",
 "Gallery",
 "Game",
-"Gandalf",
 "Gandhi",
 "Garage",
 "Gardener",
@@ -2767,7 +2751,6 @@ var linxemwords=
 "Gay",
 "Gear",
 "General",
-"Generation",
 "Genesis",
 "George",
 "Germ",
@@ -2786,7 +2769,6 @@ var linxemwords=
 "Golf",
 "Gong",
 "Good",
-"Google",
 "Goose",
 "Gorgon",
 "Gorilla",
@@ -2861,9 +2843,7 @@ var linxemwords=
 "Hermes",
 "Hide",
 "High",
-"Hijab",
 "Hip",
-"Hippo",
 "Hitler",
 "Hives",
 "Hog",
@@ -2895,7 +2875,7 @@ var linxemwords=
 "Hue",
 "Hull",
 "Hume",
-"Humour",
+"Humo(u)r",
 "Hurricane",
 "Hurt",
 "Husband",
@@ -2907,7 +2887,6 @@ var linxemwords=
 "Impact",
 "Implant",
 "Import",
-"Impression",
 "Incense",
 "Inch",
 "Incline",
@@ -2953,7 +2932,6 @@ var linxemwords=
 "Joker",
 "Jones",
 "Joseph",
-"Joule",
 "Judge",
 "Juice",
 "Juliet",
@@ -2986,7 +2964,6 @@ var linxemwords=
 "Knee",
 "Knife",
 "Knot",
-"Knuckle",
 "Labrador",
 "Lace",
 "Lager",
@@ -3002,7 +2979,7 @@ var linxemwords=
 "Leader",
 "Leaf",
 "Lean",
-"Leave",
+"Leaves",
 "Left",
 "Leg",
 "Lemon",
@@ -3066,11 +3043,9 @@ var linxemwords=
 "Mail",
 "Major",
 "Man",
-"Manager",
 "Manchester",
 "Mandela",
 "Manners",
-"Manx",
 "Mao",
 "Marble",
 "March",
@@ -3080,7 +3055,6 @@ var linxemwords=
 "Market",
 "Marley",
 "Marlowe",
-"Marmalade",
 "Maroon",
 "Marple",
 "Marry",
@@ -3177,7 +3151,7 @@ var linxemwords=
 "Net",
 "New York",
 "News",
-"Newt",
+"Newton",
 "Nice",
 "Nick",
 "Nickel",
@@ -3190,18 +3164,13 @@ var linxemwords=
 "North",
 "Nose",
 "Note",
-"Notice",
 "Novel",
-"November",
 "Numbers",
 "Nun",
 "Nurse",
 "Nut",
 "Oaks",
 "Oasis",
-"Obama",
-"Object",
-"October",
 "Odd",
 "Oil",
 "Olive",
@@ -3265,7 +3234,6 @@ var linxemwords=
 "Pepper",
 "Perch",
 "Perfect",
-"Perfume",
 "Period",
 "Permit",
 "Perry",
@@ -3301,7 +3269,6 @@ var linxemwords=
 "Plaster",
 "Plastic",
 "Plate",
-"Plato",
 "Play",
 "Player",
 "Plot",
@@ -3346,15 +3313,13 @@ var linxemwords=
 "Private",
 "Prize",
 "Proceeds",
-"Produce",
 "Product",
-"Program(me)",
+"Program",
 "Progress",
 "Project",
 "Proof",
 "Propose",
 "Protest",
-"Provision",
 "Prune",
 "Puma",
 "Pump",
@@ -3365,7 +3330,6 @@ var linxemwords=
 "Purple",
 "Purpose",
 "Pussy",
-"Putt",
 "Quack",
 "Quail",
 "Quarry",
@@ -3375,12 +3339,10 @@ var linxemwords=
 "Quiet",
 "Quiver",
 "Rabbit",
-"Raccoon",
 "Race",
 "Rack",
 "Racket",
 "Radio",
-"Radium",
 "Rag",
 "Rain",
 "Rake",
@@ -3398,11 +3360,9 @@ var linxemwords=
 "Rear",
 "Rebel",
 "Recall",
-"Receipt",
 "Recess",
 "Record",
 "Red",
-"Redress",
 "Reed",
 "Reel",
 "Referee",
@@ -3416,7 +3376,6 @@ var linxemwords=
 "Remote",
 "Rent",
 "Report",
-"Resent",
 "Reservation",
 "Reserve",
 "Resort",
@@ -3493,18 +3452,15 @@ var linxemwords=
 "Scent",
 "Scheme",
 "School",
-"Scientist",
 "Scoop",
 "Scorpion",
 "Scotland",
 "Scout",
-"Scrabble",
 "Scrap",
 "Scratch",
 "Screen",
 "Screwdriver",
 "Scrubs",
-"Sculptor",
 "Scum",
 "Sea",
 "Seal",
@@ -3584,7 +3540,6 @@ var linxemwords=
 "Snuff",
 "Soap",
 "Sock",
-"Socrates",
 "Soda",
 "Sofa",
 "Soil",
@@ -3668,7 +3623,6 @@ var linxemwords=
 "Stove",
 "Strain",
 "Strand",
-"Stranger",
 "Straw",
 "Stray",
 "Stream",
@@ -3683,7 +3637,6 @@ var linxemwords=
 "Stump",
 "Stupid",
 "Subject",
-"Substance",
 "Sue",
 "Sugar",
 "Suit",
@@ -3723,6 +3676,7 @@ var linxemwords=
 "Tarzan",
 "Tasman",
 "Taste",
+"Tattoo",
 "Tax",
 "Taxi",
 "Tea",
@@ -3767,7 +3721,6 @@ var linxemwords=
 "Tokyo",
 "Tolkien",
 "Toll",
-"Tolstoy",
 "Tom",
 "Tomato",
 "Tongue",
@@ -3813,7 +3766,6 @@ var linxemwords=
 "Turkey",
 "Turn",
 "Turner",
-"Turnip",
 "Tweed",
 "Twins",
 "Twist",
@@ -3828,7 +3780,6 @@ var linxemwords=
 "Upset",
 "Uranus",
 "Urchin",
-"Utopia",
 "Vain",
 "Van",
 "Vault",
@@ -3905,7 +3856,6 @@ var linxemwords=
 "Wizard",
 "Wolf",
 "Woman",
-"Wombat",
 "Won",
 "Wonder",
 "Wood",
@@ -3934,7 +3884,6 @@ var linxemwords=
 "Zeus",
 "Zip",
 "Zulu",
-
 
 
 
