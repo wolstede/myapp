@@ -464,6 +464,10 @@ if (GetLocalVal('countdown')==null)
 SetLocalVal('countdown', 180)
 }
 
+if (GetLocalVal('zoom')==null)
+{
+SetLocalVal('zoom', 0)
+}
 var someinfo=''
 var somebuttons
 var someinitials=[]
@@ -822,13 +826,25 @@ adfrequency=2
 
 
 var thewords=[]
-var numberwords=33
-var silverstart=18
-var bluestart=21
-var redscore=0
+var goodstart=0
+var goodend=17
+var badstart=18
+var badend=29
+var terriblestart=30
+var terribleend=35
+var numbergood=goodend-goodstart+1
+var numberbad=badend-badstart+1
+var numberterrible=terribleend-terriblestart+1
+var numberwords=numbergood+numberbad+numberterrible
+var goodscore=0
+var badscore=4
+var terriblescore=8
 var correctscore=2
-var bluescore=4
-var silverscore=8
+var good='green'
+var bad='yellow'
+var terrible='red'
+var neutral='blue'
+
 var failcompleteset=10
 var failcompletesolve=10
 var cluerejection=10
@@ -939,14 +955,14 @@ SetLocalVal('setwords', convertlisttotext('text', shufflearray(somewords)))
 SetLocalVal('solvewords', convertlisttotext('text', shufflearray(somewords)))
 SetLocalVal('setselection', convertlisttotext('number', []))
 SetLocalVal('solveselection', convertlisttotext('number', []))
-sometext='<br><table border=1 style="width:95%;background-color:lemonchiffon;text-align:center"><tr><td>'
+sometext='<br><table border=1 style="width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
 
-sometext=sometext+'<br><br>Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br>'+somesettername+' is to set a challenge for '+somesolvername+'<br><br>'+somesettername+' must select at least 2 words on a red background that can be linked by a word, name or title.  The selection must be made before the countdown ends ('+sometimeallowed+' seconds).<br><br>'+somesettername+' should take the device and tap the <i>OK</i> button when ready to proceed.'
+sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br>'+somesettername+' to set a challenge for '+somesolvername+'<br><br></span>'+somesettername+' must select at least 2 words that can be linked by a word, name or title.  The selection must be made before the countdown ends ('+sometimeallowed+' seconds).<br><br>'+somesettername+' should take the device and tap the <i>OK</i> button when ready to proceed.'
 
 sometext=sometext+'<br><br><table align=center border=0><tr><td onClick="goto(1)" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table>'
 
 
-sometext=sometext+'</td></tr></table>'
+sometext=sometext+'<br>&nbsp;</td></tr></table>'
 
 document.getElementById('theboard').style.display='none'
 
@@ -959,15 +975,23 @@ return
 // Set challenge
 if (somestatus[3]==1)
 {
+writethewordtable()
 somesetwords=GetLocalEval('setwords')
+
 somesetselection=GetLocalEval('setselection')
+
 for (var i=0; i<somesetwords.length; i++)
 {
-if (i>=bluestart) {somebgcolor='blue'; somebgintensity='light'}
-if (i>=silverstart && i<bluestart) {somebgcolor='silver'; somebgintensity='light'}
-if (i<silverstart) {somebgcolor='red'; somebgintensity='light'}
+
+if (i>=goodstart && i<=goodend) {somebgcolor=good; somebgintensity='light'}
+
+if (i>=badstart && i<=badend) {somebgcolor=bad; somebgintensity='light'}
+
+if (i>=terriblestart && i<=terribleend) {somebgcolor=terrible; somebgintensity='light'}
+
 if (member(i, somesetselection)==true) {somebgintensity='dark'}
 changetextvalue('word'+i, imagefor(somebgintensity, somebgcolor, somesetwords[i]))
+
 }
 // show scores and OK buttons
 var somebutton='<td width='+Math.floor(scalef*50)+' onClick="commitset()">'+graphicfor('OK')+'</td>'
@@ -985,7 +1009,7 @@ if (somestatus[3]==2)
 {
 somesetselection=GetLocalEval('setselection')
 
-sometext='<br><table border=1 style="width:95%;background-color:lemonchiffon;text-align:center"><tr><td>'
+sometext='<br><table border=1 style="width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
 
 sometext=sometext+'<br><br>Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br>'+somesettername+' should state the Linxem word, name or title and let others review this to accept or reject it.<br><br>Tap the <i>OK</i> button to see the board again with <i>Accept</i> and <i>Reject</i> buttons.'
 sometext=sometext+'<br><br><table align=center border=0><tr><td onClick="goto(3)" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table>'
@@ -1002,13 +1026,16 @@ return
 // State clue
 if (somestatus[3]==3)
 {
+writethewordtable()
 somesetwords=GetLocalEval('setwords')
 somesetselection=GetLocalEval('setselection')
 for (var i=0; i<somesetwords.length; i++)
 {
-if (i>=bluestart) {somebgcolor='blue'; somebgintensity='light'}
-if (i>=silverstart && i<bluestart) {somebgcolor='silver'; somebgintensity='light'}
-if (i<silverstart) {somebgcolor='red'; somebgintensity='light'}
+if (i>=goodstart && i<=goodend) {somebgcolor=good; somebgintensity='light'}
+
+if (i>=badstart && i<=badend) {somebgcolor=bad; somebgintensity='light'}
+
+if (i>=terriblestart && i<=terribleend) {somebgcolor=terrible; somebgintensity='light'}
 if (member(i, somesetselection)==true) {somebgintensity='dark'}
 changetextvalue('word'+i, imagefor(somebgintensity, somebgcolor, somesetwords[i]))
 }
@@ -1042,14 +1069,14 @@ if (somestatus[3]==4)
 // var somewords=shufflearray(linxemwords).slice(0, numberwords)
 somesetselection=GetLocalEval('setselection')
 
-sometext='<br><table border=1 style="width:95%;background-color:lemonchiffon;text-align:center"><tr><td>'
+sometext='<br><table border=1 style="width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
 
-sometext=sometext+'<br><br>Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br>'+somesolvername+' is to solve the challenge set by '+somesettername+'<br><br>'+somesolvername+' must select '+somesetselection.length+' words that can be linked by the clue given by '+somesettername+'.  The selection must be made before the countdown ends ('+sometimeallowed+' seconds).<br><br>'+somesolvername+' should take the device and tap the <i>OK</i> button when ready to proceed.'
+sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br>'+somesolvername+' to solve the challenge set by '+somesettername+'<br><br></span>'+somesolvername+' must select '+somesetselection.length+' words that can be linked by the clue given by '+somesettername+'.  The selection must be made before the countdown ends ('+sometimeallowed+' seconds).<br><br>'+somesolvername+' should take the device and tap the <i>OK</i> button when ready to proceed.'
 
 sometext=sometext+'<br><br><table align=center border=0><tr><td onClick="goto(5)" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table>'
 
 
-sometext=sometext+'</td></tr></table>'
+sometext=sometext+'<br>&nbsp;</td></tr></table>'
 document.getElementById('theboard').style.display='none'
 changetextvalue('output', sometext)
 document.getElementById('output').style.display='inline'
@@ -1060,14 +1087,14 @@ return
 // Solve challenge
 if (somestatus[3]==5)
 {
-
+writethewordtable()
 somesolvewords=GetLocalEval('solvewords')
 somesolveselection=GetLocalEval('solveselection')
 somesetselection=GetLocalEval('setselection')
 
 for (var i=0; i<somesolvewords.length; i++)
 {
-somebgcolor='green'; somebgintensity='light'
+somebgcolor=neutral; somebgintensity='light'
 if (member(i, somesolveselection)==true) {somebgintensity='dark'}
 changetextvalue('word'+i, imagefor(somebgintensity, somebgcolor, somesolvewords[i]))
 }
@@ -1085,7 +1112,7 @@ return
 // Show Result
 if (somestatus[3]==6)
 {
-
+writethewordtable()
 somesetwords=GetLocalEval('setwords')
 somesolvewords=GetLocalEval('solvewords')
 somesolveselection=GetLocalEval('solveselection')
@@ -1094,16 +1121,16 @@ var somei
 var someword
 for (var i=0; i<somesolvewords.length; i++)
 {
-somebgcolor='green'; somebgintensity='light'
+somebgcolor=neutral; somebgintensity='light'
 someword=somesolvewords[i]
 somei=ith(someword, somesetwords)
 if (member(i, somesolveselection)==true) 
 {
 someword=somesolvewords[i]
 somei=ith(someword, somesetwords)
-if (somei>=bluestart) {somebgcolor='blue'; somebgintensity='light'}
-if (somei>=silverstart && somei<bluestart) {somebgcolor='black'; somebgintensity='dark'}
-if (somei<silverstart) {somebgcolor='red'; somebgintensity='light'}
+if (somei>=goodstart && somei<=goodend) {somebgcolor=good; somebgintensity='light'}
+if (somei>=badstart && somei<=badend) {somebgcolor=bad; somebgintensity='light'}
+if (somei>=terriblestart && somei<=terribleend) {somebgcolor=terrible; somebgintensity='light'}
 if (member(somei, somesetselection)==true) {somebgintensity='dark'}
 }
 changetextvalue('word'+i, imagefor(somebgintensity, somebgcolor, somesolvewords[i]))
@@ -1129,9 +1156,9 @@ somesolvewords=GetLocalEval('solvewords')
 somesolveselection=GetLocalEval('solveselection')
 somesetselection=GetLocalEval('setselection')
 
-sometext='<br><table border=1 style="width:95%;background-color:lemonchiffon;text-align:center"><tr><td>'
+sometext='<br><table border=1 style="width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
 
-sometext=sometext+'<br><br>Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br>'
+sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br></span>'
 
 sometext=sometext+'<table border=1 style="width:90%;background-color:#FFDDDD"  align=center><tr><td colspan=3 style="font-weight:bold;text-align:center">Scores for this challenge</td></tr>'
 sometext=sometext+'<tr><td style="font-weight:bold;text-align:center">Word</td><td width=* style="font-weight:bold;text-align:center">Yours</td><td width=* style="font-weight:bold;text-align:center">Opposition</td></tr>'
@@ -1154,9 +1181,10 @@ if (member(i, somesolveselection)==true)
 {
 someword=somesolvewords[i]
 somei=ith(someword, somesetwords)
-if (somei>=bluestart) {someoppscore=bluescore}
-if (somei>=silverstart && somei<bluestart) {someoppscore=silverscore}
-if (somei<silverstart) {someyourscore=redscore}
+if (somei>=goodstart && somei<=goodend) {someyourscore=goodscore}
+if (somei>=badstart && somei<=badend) {someoppscore=badscore}
+if (somei>=terriblestart && somei<=terribleend) {someoppscore=terriblescore}
+
 if (member(somei, somesetselection)==true) {someyourscore=correctscore; somecorrect++}
 sometext=sometext+'<tr><td style="font-weight:bold;text-align:center">'+someword+'</td><td style="font-weight:bold;text-align:center">'+someyourscore+'</td><td style="font-weight:bold;text-align:center">'+someoppscore+'</td></tr>'
 someyourtotal=someyourtotal+someyourscore
@@ -1187,7 +1215,7 @@ sometext=sometext+'<br><br>Tap <i>OK</i> to continue and to see the selections m
 sometext=sometext+'<br><br><table align=center border=0><tr><td onClick="goto(8)" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table>'
 }
 
-sometext=sometext+'</td></tr></table>'
+sometext=sometext+'<br>&nbsp;</td></tr></table>'
 if (GetLocalNum('scoreadded')==0) {distributescores(someyourtotal, someopptotal)} // Ensures that scores are added only once if app restarted in this phase
 SetLocalVal('scoreadded', 1) 
 changebgcolor('timerdisplay', 'yellow')
@@ -1203,7 +1231,7 @@ return
 // Show Result
 if (somestatus[3]==8)
 {
-
+writethewordtable()
 somesetwords=GetLocalEval('setwords')
 somesolvewords=GetLocalEval('solvewords')
 somesolveselection=GetLocalEval('solveselection')
@@ -1212,12 +1240,14 @@ var somei
 var someword
 for (var i=0; i<somesolvewords.length; i++)
 {
-somebgcolor='green'; somebgintensity='light'
+somebgcolor=neutral; somebgintensity='light'
 someword=somesolvewords[i]
 somei=ith(someword, somesetwords)
 if (member(somei, somesetselection)==true) 
 {
-somebgcolor='red'; somebgintensity='dark'
+if (somei>=goodstart && somei<=goodend) {somebgcolor=good; somebgintensity='dark'}
+if (somei>=badstart && somei<=badend) {somebgcolor=bad; somebgintensity='dark'}
+if (somei>=terriblestart && somei<=terribleend) {somebgcolor=terrible; somebgintensity='dark'}
 }
 changetextvalue('word'+i, imagefor(somebgintensity, somebgcolor, somesolvewords[i]))
 }
@@ -1241,17 +1271,17 @@ if (somestatus[3]==9)
 // somesolveselection=GetLocalEval('solveselection')
 // somesetselection=GetLocalEval('setselection')
 
-sometext='<br><table border=1 style="width:95%;background-color:lemonchiffon;text-align:center"><tr><td>'
+sometext='<br><table border=1 style="width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
 
-sometext=sometext+'<br><br>Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br>'
+sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br></span>'
 
-sometext=sometext+somesettername+' failed to select 2 red words within the countdown, so the opposition gains '+failcompleteset+ ' points.'
-sometext=sometext+' This ends the challenge.'
+sometext=sometext+somesettername+' failed to select 2 words within the countdown, so the opposition gains '+failcompleteset+ ' points.'
+sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">This ends the challenge.</span>'
 
 sometext=sometext+'<br><br>Tap <i>OK</i> to continue'
 sometext=sometext+'<br><br><table align=center border=0><tr><td onClick="goto(12)" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table>'
 
-sometext=sometext+'</td></tr></table>'
+sometext=sometext+'<br>&nbsp;</td></tr></table>'
 
 distributescores(0, failcompleteset) 
 document.getElementById('theboard').style.display='none'
@@ -1270,17 +1300,17 @@ if (somestatus[3]==10)
 // somesolveselection=GetLocalEval('solveselection')
 // somesetselection=GetLocalEval('setselection')
 
-sometext='<br><table border=1 style="width:95%;background-color:lemonchiffon;text-align:center"><tr><td>'
+sometext='<br><table border=1 style="width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
 
-sometext=sometext+'<br><br>Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br>'
+sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br></span>'
 
-sometext=sometext+'The clue given by '+somesettername+' was rejected, so the opposition gains '+cluerejection+ ' points.'
-sometext=sometext+' This ends the challenge.'
+sometext=sometext+'The clue given by '+somesettername+' was rejected, so the opposition gains '+cluerejection+ ' points.<br><br>'
+sometext=sometext+'<span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">This ends the challenge.</span>'
 
 sometext=sometext+'<br><br>Tap <i>OK</i> to continue'
 sometext=sometext+'<br><br><table align=center border=0><tr><td onClick="goto(12)" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table>'
 
-sometext=sometext+'</td></tr></table>'
+sometext=sometext+'<br>&nbsp;</td></tr></table>'
 
 distributescores(0, cluerejection) 
 document.getElementById('theboard').style.display='none'
@@ -1299,17 +1329,17 @@ somesolvewords=GetLocalEval('solvewords')
 somesolveselection=GetLocalEval('solveselection')
 somesetselection=GetLocalEval('setselection')
 
-sometext='<br><table border=1 style="width:95%;background-color:lemonchiffon;text-align:center"><tr><td>'
+sometext='<br><table border=1 style="width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
 
-sometext=sometext+'<br><br>Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br>'
+sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br></span>'
 
-sometext=sometext+somesolvername+' failed to select the required number of green words within the countdown, so the opposition gains '+failcompletesolve+ ' points.'
-sometext=sometext+' This ends the challenge.'
+sometext=sometext+somesolvername+' failed to select the required number of green words within the countdown, so the opposition gains '+failcompletesolve+ ' points.<br><br>'
+sometext=sometext+'<span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">This ends the challenge.</span>'
 
 sometext=sometext+'<br><br>Tap <i>OK</i> to continue'
 sometext=sometext+'<br><br><table align=center border=0><tr><td onClick="goto(12)" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table>'
 
-sometext=sometext+'</td></tr></table>'
+sometext=sometext+'<br>&nbsp;</td></tr></table>'
 distributescores(0, failcompletesolve) 
 document.getElementById('theboard').style.display='none'
 changetextvalue('output', sometext)
@@ -1340,16 +1370,16 @@ continuechallenge()
 if (somestatus[3]==13)
 {
 
-sometext='<br><table border=1 style="width:95%;background-color:#FFDDDD;text-align:center"><tr><td>'
+sometext='<br><table border=1 style="width:95%;background-color:#FFDDDD;text-align:center" align=center><tr><td>'
 
-sometext=sometext+'<br><br>Game over.  Final scores are:'
+sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">Game over<br><br></span>Final scores are:'
 sometext=sometext+'<br><table border=0 cellspacing=0 cellpadding=0 style="background-color:lemonchiffon" align=center width=80%><tr><td>'+scorecard()+'</td></tr></table>'
 
-sometext=sometext+'<br><br>Tap <i>New</i> for a new game.'
+sometext=sometext+'<br><br>Tap <i>New</i> for a new game.<br><br>&nbsp;'
 
 
 
-sometext=sometext+'</td></tr></table>'
+sometext=sometext+'<br>&nbsp;</td></tr></table>'
 document.getElementById('theboard').style.display='none'
 changetextvalue('output', sometext)
 document.getElementById('output').style.display='inline'
@@ -1562,8 +1592,14 @@ var sometextcolour='black'
 if (someletter==='' || someletter===' ') {someletter='&nbsp;'}
 if (someshade=='dark') {sometextcolour='white'}
 
+if (GetLocalNum('zoom')==0)
+{
 return '<div style="position:relative"><img width='+Math.floor(scalef*76)+' height='+Math.floor(scalef*15)+' src="'+someshade+somecolour+'wordbg.png" style="display:block"><div style="position:absolute;top:0px;left:0px;width:100%;height:100%;display:block"><table border=0 cellspacing=0 cellpadding=0 align=center valign=middle ><tr height='+Math.floor(scalef*15)+'><td align=center valign=middle style="text-align:center;font-weight:bold;color:'+sometextcolour+'">'+someletter+'</td></tr></table></div></div>'
-
+}
+else
+{
+return '<div style="position:relative"><img width='+Math.floor(scalef*114)+' height='+Math.floor(scalef*17)+' src="'+someshade+somecolour+'wordbg.png" style="display:block"><div style="position:absolute;top:0px;left:0px;width:100%;height:100%;display:block"><table border=0 cellspacing=0 cellpadding=0 align=center valign=middle ><tr height='+Math.floor(scalef*17)+'><td align=center valign=middle style="font-size:'+Math.floor(scalef*13)+'px;text-align:center;font-weight:bold;color:'+sometextcolour+'">'+someletter+'</td></tr></table></div></div>'
+}
 
 
 }
@@ -1577,34 +1613,59 @@ return '<div style="position:relative"><img width='+Math.floor(scalef*76)+' heig
 <script language="Javascript">
 
 
+function writethewordtable()
+{
+
+var sometext=''
+if (GetLocalNum('zoom')==0)
+{
+sometext=sometext+'<table width=100% border=0 cellspacing=0 cellpadding=0 style = "background-color:none" align=center>'
+for (var i=0; i<(numberwords/3); i++)
+{
+sometext=sometext+'<tr>'
+for (var j=0; j<3; j++)
+{
+sometext=sometext+'<td onClick="clickword('+((i*3)+j)+')" id="word'+((i*3)+j)+'" width="'+Math.floor(scalef*76)+'" align=center>'+imagefor('light', neutral, 'Linxem')+'</td>'
+if (j<2) {sometext=sometext+'<td><img src="empty.png" width='+Math.floor(scalef*1)+'  height='+Math.floor(scalef*2)+' style="display:block"></td>'}
+}
+sometext=sometext+'</tr><tr><td colspan=5><img src="empty.png" width='+Math.floor(scalef*230)+'  height='+Math.floor(scalef*2)+' style="display:block"></td></tr>'
+}
+sometext=sometext+'</table>'
+}
+else
+{
+sometext=sometext+'<table width=100% border=0 cellspacing=0 cellpadding=0 style = "background-color:none" align=center>'
+for (var i=0; i<(numberwords/2); i++)
+{
+sometext=sometext+'<tr>'
+for (var j=0; j<2; j++)
+{
+sometext=sometext+'<td onClick="clickword('+((i*2)+j)+')" id="word'+((i*2)+j)+'" width="'+Math.floor(scalef*114)+'" align=center></td>'
+if (j<1) {sometext=sometext+'<td><img src="empty.png" width='+Math.floor(scalef*2)+'  height='+Math.floor(scalef*2)+' style="display:block"></td>'}
+}
+sometext=sometext+'</tr><tr><td colspan=5><img src="empty.png" width='+Math.floor(scalef*230)+'  height='+Math.floor(scalef*1)+' style="display:block"></td></tr>'
+}
+sometext=sometext+'</table>'
+}
+changetextvalue('wordtable', sometext)
+}
 
 function writethegame()
 {
-documentwrite('<div id="theboard" style="display:none">')
+documentwrite('<div id="theboard" style="display:none; background-color:silver">')
 documentwrite('<center>')
 documentwrite('<table width=100% border=0 cellspacing=0 cellpadding=0 style = "background-color:none" align=center>')
+documentwrite('<tr><td width=100% id="wordtable">')
+
+documentwrite('</td></tr>')
+documentwrite('<tr><td  style="text-align:center; background-color:white;height:'+Math.floor(scalef*15)+'px;font-size:'+Math.floor(scalef*10)+'px"><table border=1 width=100% height=100% cellspacing=0 cellpadding=0 align=center valign=middle><tr><td id="workpad" style="text-align:center">WW PA PB PC</td></tr></table></td></tr>')
+documentwrite('<tr><td  style="text-align:center; "><img src="empty.png" width='+Math.floor(scalef*230)+'  height='+Math.floor(scalef*3)+' style="display:block"></td></tr>')
+
+documentwrite('<tr><td ><table border=1 cellpadding=0 cellspacing=0 width=100%><tr><td onClick="setzoom(0)" style="background-color:black;color:white;width:'+Math.floor(scalef*50)+'px;text-align:center">ZOom -</td><td style="background-color:yellow;text-align:center;font-weight:bold" id="timerdisplay">&nbsp;</td><td onClick="setzoom(1)" style="background-color:black;color:white;width:'+Math.floor(scalef*50)+'px;text-align:center">zoOM +</td></tr></table></td></tr>')
+documentwrite('<tr><td ><img src="empty.png" width='+Math.floor(scalef*230)+'  height='+Math.floor(scalef*2)+' style="display:block"></td></tr>')
 
 
-for (var i=0; i<11; i++)
-{
-documentwrite('<tr>')
-for (var j=0; j<3; j++)
-{
-documentwrite('<td onClick="clickword('+((i*3)+j)+')" id="word'+((i*3)+j)+'" width="'+Math.floor(scalef*76)+'" align=center>'+imagefor('light', 'green', 'Linxem')+'</td>')
-if (j<2) {documentwrite('<td><img src="empty.png" width='+Math.floor(scalef*1)+'  height='+Math.floor(scalef*2)+' style="display:block"></td>')}
-}
-documentwrite('</tr><tr><td colspan=5><img src="empty.png" width='+Math.floor(scalef*230)+'  height='+Math.floor(scalef*2)+' style="display:block"></td></tr>')
-}
-
-
-documentwrite('<tr><td colspan=5 style="text-align:center; background-color:white;height:'+Math.floor(scalef*15)+'px;font-size:'+Math.floor(scalef*10)+'px"><table border=1 width=100% height=100% cellspacing=0 cellpadding=0 align=center valign=middle><tr><td id="workpad" style="text-align:center">WW PA PB PC</td></tr></table></td></tr>')
-documentwrite('<tr><td colspan=5 style="text-align:center; "><img src="empty.png" width='+Math.floor(scalef*230)+'  height='+Math.floor(scalef*3)+' style="display:block"></td></tr>')
-
-documentwrite('</tr><tr><td colspan=5><table border=1 cellpadding=0 cellspacing=0 width=100%><tr><td style="background-color:yellow;text-align:center;font-weight:bold" id="timerdisplay">&nbsp;</td></tr></table></td></tr>')
-documentwrite('</tr><tr><td colspan=5><img src="empty.png" width='+Math.floor(scalef*230)+'  height='+Math.floor(scalef*2)+' style="display:block"></td></tr>')
-
-
-documentwrite('<tr><td colspan=5 style="text-align:center; " id="scoresbuttons"></td></tr>')
+documentwrite('<tr><td style="text-align:center; " id="scoresbuttons"></td></tr>')
 
 
 documentwrite('</table>')
@@ -1623,7 +1684,11 @@ documentwrite('</div>')
 }
 
 
-
+function setzoom(someval)
+{
+SetLocalVal('zoom', someval)
+continuechallenge()
+}
 
 
 
@@ -2045,7 +2110,7 @@ Once the initials and countdown time are set appropriately, you generally, excep
 The system chooses who is to be the setter (and the solver in 3- or 4-player individual games), and advises that the device should be passed to the setter. The setter should take the device and tap <i>OK</i> to reveal the main screen.
 <br>
 <br>
-The main screen displays <script language="Javascript">documentwrite(numberwords)</script>, <script language="Javascript">documentwrite(silverstart)</script> red ones, <script language="Javascript">documentwrite(bluestart-silverstart)</script> black ones, and <script language="Javascript">documentwrite(numberwords-bluestart)</script> blue ones.  The countdown starts and the setter must select, by tapping, 2 or more of the red words that can be linked.
+The main screen displays <script language="Javascript">documentwrite(numberwords)</script>, <script language="Javascript">documentwrite(numbergood)</script> red ones, <script language="Javascript">documentwrite(numberbad)</script> black ones, and <script language="Javascript">documentwrite(numberterrible)</script> blue ones.  The countdown starts and the setter must select, by tapping, 2 or more of the red words that can be linked.
 <br><br>
 Points to note about selecting words in this phase and in the solving stage are:
 <ul>
@@ -2141,26 +2206,25 @@ var linxemwords=
 "Accent",
 "Ace",
 "Achilles",
-"Action",
 "Actor",
 "Acts",
 "Acute",
+"Ad",
 "Adam",
 "Adams",
 "Adder",
-"Addition",
 "Admiral",
 "Admit",
-"Advance",
-"Advocate",
 "Aerial",
 "Afghan",
 "Africa",
 "Age",
 "Air",
 "Ajax",
+"Alexander",
+"Alpha",
 "Amazon",
-"Ambulance",
+"Amber",
 "America",
 "Anchor",
 "Angle",
@@ -2195,6 +2259,8 @@ var linxemwords=
 "Australia",
 "Avocado",
 "Avon",
+"Axes",
+"Axis",
 "Baby",
 "Bach",
 "Back",
@@ -2236,10 +2302,10 @@ var linxemwords=
 "Beethoven",
 "Beetle",
 "Beijing",
-"Being",
 "Belfast",
 "Bell",
 "Belt",
+"Ben",
 "Bench",
 "Bend",
 "Berlin",
@@ -2261,6 +2327,7 @@ var linxemwords=
 "Block",
 "Blood",
 "Bloom",
+"Blossom",
 "Blow",
 "Blubber",
 "Blue",
@@ -2268,7 +2335,6 @@ var linxemwords=
 "Blunt",
 "Blur",
 "Boa",
-"Boar",
 "Board",
 "Boat",
 "Bob",
@@ -2278,12 +2344,12 @@ var linxemwords=
 "Bomb",
 "Bond",
 "Bonnet",
+"Boob",
 "Book",
 "Boom",
 "Boot",
 "Bore",
 "Boss",
-"Bother",
 "Bottom",
 "Bound",
 "Bourne",
@@ -2308,6 +2374,7 @@ var linxemwords=
 "Broad",
 "Broke",
 "Bronze",
+"Brook",
 "Brother",
 "Brow",
 "Brown",
@@ -2327,15 +2394,14 @@ var linxemwords=
 "Buns",
 "Burger",
 "Burns",
-"Bus",
 "Bush",
 "Bust",
 "Butcher",
 "Butter",
 "Button",
-"Cabbage",
 "Cabinet",
 "Cable",
+"Caddy",
 "Caesar",
 "Cage",
 "Cairo",
@@ -2354,10 +2420,10 @@ var linxemwords=
 "Canteen",
 "Cap",
 "Cape",
-"Cape Town",
 "Capital",
 "Cappuccino",
 "Capricorn",
+"Captain",
 "Capture",
 "Car",
 "Card",
@@ -2366,14 +2432,13 @@ var linxemwords=
 "Carolina",
 "Carp",
 "Carter",
-"Casablanca",
 "Case",
+"Casino",
 "Cast",
 "Castle",
-"Castor",
 "Cat",
 "Catch",
-"Cause",
+"Catherine",
 "Cell",
 "Cent",
 "Central",
@@ -2406,7 +2471,6 @@ var linxemwords=
 "Chicken",
 "Chil(l)i",
 "Chile",
-"Chimp",
 "Chin",
 "China",
 "Chink",
@@ -2421,17 +2485,16 @@ var linxemwords=
 "Churchill",
 "Cider",
 "Cinch",
-"Cinderella",
 "Circle",
 "Circuit",
 "City",
 "Claret",
+"Clark",
 "Clasp",
 "Class",
 "Clay",
 "Clean",
 "Clear",
-"Clerk",
 "Climb",
 "Clink",
 "Clinton",
@@ -2459,11 +2522,11 @@ var linxemwords=
 "Compact",
 "Company",
 "Compound",
-"Condition",
 "Conductor",
 "Cone",
 "Console",
 "Constable",
+"Constance",
 "Convert",
 "Cook",
 "Cookie",
@@ -2510,12 +2573,10 @@ var linxemwords=
 "Cupid",
 "Curb",
 "Cure",
-"Currant",
 "Current",
 "Curry",
 "Curse",
 "Curtain",
-"Cushion",
 "Cycle",
 "Dad",
 "Daisy",
@@ -2530,6 +2591,7 @@ var linxemwords=
 "Dash",
 "Date",
 "David",
+"Davis",
 "Dawn",
 "Day",
 "Deaf",
@@ -2537,15 +2599,15 @@ var linxemwords=
 "Dear",
 "Deck",
 "Decoration",
-"Deed",
+"Deeds",
 "Deep",
 "Deer",
-"Default",
 "Defect",
 "Degree",
 "Delta",
 "Demo",
 "Demon",
+"Dennis",
 "Denomination",
 "Dentist",
 "Department",
@@ -2572,22 +2634,24 @@ var linxemwords=
 "Dip",
 "Dirt",
 "Disc",
-"Discharge",
 "Discipline",
-"Display",
 "Ditch",
 "Dive",
 "Division",
 "Divorce",
 "Do",
+"Doc",
 "Dock",
 "Doctor",
 "Dog",
 "Doll",
 "Dollar",
+"Dolly",
 "Dolphin",
 "Donkey",
+"Dot",
 "Dough",
+"Douglas",
 "Dove",
 "Down",
 "Doyle",
@@ -2641,6 +2705,7 @@ var linxemwords=
 "Everest",
 "Ewe",
 "Exam",
+"Excel",
 "Execution",
 "Exercise",
 "Exhaust",
@@ -2654,6 +2719,7 @@ var linxemwords=
 "Faint",
 "Fair",
 "Fairy",
+"Faith",
 "Fall",
 "Falls",
 "False",
@@ -2671,6 +2737,7 @@ var linxemwords=
 "Felt",
 "Fence",
 "Fencing",
+"Fern",
 "Field",
 "Figure",
 "File",
@@ -2706,6 +2773,7 @@ var linxemwords=
 "Fly",
 "Foil",
 "Fold",
+"Fool",
 "Foot",
 "Football",
 "Force",
@@ -2747,7 +2815,6 @@ var linxemwords=
 "Garlic",
 "Gas",
 "Gather",
-"Gauntlet",
 "Gay",
 "Gear",
 "General",
@@ -2770,8 +2837,8 @@ var linxemwords=
 "Gong",
 "Good",
 "Goose",
+"Gorge",
 "Gorgon",
-"Gorilla",
 "Governor",
 "Grace",
 "Grade",
@@ -2791,8 +2858,9 @@ var linxemwords=
 "Grip",
 "Gross",
 "Ground",
-"Grow",
+"Grown",
 "Growth",
+"Grub",
 "Guernsey",
 "Guide",
 "Guitar",
@@ -2815,6 +2883,7 @@ var linxemwords=
 "Happy",
 "Harbo(u)r",
 "Hard",
+"Hardy",
 "Hare",
 "Harp",
 "Harrow",
@@ -2825,13 +2894,16 @@ var linxemwords=
 "Haul",
 "Haunt",
 "Hawk",
+"Hazel",
 "Head",
 "Hear",
+"Hearing",
 "Heart",
 "Heat",
 "Heath",
 "Heather",
 "Heaven",
+"Hector",
 "Hedge",
 "Heel",
 "Helium",
@@ -2858,8 +2930,11 @@ var linxemwords=
 "Hood",
 "Hoof",
 "Hook",
+"Hooker",
 "Hoop",
-"Hop",
+"Hoover",
+"Hope",
+"Hops",
 "Horn",
 "Hornet",
 "Horse",
@@ -2881,7 +2956,6 @@ var linxemwords=
 "Husband",
 "Husky",
 "Ice",
-"Ideal",
 "Illusion",
 "Image",
 "Impact",
@@ -2894,7 +2968,6 @@ var linxemwords=
 "India",
 "Indiana",
 "Indigo",
-"Industry",
 "Insert",
 "Insult",
 "Interest",
@@ -2919,12 +2992,15 @@ var linxemwords=
 "Japan",
 "Jar",
 "Jason",
+"Jasper",
+"Java",
 "Jay",
 "Jeep",
 "Jelly",
 "Jerk",
 "Jersey",
 "Jet",
+"Jig",
 "Jingle",
 "John",
 "Johnson",
@@ -2932,8 +3008,8 @@ var linxemwords=
 "Joker",
 "Jones",
 "Joseph",
+"Joy",
 "Judge",
-"Juice",
 "Juliet",
 "July",
 "Jumbo",
@@ -2956,30 +3032,36 @@ var linxemwords=
 "Killer",
 "Kilo",
 "Kind",
+"Kindle",
 "King",
+"Kingdom",
 "Kink",
 "Kirk",
 "Kite",
+"Kitty",
 "Kiwi",
 "Knee",
 "Knife",
 "Knot",
+"Labo(u)r",
 "Labrador",
 "Lace",
 "Lager",
 "Lamb",
-"Lancashire",
+"Lancaster",
 "Land",
 "Lap",
 "Large",
 "Lash",
 "Last",
+"Laurel",
 "Law",
 "Lead",
 "Leader",
 "Leaf",
 "Lean",
 "Leaves",
+"Lee",
 "Left",
 "Leg",
 "Lemon",
@@ -3003,6 +3085,7 @@ var linxemwords=
 "Lima",
 "Lime",
 "Limp",
+"Limpet",
 "Lincoln",
 "Line",
 "Links",
@@ -3025,6 +3108,7 @@ var linxemwords=
 "Los Angeles",
 "Loss",
 "Lot",
+"Lotus",
 "Louis",
 "Lounge",
 "Love",
@@ -3070,6 +3154,7 @@ var linxemwords=
 "Matter",
 "Matthew",
 "May",
+"Mayo",
 "McDonald",
 "McKinley",
 "Meal",
@@ -3095,6 +3180,7 @@ var linxemwords=
 "Miner",
 "Minister",
 "Mink",
+"Minor",
 "Mint",
 "Minute",
 "Miss",
@@ -3102,6 +3188,7 @@ var linxemwords=
 "Mist",
 "Mo(u)ld",
 "Mobile",
+"Mocking",
 "Mode",
 "Model",
 "Mole",
@@ -3111,6 +3198,7 @@ var linxemwords=
 "Monkey",
 "Montgomery",
 "Moon",
+"Moor",
 "Moped",
 "Morocco",
 "Morse",
@@ -3143,7 +3231,7 @@ var linxemwords=
 "Nature",
 "Navy",
 "Neck",
-"Needle",
+"Needles",
 "Nelson",
 "Neon",
 "Neptune",
@@ -3153,6 +3241,7 @@ var linxemwords=
 "News",
 "Newton",
 "Nice",
+"Nicholas",
 "Nick",
 "Nickel",
 "Nike",
@@ -3171,10 +3260,12 @@ var linxemwords=
 "Nut",
 "Oaks",
 "Oasis",
+"Oats",
 "Odd",
 "Oil",
 "Olive",
 "Oliver",
+"Omnibus",
 "Onion",
 "Open",
 "Operation",
@@ -3183,11 +3274,12 @@ var linxemwords=
 "Organ",
 "Orwell",
 "Oscar",
+"Othello",
 "Otter",
 "Ounce",
 "Outfit",
-"Oven",
 "Owl",
+"Own",
 "Oxford",
 "Pace",
 "Pacific",
@@ -3216,6 +3308,7 @@ var linxemwords=
 "Pasta",
 "Paste",
 "Pat",
+"Patience",
 "Patient",
 "Pattern",
 "Paul",
@@ -3225,6 +3318,7 @@ var linxemwords=
 "Peck",
 "Peep",
 "Peer",
+"Pelican",
 "Pelt",
 "Pen",
 "Penalty",
@@ -3242,6 +3336,7 @@ var linxemwords=
 "Pest",
 "Pet",
 "Peter",
+"Phoenix",
 "Phone",
 "Pick",
 "Picket",
@@ -3276,6 +3371,7 @@ var linxemwords=
 "Plumber",
 "Poach",
 "Pocket",
+"Pod",
 "Point",
 "Poirot",
 "Poker",
@@ -3283,6 +3379,7 @@ var linxemwords=
 "Police",
 "Polish",
 "Polka",
+"Pollock",
 "Polo",
 "Pontoon",
 "Poodle",
@@ -3290,8 +3387,10 @@ var linxemwords=
 "Pop",
 "Pope",
 "Popeye",
+"Poppy",
 "Pork",
 "Port",
+"Portal",
 "Position",
 "Post",
 "Pot",
@@ -3320,15 +3419,15 @@ var linxemwords=
 "Proof",
 "Propose",
 "Protest",
+"Prudence",
 "Prune",
+"Pull",
 "Puma",
 "Pump",
 "Pumps",
 "Punch",
 "Pupil",
 "Puppy",
-"Purple",
-"Purpose",
 "Pussy",
 "Quack",
 "Quail",
@@ -3336,6 +3435,7 @@ var linxemwords=
 "Quarter",
 "Quebec",
 "Queen",
+"Queue",
 "Quiet",
 "Quiver",
 "Rabbit",
@@ -3356,10 +3456,8 @@ var linxemwords=
 "Rattle",
 "Ratty",
 "Reading",
-"Reagan",
 "Rear",
 "Rebel",
-"Recall",
 "Recess",
 "Record",
 "Red",
@@ -3396,7 +3494,6 @@ var linxemwords=
 "Rim",
 "Ring",
 "Road",
-"Roast",
 "Robin",
 "Rock",
 "Rocket",
@@ -3428,6 +3525,7 @@ var linxemwords=
 "Run",
 "Rung",
 "Runner",
+"Russell",
 "Russian",
 "Rye",
 "Sack",
@@ -3447,10 +3545,8 @@ var linxemwords=
 "Saturn",
 "Saw",
 "Scales",
-"Scallop",
 "Scene",
 "Scent",
-"Scheme",
 "School",
 "Scoop",
 "Scorpion",
@@ -3478,6 +3574,7 @@ var linxemwords=
 "Sex",
 "Shade",
 "Shag",
+"Shah",
 "Shakespeare",
 "Shame",
 "Shape",
@@ -3489,7 +3586,6 @@ var linxemwords=
 "Shell",
 "Sherlock",
 "Shift",
-"Shin",
 "Ship",
 "Shiraz",
 "Shirt",
@@ -3548,7 +3644,6 @@ var linxemwords=
 "Solomon",
 "Solution",
 "Sore",
-"Sorry",
 "Sound",
 "South",
 "Sow",
@@ -3583,7 +3678,6 @@ var linxemwords=
 "Spy",
 "Square",
 "Squash",
-"Squid",
 "Stable",
 "Staff",
 "Stag",
@@ -3611,6 +3705,7 @@ var linxemwords=
 "Still",
 "Sting",
 "Stir",
+"Stirling",
 "Stitch",
 "Stock",
 "Stole",
@@ -3627,12 +3722,14 @@ var linxemwords=
 "Stray",
 "Stream",
 "Stress",
+"Stretcher",
 "Strike",
 "String",
 "Strip",
 "Stripe",
 "Stroke",
 "Strut",
+"Stuart",
 "Stud",
 "Stump",
 "Stupid",
@@ -3643,7 +3740,6 @@ var linxemwords=
 "Summer",
 "Sun",
 "Superman",
-"Survey",
 "Sushi",
 "Suspect",
 "Swallow",
@@ -3653,6 +3749,7 @@ var linxemwords=
 "Swede",
 "Sweet",
 "Swell",
+"Swift",
 "Swim",
 "Swing",
 "Switch",
@@ -3664,7 +3761,6 @@ var linxemwords=
 "Tack",
 "Tackle",
 "Tag",
-"Tailor",
 "Tale",
 "Tall",
 "Tango",
@@ -3674,17 +3770,18 @@ var linxemwords=
 "Tape",
 "Tart",
 "Tarzan",
-"Tasman",
 "Taste",
 "Tattoo",
 "Tax",
 "Taxi",
+"Taylor",
 "Tea",
 "Tear",
 "Teddy",
 "Tee",
 "Telegraph",
 "Television",
+"Teller",
 "Temple",
 "Tend",
 "Tender",
@@ -3694,7 +3791,7 @@ var linxemwords=
 "Terms",
 "Test",
 "Texas",
-"Theory",
+"Thatcher",
 "Thomas",
 "Thread",
 "Throw",
@@ -3705,7 +3802,6 @@ var linxemwords=
 "Tiger",
 "Tights",
 "Tile",
-"Tiler",
 "Till",
 "Time",
 "Tin",
@@ -3752,9 +3848,7 @@ var linxemwords=
 "Trip",
 "Troop",
 "Trotter",
-"Trouble",
 "Truck",
-"True",
 "Truman",
 "Trump",
 "Trumpet",
@@ -3770,18 +3864,19 @@ var linxemwords=
 "Twins",
 "Twist",
 "Twister",
+"Tyler",
 "Type",
 "Umpire",
 "Uncle",
 "Uniform",
 "Unit",
 "Universe",
-"Uplift",
 "Upset",
 "Uranus",
 "Urchin",
 "Vain",
 "Van",
+"Vat",
 "Vault",
 "Veil",
 "Vein",
@@ -3811,7 +3906,6 @@ var linxemwords=
 "Walk",
 "Walker",
 "Wall",
-"Wander",
 "War",
 "Warren",
 "Wash",
@@ -3870,13 +3964,12 @@ var linxemwords=
 "X-ray",
 "Yahoo",
 "Yale",
+"Yank",
 "Yankee",
 "Yard",
 "Yarn",
 "Yellow",
 "Yen",
-"Yield",
-"Yoke",
 "York",
 "Young",
 "Zebra",
@@ -3884,6 +3977,7 @@ var linxemwords=
 "Zeus",
 "Zip",
 "Zulu",
+
 
 
 
