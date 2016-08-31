@@ -7,7 +7,7 @@ var appversion='1.0 (20160522)'
 // localStorage.clear()
 var restartconfirmationrequired=1
 var adfrequency=1
-var adsrequired=1
+var adsrequired=0
 var numfreeturns=8
 
 
@@ -45,7 +45,7 @@ documentwrite('<style type="text/css">      \nbody {color: black; background-col
 </script>
 
 </head>
-<body onLoad="runonload()" TOPMARGIN=0 LEFTMARGIN=0 MARGINHEIGHT=0 MARGINWIDTH=0 style="background-color:#DDDDFF; width:100%; height:100%">
+<body onLoad="runonload()" TOPMARGIN=0 LEFTMARGIN=0 MARGINHEIGHT=0 MARGINWIDTH=0 style="background-color:powderblue; width:100%; height:100%">
 <SCRIPT LANGUAGE="JavaScript">
 
 // Local storage
@@ -283,6 +283,7 @@ return somereturn
 </script>
 <script language="Javascript">
 
+/*
 function settextvalue(somename, someval)
 {
 changetextvalue(somename, someval)
@@ -293,14 +294,14 @@ function resettextvalue(somename)
 {
 changetextvalue(somename, unescape(GetLocalVal('textvalue'+somename)))
 }
-
+*/
 
 function graphicfor(somename)
 {
 if (somename=='blank') {return ''}
 // return '<div style="position:relative"><img width='+Math.floor(scalef*50)+' height='+Math.floor(scalef*20)+' src="blackwordbg.png" style="display:block"><div style="position:absolute;top:0px;left:0px;width:100%;height:100%;display:inline"><table border=0 cellspacing=0 cellpadding=0 align=center valign=middle ><tr height='+Math.floor(scalef*20)+'><td align=center valign=middle style="text-align:center;font-weight:bold;color:white">'+somename+'</td></tr></table></div></div>'
 
-return '<div style="position:relative"><img width='+Math.floor(scalef*50)+' height='+Math.floor(scalef*20)+' src="greybluebutton.png" style="display:block"><div style="position:absolute;top:0px;left:0px;width:100%;height:100%;display:inline"><table border=0 cellspacing=0 cellpadding=0 align=center valign=middle ><tr height='+Math.floor(scalef*20)+'><td align=center valign=middle style="text-align:center;font-weight:bold;color:white">'+somename+'</td></tr></table></div></div>'
+return '<div style="position:relative"><img width='+Math.floor(scalef*50)+' height='+Math.floor(scalef*20)+' src="greybluebutton.png" style="display:block"><div style="position:absolute;top:0px;left:0px;width:100%;height:100%;display:inline"><table border=0 cellspacing=0 cellpadding=0 align=center valign=middle ><tr height='+Math.floor(scalef*20)+'><td align=center valign=middle style="font-size:'+Math.floor(scalef*10)+'px;text-align:center;font-weight:bold;color:white">'+somename+'</td></tr></table></div></div>'
 }
 
 
@@ -392,6 +393,7 @@ continuegame()
 function newgame()
 {
 if (showingads==1 || showinghelp==1 || preventbuttonactions==1) {return}
+if (timer != null) {clearTimeout(timer)}
 if (GetLocalList('linxemstatus')[3]>=0 )
 {
 if (GetLocalList('linxemstatus')[3]<13)
@@ -416,11 +418,11 @@ function selectthegame()
 {
 SetLocalVal('linxemstatus', [0,0,-1,-1])
 
-var sometext='<br><table border=1 cellpadding=0 cellspacing=0 style="width:100%;background-color:lemonchiffon"><tr><td>'
+var sometext='<br><table border=1 cellpadding='+Math.floor(scalef*3)+' cellspacing=0 style="width:100%;background-color:lemonchiffon"><tr><td>'
 sometext=sometext+'<br><table align=center cellspacing=2 cellpadding=1 border=0>'
 sometext=sometext+'<tr><td align=left ><b>Choose the type of game to play</b><br></i></td><td align=center valign=top><br>'+centralimage()+'</td></tr>'
 sometext=sometext+'<tr><td align=left>4 players: 1 pair against another<br><i>Winner has higher total</i></td><td onClick="newgame2(1)">'+graphicfor('Play')+'</td></tr>'
-sometext=sometext+'<tr><td align=left>2 players: 1 pair against Nobody<br><i>Winner has higher total</i></td><td onClick="newgame2(2)">'+graphicfor('Play')+'</td></tr>'
+sometext=sometext+'<tr><td align=left>2 players: 1 pair against Anon.<br><i>Winner has higher total</i></td><td onClick="newgame2(2)">'+graphicfor('Play')+'</td></tr>'
 sometext=sometext+'<tr><td align=left>3 players: Playing all pairs<br><i>Winner has highest total</i></td><td onClick="newgame2(3)">'+graphicfor('Play')+'</td></tr>'
 sometext=sometext+'<tr><td align=left>4 players: Playing all pairs<br><i>Winner has highest total</i></td><td onClick="newgame2(4)">'+graphicfor('Play')+'</td></tr>'
 sometext=sometext+'</table><br>&nbsp;</td></tr></table>'
@@ -468,6 +470,7 @@ if (GetLocalVal('zoom')==null)
 {
 SetLocalVal('zoom', 0)
 }
+
 var someinfo=''
 var somebuttons
 var someinitials=[]
@@ -482,20 +485,20 @@ somebuttons='You may choose to play 4, 8 or 12 challenges in the game.  Tap one 
 }
 if (sometype==2)
 {
-someinfo='Players 1:'+textinitialsfor(0)+' and 2:'+textinitialsfor(1)+' will play with each other against non-playing opponent, who receives any points lost.<br><br>'
+someinfo='Players 1:'+textinitialsfor(0)+' and 2:'+textinitialsfor(1)+' will play with each other against a non-playing opposition, Anon., who receive any points lost.<br><br>'
 somebuttons='You may choose to play 4, 8 or 12 challenges in the game.  Tap one button below when you are ready.<table align=center><tr><td onClick="playgame(2, 1)">'+graphicfor('4')+'</td><td><img src="empty.png" width='+Math.floor(scalef*20)+'  height='+Math.floor(scalef*3)+' style="display:block"></td><td onClick="playgame(2,2)">'+graphicfor('8')+'</td><td><img src="empty.png" width='+Math.floor(scalef*20)+'  height='+Math.floor(scalef*3)+' style="display:block"></td><td onClick="playgame(2, 3)">'+graphicfor('12')+'</td></tr></table>'
 }
 if (sometype==3)
 {
-someinfo='Players 1:'+textinitialsfor(0)+', 2:'+textinitialsfor(1)+' and 3:'+textinitialsfor(2)+' will combine to play one pair at a time. Points won are shared between the two players in the pair, while points lost go to the third player.<br><br>'
+someinfo='Players 1:'+textinitialsfor(0)+', 2:'+textinitialsfor(1)+' and 3:'+textinitialsfor(2)+' will combine to play one pair at a time. Points won are shared equally by the two players in the pair, while points lost go to the third player.<br><br>'
 somebuttons='You may choose to play 6 or 12 challenges in the game.  Tap one button below when you are ready.<table align=center><tr><td onClick="playgame(3, 1)">'+graphicfor('6')+'</td><td><img src="empty.png" width='+Math.floor(scalef*20)+'  height='+Math.floor(scalef*3)+' style="display:block"></td><td onClick="playgame(3,2)">'+graphicfor('12')+'</td></tr></table>'
 }
 if (sometype==4)
 {
-someinfo='Players 1:'+textinitialsfor(0)+', 2:'+textinitialsfor(1)+', 3:'+textinitialsfor(2)+' and 4:'+textinitialsfor(3)+' will combine to play one pair at a time. Points won are shared between the two players in the pair, while points lost are shared between the other two players.<br><br>'
+someinfo='Players 1:'+textinitialsfor(0)+', 2:'+textinitialsfor(1)+', 3:'+textinitialsfor(2)+' and 4:'+textinitialsfor(3)+' will combine to play one pair at a time. Points won are shared equally by the two players in the pair, while points lost are shared equally by the other two players.<br><br>'
 somebuttons='There are 12 challenges in the game.  Tap the button below when you are ready.<table align=center><tr><td onClick="playgame(4, 1)">'+graphicfor('12')+'</td></tr></table>'
 }
-var sometext='<br><table border=1 style="width:100%;background-color:lemonchiffon"><tr><td>'
+var sometext='<br><table border=1 cellpadding='+Math.floor(scalef*3)+' style="width:100%;background-color:lemonchiffon"><tr><td>'
 sometext=sometext+someinfo
 
 if (uniquelist(someinitials.slice(0, numplayers)).length<someinitials.slice(0, numplayers).length)
@@ -510,8 +513,7 @@ sometext=sometext+'<br><br><table align=center><tr><td onClick="resetinitials()"
 
 sometext=sometext+'<br>The game uses a countdown.  The current setting is shown with a green background below.  Tap to change if you wish.'
 
-sometext=sometext+'<br><br><table border=1 align=center cellpadding=0 cellspacing=0><tr><td onClick="setcountdown(60)" id="setcd60" style="width:'+Math.floor(scalef*40)+'px;background-color:#FFFFEE;color:silver;text-align:center">1 min</td><td onClick="setcountdown(120)" id="setcd120" style="width:'+Math.floor(scalef*40)+'px;background-color:#FFFFEE;color:silver;text-align:center">2 mins</td><td onClick="setcountdown(180)" id="setcd180" style="width:'+Math.floor(scalef*40)+'px;background-color:#FFFFEE;color:silver;text-align:center">3 mins</td><td onClick="setcountdown(240)" id="setcd240" style="width:'+Math.floor(scalef*40)+'px;background-color:#FFFFEE;color:silver;text-align:center">4 mins</td></tr></table>'
-sometext=sometext+'<br>Once you are ready to begin, tap OK to continue'
+sometext=sometext+'<br><br><table border=1 align=center cellpadding=0 cellspacing=0><tr><td onClick="setcountdown(60)" id="setcd60" style="width:'+Math.floor(scalef*40)+'px;background-color:#FFFFEE;color:silver;text-align:center">1 min</td><td onClick="setcountdown(120)" id="setcd120" style="width:'+Math.floor(scalef*40)+'px;background-color:#FFFFEE;color:silver;text-align:center">2 mins</td><td onClick="setcountdown(180)" id="setcd180" style="width:'+Math.floor(scalef*40)+'px;background-color:#FFFFEE;color:silver;text-align:center">3 mins</td><td onClick="setcountdown(240)" id="setcd240" style="width:'+Math.floor(scalef*40)+'px;background-color:#FFFFEE;color:silver;text-align:center">4 mins</td><td onClick="setcountdown(300)" id="setcd300" style="width:'+Math.floor(scalef*40)+'px;background-color:#FFFFEE;color:silver;text-align:center">5 mins</td></tr></table>'
 sometext=sometext+'<br>'+somebuttons
 
 }
@@ -593,6 +595,7 @@ resetinitials()
 
 function mapinitialblank(someindex, sometiles, somecurrent)
 {
+var sometype=GetLocalList('linxemstatus')[0]
 var sometext=''
 var racksize=sometiles.length
 sometext=sometext+'<br><table cellspacing=0 cellpadding=0 border=0 align=center ><tr>'
@@ -640,14 +643,16 @@ sometext=sometext+'<td width='+Math.floor(scalef*10)+'></td>'
 }
 sometext=sometext+'</tr></table>'
 var someconfirmkey
+var somemessagetext=''
+if (sometype==1) {somemessagetext='<span style="color:red;">Note: Players 1 and 3 play against 2 and 4</span>'}
 if (someindex==sometiles.length)
 {
-sometext=sometext+'<p style="text-align:center"><br>Tap &gt; or any letter key below to confirm the initials (or &lt; to make changes)<br><br>'
+sometext=sometext+'<p style="text-align:center">'+somemessagetext+'<br>Tap &gt; or any letter key below to confirm the initials (or &lt; to make changes)<br><br>'
 someconfirmkey='<td style="width:'+Math.floor(scalef*20)+'px;height:'+Math.floor(scalef*20)+'px" ><table height=100% width=100% style="border:1px solid gray;text-align:center;font-size:'+Math.floor(scalef*17)+'px;background-color:lemonchiffon;color:black;font-weight:bold" onClick="mapinitialto(0)"><tr><td style="font-size:'+Math.floor(scalef*13)+'px;font-weight:bold;background-color:green">&gt;</td></tr></table></td>'
 }
 else
 {
-sometext=sometext+'<p style="text-align:center"><br>Tap a letter below to specify the letter of the initials marked above<br><br>'
+sometext=sometext+'<p style="text-align:center">'+somemessagetext+'<br>Tap a letter below to specify the letter of the initials marked above<br><br>'
 someconfirmkey='<td></td>'
 }
 
@@ -700,7 +705,73 @@ var playercolours=['#FF8888', 'yellow', 'limegreen', 'cornflowerblue']
 <script language="Javascript">
 
 
+function restartgame()
+{
+var somestatus=GetLocalList('linxemstatus')
+if (somestatus[0]>0)
+{
+var someplayers=GetLocalEval('players')
+var somescores=GetLocalEval('scores')
+var somepatterns=GetLocalEval('patterns')
+var somechallenge=somestatus[2]
+var somepattern=somepatterns[somechallenge]
+var somesetter=someplayers[somepattern[0]]
+var somesolver=someplayers[somepattern[1]]
 
+var somesettername=textinitialsfor(somesetter)
+var somesolvername=textinitialsfor(somesolver)
+var sometext=''
+if (somestatus[3]>=1 && somestatus[3]<=3)
+{
+sometext='<br><table border=1 cellpadding='+Math.floor(scalef*3)+' style="width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
+
+sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br>'+somesettername+' is the setter and '+somesolvername+' is the solver.</span><br><br>'+somesettername+' should take the device and tap the <i>OK</i> button when ready to proceed.'
+
+if (somestatus[3]==1) 
+{
+sometext=sometext+'<br><br>The setting countdown will continue.'
+}
+sometext=sometext+'<br><br><table align=center border=0><tr><td onClick="continuegame()" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table>'
+
+
+sometext=sometext+'<br>&nbsp;</td></tr></table>'
+
+document.getElementById('theboard').style.display='none'
+
+changetextvalue('output', sometext)
+
+document.getElementById('output').style.display='inline'
+
+return
+}
+
+if (somestatus[3]>=5 && somestatus[3]<=8)
+{
+sometext='<br><table border=1 cellpadding='+Math.floor(scalef*3)+' style="width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
+
+sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br>'+somesettername+' is the setter and '+somesolvername+' is the solver.</span><br><br>'+somesolvername+' should take the device and tap the <i>OK</i> button when ready to proceed.'
+
+if (somestatus[3]==5) 
+{
+sometext=sometext+'<br><br>The solving countdown will continue.'
+}
+sometext=sometext+'<br><br><table align=center border=0><tr><td onClick="continuegame()" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table>'
+
+
+sometext=sometext+'<br>&nbsp;</td></tr></table>'
+
+document.getElementById('theboard').style.display='none'
+
+changetextvalue('output', sometext)
+
+document.getElementById('output').style.display='inline'
+
+return
+}
+}
+continuegame()
+
+}
 
 
 
@@ -830,19 +901,14 @@ var goodstart=0
 var goodend=17
 var badstart=18
 var badend=29
-var terriblestart=30
-var terribleend=35
 var numbergood=goodend-goodstart+1
 var numberbad=badend-badstart+1
-var numberterrible=terribleend-terriblestart+1
-var numberwords=numbergood+numberbad+numberterrible
+var numberwords=numbergood+numberbad
 var goodscore=0
 var badscore=4
-var terriblescore=8
 var correctscore=2
 var good='green'
 var bad='yellow'
-var terrible='red'
 var neutral='blue'
 
 var failcompleteset=10
@@ -869,7 +935,7 @@ SetLocalVal('patterns', convertlisttotext('listnumber', someactualpattern))
 // SetLocalVal('words', convertlisttotext('text', thewords))
 // showcurrentad()
 stoptimer()
-// settextvalue('workpad', '')
+// changetextvalue('workpad', '')
 SetLocalVal('linxemstatus', [gametype, numberofplayers(gametype), 0, 0])
 SetLocalVal('countdown', 0)
 var someplayers=[0,1,2,3].slice(0, numberofplayers(gametype))
@@ -918,6 +984,26 @@ SetLocalVal('scores', convertlisttotext('number', somescores))
 
 }
 
+function highlightzoom()
+{
+if (GetLocalNum('zoom')==0)
+{
+changebgcolor('col3', 'white')
+changebgcolor('col2', 'silver')
+}
+else
+{
+changebgcolor('col3', 'silver')
+changebgcolor('col2', 'white')
+}
+}
+
+function savelinxemtext()
+{
+
+SetLocalVal('linxemtext', escape(document.getElementById('linxemtext').value))
+}
+
 function continuechallenge()
 {
 var somestatus=GetLocalList('linxemstatus')
@@ -933,7 +1019,8 @@ var somesolver=someplayers[somepattern[1]]
 var somesettername=textinitialsfor(somesetter)
 var somesolvername=textinitialsfor(somesolver)
 var sometimeallowed=GetLocalVal('timeallowed')
-var sometext
+var somelinxemtext=unescape(GetLocalVal('linxemtext'))
+var sometext=''
 var somesetwords
 var somesolvewords
 var somebgcolor
@@ -943,21 +1030,22 @@ var somesolveselection
 var somescorecard
 
 showcurrentad()
-
+highlightzoom()
 // Hand to Setter
 if (somestatus[3]==0)
 {
 
 
-var somewords=shufflearray(linxemwords).slice(0, numberwords)
+var somewords=shufflearray(shufflearray(linxemwords)).slice(0, numberwords)
 
 SetLocalVal('setwords', convertlisttotext('text', shufflearray(somewords)))
 SetLocalVal('solvewords', convertlisttotext('text', shufflearray(somewords)))
 SetLocalVal('setselection', convertlisttotext('number', []))
 SetLocalVal('solveselection', convertlisttotext('number', []))
-sometext='<br><table border=1 style="width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
+SetLocalVal('linxemtext', '')
+sometext='<br><table border=1 cellpadding='+Math.floor(scalef*3)+' style="width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
 
-sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br>'+somesettername+' to set a challenge for '+somesolvername+'<br><br></span>'+somesettername+' must select at least 2 words that can be linked by a word, name or title.  The selection must be made before the countdown ends ('+sometimeallowed+' seconds).<br><br>'+somesettername+' should take the device and tap the <i>OK</i> button when ready to proceed.'
+sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br>'+somesettername+' to set a challenge for '+somesolvername+'<br><br></span>'+somesettername+' must select at least 2 words/names that can be connected by a Linxem.<br><br>The selection must be made before the countdown ends ('+sometimeallowed+' seconds).<br><br>'+somesettername+' should take the device and tap the <i>OK</i> button when ready to proceed.'
 
 sometext=sometext+'<br><br><table align=center border=0><tr><td onClick="goto(1)" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table>'
 
@@ -987,16 +1075,22 @@ if (i>=goodstart && i<=goodend) {somebgcolor=good; somebgintensity='light'}
 
 if (i>=badstart && i<=badend) {somebgcolor=bad; somebgintensity='light'}
 
-if (i>=terriblestart && i<=terribleend) {somebgcolor=terrible; somebgintensity='light'}
-
 if (member(i, somesetselection)==true) {somebgintensity='dark'}
 changetextvalue('word'+i, imagefor(somebgintensity, somebgcolor, somesetwords[i]))
 
 }
 // show scores and OK buttons
 var somebutton='<td width='+Math.floor(scalef*50)+' onClick="commitset()">'+graphicfor('OK')+'</td>'
-settextvalue('workpad', 'Words selected so far: '+somesetselection.length)
+if (somesetselection.length<2)
+{
+changetextvalue('workpad', 'Selected '+somesetselection.length+' - minimum 2 required')
+}
+else
+{
+changetextvalue('workpad', 'Selected '+somesetselection.length)
+}
 changetextvalue('scoresbuttons', '<table border=0 cellspacing=0 cellpadding=0 width='+Math.floor(scalef*230)+'><tr>'+somebutton+'<td width='+Math.floor(scalef*3)+'><img src="empty.png" width='+Math.floor(scalef*3)+'></td><td style="text-align:center;font-weight:bold;color:black;background-color:lemonchiffon;font-size:'+Math.floor(scalef*8)+'px">'+scorecard()+'</td><td width='+Math.floor(scalef*3)+'><img src="empty.png" width='+Math.floor(scalef*3)+'></td>'+somebutton+'</tr></table>')
+document.getElementById('linxemtext').value=somelinxemtext
 // changebgcolor('timerdisplay', 'yellow')
 // changetextvalue('timerdisplay', '&nbsp;')
 document.getElementById('theboard').style.display='inline'
@@ -1009,9 +1103,9 @@ if (somestatus[3]==2)
 {
 somesetselection=GetLocalEval('setselection')
 
-sometext='<br><table border=1 style="width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
+sometext='<br><table border=1 cellpadding='+Math.floor(scalef*3)+' style="width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
 
-sometext=sometext+'<br><br>Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br>'+somesettername+' should state the Linxem word, name or title and let others review this to accept or reject it.<br><br>Tap the <i>OK</i> button to see the board again with <i>Accept</i> and <i>Reject</i> buttons.'
+sometext=sometext+'<br><br>Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br>'+somesettername+' should state the Linxem and let others review this to accept or reject it.<br><br>Tap the <i>OK</i> button to see the board again with <i>Accept</i> and <i>Reject</i> buttons.'
 sometext=sometext+'<br><br><table align=center border=0><tr><td onClick="goto(3)" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table>'
 
 
@@ -1035,7 +1129,6 @@ if (i>=goodstart && i<=goodend) {somebgcolor=good; somebgintensity='light'}
 
 if (i>=badstart && i<=badend) {somebgcolor=bad; somebgintensity='light'}
 
-if (i>=terriblestart && i<=terribleend) {somebgcolor=terrible; somebgintensity='light'}
 if (member(i, somesetselection)==true) {somebgintensity='dark'}
 changetextvalue('word'+i, imagefor(somebgintensity, somebgcolor, somesetwords[i]))
 }
@@ -1044,17 +1137,18 @@ var somebutton='<td width='+Math.floor(scalef*50)+' onClick="goto(4)">'+graphicf
 var somerejectbutton='<td width='+Math.floor(scalef*50)+' onClick="goto(10)">'+graphicfor('Reject')+'</td>'
 if (somestatus[0]==2)
 {
-settextvalue('workpad', 'State Linxem word then tap OK')
+changetextvalue('workpad', 'Input or say Linxem & tap OK')
 changetextvalue('scoresbuttons', '<table border=0 cellspacing=0 cellpadding=0 width='+Math.floor(scalef*230)+'><tr>'+somebutton+'<td width='+Math.floor(scalef*3)+'><img src="empty.png" width='+Math.floor(scalef*3)+'></td><td style="text-align:center;font-weight:bold;color:black;background-color:lemonchiffon;font-size:'+Math.floor(scalef*8)+'px">'+scorecard()+'</td><td width='+Math.floor(scalef*3)+'><img src="empty.png" width='+Math.floor(scalef*3)+'></td>'+somebutton+'</tr></table>')
 
 }
 else
 {
-settextvalue('workpad', 'State Linxem word; Share it; Tap OK/Reject')
+changetextvalue('workpad', 'Input or say Linxem. Consult. Tap OK or Reject')
 changetextvalue('scoresbuttons', '<table border=0 cellspacing=0 cellpadding=0 width='+Math.floor(scalef*230)+'><tr>'+somerejectbutton+'<td width='+Math.floor(scalef*3)+'><img src="empty.png" width='+Math.floor(scalef*3)+'></td><td style="text-align:center;font-weight:bold;color:black;background-color:lemonchiffon;font-size:'+Math.floor(scalef*8)+'px">'+scorecard()+'</td><td width='+Math.floor(scalef*3)+'><img src="empty.png" width='+Math.floor(scalef*3)+'></td>'+somebutton+'</tr></table>')
 }
 changebgcolor('timerdisplay', 'red')
 changetextvalue('timerdisplay', '&nbsp;')
+document.getElementById('linxemtext').value=somelinxemtext
 
 document.getElementById('theboard').style.display='inline'
 changetextvalue('output', '&nbsp;')
@@ -1069,9 +1163,9 @@ if (somestatus[3]==4)
 // var somewords=shufflearray(linxemwords).slice(0, numberwords)
 somesetselection=GetLocalEval('setselection')
 
-sometext='<br><table border=1 style="width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
+sometext='<br><table border=1 cellpadding='+Math.floor(scalef*3)+' style="width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
 
-sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br>'+somesolvername+' to solve the challenge set by '+somesettername+'<br><br></span>'+somesolvername+' must select '+somesetselection.length+' words that can be linked by the clue given by '+somesettername+'.  The selection must be made before the countdown ends ('+sometimeallowed+' seconds).<br><br>'+somesolvername+' should take the device and tap the <i>OK</i> button when ready to proceed.'
+sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br>'+somesolvername+' to solve the challenge set by '+somesettername+'<br><br><span style="font-size:'+Math.floor(scalef*14)+'px;background-color:red;color:white">&nbsp;&nbsp;&nbsp;'+somesetselection.length+'&nbsp;&nbsp;&nbsp;<br><br></span></span>'+somesolvername+' must select '+somesetselection.length+' words that can be linked by the Linxem given by '+somesettername+'.<br><br>The selection must be made before the countdown ends ('+sometimeallowed+' seconds).<br><br>'+somesolvername+' should take the device and tap the <i>OK</i> button when ready to proceed.'
 
 sometext=sometext+'<br><br><table align=center border=0><tr><td onClick="goto(5)" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table>'
 
@@ -1100,8 +1194,17 @@ changetextvalue('word'+i, imagefor(somebgintensity, somebgcolor, somesolvewords[
 }
 // show scores and OK buttons
 var somebutton='<td width='+Math.floor(scalef*50)+' onClick="commitsolve()">'+graphicfor('OK')+'</td>'
-settextvalue('workpad', 'Words selected so far: '+somesolveselection.length+' of '+somesetselection.length)
+if (somesolveselection.length > somesetselection.length)
+{
+changetextvalue('workpad', '<span style="color:red">Selected '+somesolveselection.length+' - only '+somesetselection.length+' required</span>')
+
+}
+else
+{
+changetextvalue('workpad', 'Selected '+somesolveselection.length+' of '+somesetselection.length)
+}
 changetextvalue('scoresbuttons', '<table border=0 cellspacing=0 cellpadding=0 width='+Math.floor(scalef*230)+'><tr>'+somebutton+'<td width='+Math.floor(scalef*3)+'><img src="empty.png" width='+Math.floor(scalef*3)+'></td><td style="text-align:center;font-weight:bold;color:black;background-color:lemonchiffon;font-size:'+Math.floor(scalef*8)+'px">'+scorecard()+'</td><td width='+Math.floor(scalef*3)+'><img src="empty.png" width='+Math.floor(scalef*3)+'></td>'+somebutton+'</tr></table>')
+document.getElementById('linxemtext').value=somelinxemtext
 
 document.getElementById('theboard').style.display='inline'
 changetextvalue('output', '&nbsp;')
@@ -1130,17 +1233,18 @@ someword=somesolvewords[i]
 somei=ith(someword, somesetwords)
 if (somei>=goodstart && somei<=goodend) {somebgcolor=good; somebgintensity='light'}
 if (somei>=badstart && somei<=badend) {somebgcolor=bad; somebgintensity='light'}
-if (somei>=terriblestart && somei<=terribleend) {somebgcolor=terrible; somebgintensity='light'}
+
 if (member(somei, somesetselection)==true) {somebgintensity='dark'}
 }
 changetextvalue('word'+i, imagefor(somebgintensity, somebgcolor, somesolvewords[i]))
 }
 // show scores and Score buttons
 var somebutton='<td width='+Math.floor(scalef*50)+' onClick="goto(7)">'+graphicfor('Score')+'</td>'
-settextvalue('workpad', 'Tap Score to score your selections')
+changetextvalue('workpad', 'Tap Score to score your selections')
 changetextvalue('scoresbuttons', '<table border=0 cellspacing=0 cellpadding=0 width='+Math.floor(scalef*230)+'><tr>'+somebutton+'<td width='+Math.floor(scalef*3)+'><img src="empty.png" width='+Math.floor(scalef*3)+'></td><td style="text-align:center;font-weight:bold;color:black;background-color:lemonchiffon;font-size:'+Math.floor(scalef*8)+'px">'+scorecard()+'</td><td width='+Math.floor(scalef*3)+'><img src="empty.png" width='+Math.floor(scalef*3)+'></td>'+somebutton+'</tr></table>')
-changebgcolor('timerdisplay', 'yellow')
+changebgcolor('timerdisplay', 'red')
 changetextvalue('timerdisplay', '&nbsp;')
+document.getElementById('linxemtext').value=somelinxemtext
 
 document.getElementById('theboard').style.display='inline'
 changetextvalue('output', '&nbsp;')
@@ -1151,75 +1255,48 @@ return
 // Score Solution
 if (somestatus[3]==7)
 {
-somesetwords=GetLocalEval('setwords')
-somesolvewords=GetLocalEval('solvewords')
-somesolveselection=GetLocalEval('solveselection')
-somesetselection=GetLocalEval('setselection')
 
-sometext='<br><table border=1 style="width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
+var somescoring=calculatescoretable()
+var somecorrect=somescoring[0]
+var somenumdefined=somescoring[1]
+var someyourtotal=somescoring[2]
+var someopptotal=somescoring[3]
+var sometable=somescoring[4]
+
+sometext='<br><table border=1 cellpadding='+Math.floor(scalef*3)+' style="width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
 
 sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br></span>'
 
-sometext=sometext+'<table border=1 style="width:90%;background-color:#FFDDDD"  align=center><tr><td colspan=3 style="font-weight:bold;text-align:center">Scores for this challenge</td></tr>'
-sometext=sometext+'<tr><td style="font-weight:bold;text-align:center">Word</td><td width=* style="font-weight:bold;text-align:center">Yours</td><td width=* style="font-weight:bold;text-align:center">Opposition</td></tr>'
+sometext=sometext+'<table border=1 cellspacing=0 style="width:90%;background-color:#FFDDDD"  align=center><tr><td colspan=3 style="font-weight:bold;text-align:center">Scores for this challenge</td></tr>'
+sometext=sometext+'<tr><td style="font-size:'+Math.floor(scalef*10)+'px;font-weight:bold;text-align:center">Word</td><td width=* style="font-size:'+Math.floor(scalef*10)+'px;font-weight:bold;text-align:center">Yours</td><td width=* style="font-size:'+Math.floor(scalef*10)+'px;font-weight:bold;text-align:center">Oppos\'n</td></tr>'
 
-
-var somei
-var someword
-var someyourscore
-var someoppscore
-var someyourtotal=0
-var someopptotal=0
-var somecorrect=0
-for (var i=0; i<somesolvewords.length; i++)
+for (var i=0; i<sometable.length; i++)
 {
-someyourscore=0
-someoppscore=0
-someword=somesolvewords[i]
-somei=ith(someword, somesetwords)
-if (member(i, somesolveselection)==true) 
-{
-someword=somesolvewords[i]
-somei=ith(someword, somesetwords)
-if (somei>=goodstart && somei<=goodend) {someyourscore=goodscore}
-if (somei>=badstart && somei<=badend) {someoppscore=badscore}
-if (somei>=terriblestart && somei<=terribleend) {someoppscore=terriblescore}
-
-if (member(somei, somesetselection)==true) {someyourscore=correctscore; somecorrect++}
-sometext=sometext+'<tr><td style="font-weight:bold;text-align:center">'+someword+'</td><td style="font-weight:bold;text-align:center">'+someyourscore+'</td><td style="font-weight:bold;text-align:center">'+someoppscore+'</td></tr>'
-someyourtotal=someyourtotal+someyourscore
-someopptotal=someopptotal+someoppscore
+sometext=sometext+'<tr><td style="font-weight:bold;text-align:center">'+sometable[i][0]+'</td><td style="font-weight:bold;text-align:center">'+sometable[i][1]+'</td><td style="font-weight:bold;text-align:center">'+sometable[i][2]+'</td></tr>'
 }
 
-}
-// calculate bonus
-var someyourbonus=0
-var someoppbonus=0
-if (somecorrect==somesolveselection.length && somecorrect>=3) {someyourbonus=bonusscore}
-sometext=sometext+'<tr><td style="font-weight:bold;text-align:center">Bonus</td><td style="font-weight:bold;text-align:center">'+someyourbonus+'</td><td style="font-weight:bold;text-align:center">'+someoppbonus+'</td></tr>'
-someyourtotal=someyourtotal+someyourbonus
-someopptotal=someopptotal+someoppbonus
-
-sometext=sometext+'<tr><td style="font-weight:bold;text-align:center">Total</td><td style="font-weight:bold;text-align:center">'+someyourtotal+'</td><td style="font-weight:bold;text-align:center">'+someopptotal+'</td></tr>'
 
 sometext=sometext+'</table>'
-if (somecorrect==somesolveselection.length)
+
+sometext=sometext+'<br><table border=1 cellpadding=4 cellspacing=0 style="width:80%;background-color:#FFDDDD"  align=center><tr><td style="text-align:center;font-weight:bold">Current Score<br><table border=0 cellspacing=0 cellpadding=0 style="background-color:lemonchiffon" align=center><tr><td>'+scorecard()+'</td></tr></table>&nbsp;</td></tr></table>'
+
+if (somecorrect==somenumdefined)
 {
-sometext=sometext+'<br><br>Tap <i>OK</i> to continue.'
+sometext=sometext+'<br>Tap <i>OK</i> to continue.'
 sometext=sometext+'<br><br><table align=center border=0><tr><td onClick="goto(12)" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table>'
 
 }
 else
 {
-sometext=sometext+'<br><br>Tap <i>OK</i> to continue and to see the selections made by '+somesettername+'.'
+sometext=sometext+'<br>Tap <i>OK</i> to continue and to see the selections made by '+somesettername+'.'
 sometext=sometext+'<br><br><table align=center border=0><tr><td onClick="goto(8)" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table>'
 }
 
 sometext=sometext+'<br>&nbsp;</td></tr></table>'
-if (GetLocalNum('scoreadded')==0) {distributescores(someyourtotal, someopptotal)} // Ensures that scores are added only once if app restarted in this phase
-SetLocalVal('scoreadded', 1) 
-changebgcolor('timerdisplay', 'yellow')
-changetextvalue('timerdisplay', '&nbsp;')
+// if (GetLocalNum('scoreadded')==0) {distributescores(someyourtotal, someopptotal)} // Ensures that scores are added only once if app restarted in this phase
+// SetLocalVal('scoreadded', 1) 
+// changebgcolor('timerdisplay', 'yellow')
+// changetextvalue('timerdisplay', '&nbsp;')
 
 document.getElementById('theboard').style.display='none'
 changetextvalue('output', sometext)
@@ -1247,14 +1324,18 @@ if (member(somei, somesetselection)==true)
 {
 if (somei>=goodstart && somei<=goodend) {somebgcolor=good; somebgintensity='dark'}
 if (somei>=badstart && somei<=badend) {somebgcolor=bad; somebgintensity='dark'}
-if (somei>=terriblestart && somei<=terribleend) {somebgcolor=terrible; somebgintensity='dark'}
+
 }
 changetextvalue('word'+i, imagefor(somebgintensity, somebgcolor, somesolvewords[i]))
 }
-// show scores and Score buttons
+// show scores and buttons
+changebgcolor('timerdisplay', 'red')
+changetextvalue('timerdisplay', '&nbsp;')
+
 var somebutton='<td width='+Math.floor(scalef*50)+' onClick="goto(12)">'+graphicfor('OK')+'</td>'
-settextvalue('workpad', 'Tap OK to proceed when ready')
+changetextvalue('workpad', 'Tap OK to proceed when ready')
 changetextvalue('scoresbuttons', '<table border=0 cellspacing=0 cellpadding=0 width='+Math.floor(scalef*230)+'><tr>'+somebutton+'<td width='+Math.floor(scalef*3)+'><img src="empty.png" width='+Math.floor(scalef*3)+'></td><td style="text-align:center;font-weight:bold;color:black;background-color:lemonchiffon;font-size:'+Math.floor(scalef*8)+'px">'+scorecard()+'</td><td width='+Math.floor(scalef*3)+'><img src="empty.png" width='+Math.floor(scalef*3)+'></td>'+somebutton+'</tr></table>')
+document.getElementById('linxemtext').value=somelinxemtext
 
 document.getElementById('theboard').style.display='inline'
 changetextvalue('output', '&nbsp;')
@@ -1271,19 +1352,19 @@ if (somestatus[3]==9)
 // somesolveselection=GetLocalEval('solveselection')
 // somesetselection=GetLocalEval('setselection')
 
-sometext='<br><table border=1 style="width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
+sometext='<br><table border=1 cellpadding='+Math.floor(scalef*3)+' style="width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
 
 sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br></span>'
 
 sometext=sometext+somesettername+' failed to select 2 words within the countdown, so the opposition gains '+failcompleteset+ ' points.'
-sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">This ends the challenge.</span>'
+sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">This ends the challenge.<br></span>'
+sometext=sometext+'<br><table border=1 cellpadding=4 cellspacing=0 style="width:80%;background-color:#FFDDDD"  align=center><tr><td style="text-align:center;font-weight:bold">Current Score<br><table border=0 cellspacing=0 cellpadding=0 style="background-color:lemonchiffon" align=center><tr><td>'+scorecard()+'</td></tr></table>&nbsp;</td></tr></table>'
 
-sometext=sometext+'<br><br>Tap <i>OK</i> to continue'
+sometext=sometext+'<br>Tap <i>OK</i> to continue'
 sometext=sometext+'<br><br><table align=center border=0><tr><td onClick="goto(12)" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table>'
 
 sometext=sometext+'<br>&nbsp;</td></tr></table>'
 
-distributescores(0, failcompleteset) 
 document.getElementById('theboard').style.display='none'
 changetextvalue('output', sometext)
 document.getElementById('output').style.display='inline'
@@ -1300,19 +1381,19 @@ if (somestatus[3]==10)
 // somesolveselection=GetLocalEval('solveselection')
 // somesetselection=GetLocalEval('setselection')
 
-sometext='<br><table border=1 style="width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
+sometext='<br><table border=1 cellpadding='+Math.floor(scalef*3)+' style="width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
 
 sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br></span>'
 
-sometext=sometext+'The clue given by '+somesettername+' was rejected, so the opposition gains '+cluerejection+ ' points.<br><br>'
-sometext=sometext+'<span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">This ends the challenge.</span>'
+sometext=sometext+'The Linxem given by '+somesettername+' was rejected, so the opposition gains '+cluerejection+ ' points.'
+sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">This ends the challenge.<br></span>'
+sometext=sometext+'<br><table border=1 cellpadding=4 cellspacing=0 style="width:80%;background-color:#FFDDDD"  align=center><tr><td style="text-align:center;font-weight:bold">Current Score<br><table border=0 cellspacing=0 cellpadding=0 style="background-color:lemonchiffon" align=center><tr><td>'+scorecard()+'</td></tr></table>&nbsp;</td></tr></table>'
 
-sometext=sometext+'<br><br>Tap <i>OK</i> to continue'
+sometext=sometext+'<br>Tap <i>OK</i> to continue'
 sometext=sometext+'<br><br><table align=center border=0><tr><td onClick="goto(12)" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table>'
 
 sometext=sometext+'<br>&nbsp;</td></tr></table>'
 
-distributescores(0, cluerejection) 
 document.getElementById('theboard').style.display='none'
 changetextvalue('output', sometext)
 document.getElementById('output').style.display='inline'
@@ -1329,18 +1410,18 @@ somesolvewords=GetLocalEval('solvewords')
 somesolveselection=GetLocalEval('solveselection')
 somesetselection=GetLocalEval('setselection')
 
-sometext='<br><table border=1 style="width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
+sometext='<br><table border=1 cellpadding='+Math.floor(scalef*3)+' style="width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
 
 sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br></span>'
 
-sometext=sometext+somesolvername+' failed to select the required number of green words within the countdown, so the opposition gains '+failcompletesolve+ ' points.<br><br>'
-sometext=sometext+'<span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">This ends the challenge.</span>'
+sometext=sometext+somesolvername+' failed to select the required number of words within the countdown, so the opposition gains '+failcompletesolve+ ' points.'
+sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">This ends the challenge.<br></span>'
+sometext=sometext+'<br><table border=1 cellpadding=4 cellspacing=0 style="width:80%;background-color:#FFDDDD"  align=center><tr><td style="text-align:center;font-weight:bold">Current Score<br><table border=0 cellspacing=0 cellpadding=0 style="background-color:lemonchiffon" align=center><tr><td>'+scorecard()+'</td></tr></table>&nbsp;</td></tr></table>'
 
-sometext=sometext+'<br><br>Tap <i>OK</i> to continue'
+sometext=sometext+'<br>Tap <i>OK</i> to continue'
 sometext=sometext+'<br><br><table align=center border=0><tr><td onClick="goto(12)" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table>'
 
 sometext=sometext+'<br>&nbsp;</td></tr></table>'
-distributescores(0, failcompletesolve) 
 document.getElementById('theboard').style.display='none'
 changetextvalue('output', sometext)
 document.getElementById('output').style.display='inline'
@@ -1370,9 +1451,9 @@ continuechallenge()
 if (somestatus[3]==13)
 {
 
-sometext='<br><table border=1 style="width:95%;background-color:#FFDDDD;text-align:center" align=center><tr><td>'
+sometext='<br><table border=1 cellpadding='+Math.floor(scalef*3)+' style="width:95%;background-color:#FFDDDD;text-align:center" align=center><tr><td>'
 
-sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">Game over<br><br></span>Final scores are:'
+sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">Game over<br><br>Final scores<br></span>'
 sometext=sometext+'<br><table border=0 cellspacing=0 cellpadding=0 style="background-color:lemonchiffon" align=center width=80%><tr><td>'+scorecard()+'</td></tr></table>'
 
 sometext=sometext+'<br><br>Tap <i>New</i> for a new game.<br><br>&nbsp;'
@@ -1399,7 +1480,7 @@ goto(3)
 }
 else
 {
-settextvalue('workpad', '<span style="color:red">A minimum of 2 words must be selected</span>')
+changetextvalue('workpad', '<span style="color:red">Select at least 2 words</span>')
 }
 }
 
@@ -1415,9 +1496,62 @@ goto(6)
 }
 else
 {
-settextvalue('workpad', '<span style="color:red">You must select '+somesetselection.length+' words</span>')
+changetextvalue('workpad', '<span style="color:red">Select exactly '+somesetselection.length+' words</span>')
 }
 }
+
+function calculatescoretable()
+{
+somesetwords=GetLocalEval('setwords')
+somesolvewords=GetLocalEval('solvewords')
+somesolveselection=GetLocalEval('solveselection')
+somesetselection=GetLocalEval('setselection')
+
+var sometable=[]
+
+var somei
+var someword
+var someyourscore
+var someoppscore
+var someyourtotal=0
+var someopptotal=0
+var somecorrect=0
+for (var i=0; i<somesolvewords.length; i++)
+{
+someyourscore=0
+someoppscore=0
+someword=somesolvewords[i]
+somei=ith(someword, somesetwords)
+if (member(i, somesolveselection)==true) 
+{
+someword=somesolvewords[i]
+somei=ith(someword, somesetwords)
+if (somei>=goodstart && somei<=goodend) {someyourscore=goodscore}
+if (somei>=badstart && somei<=badend) {someoppscore=badscore}
+
+
+if (member(somei, somesetselection)==true) {someyourscore=correctscore; somecorrect++}
+sometable=sometable.concat([[someword, someyourscore, someoppscore]])
+someyourtotal=someyourtotal+someyourscore
+someopptotal=someopptotal+someoppscore
+}
+
+}
+// calculate bonus
+var someyourbonus=0
+var someoppbonus=0
+if (somecorrect==somesolveselection.length && somecorrect>=3) {someyourbonus=bonusscore}
+sometable=sometable.concat([['<i>Bonus</i>', someyourbonus, someoppbonus]])
+
+
+someyourtotal=someyourtotal+someyourbonus
+someopptotal=someopptotal+someoppbonus
+sometable=sometable.concat([['<i>Total</i>', someyourtotal, someopptotal]])
+return [somecorrect, somesolveselection.length, someyourtotal, someopptotal, sometable]
+
+}
+
+
 function scorecard()
 {
 
@@ -1425,10 +1559,10 @@ var somescores=GetLocalEval('scores')
 var somestatus=GetLocalList('linxemstatus')
 var somegametype=somestatus[0]
 
-if (somegametype==4) {return '<table border=1 cellpadding=0 cellspacing=0 width=100%><tr><td style="width:'+Math.floor(scalef*24)+'px;text-align:center;font-weight:bold">'+textinitialsfor(0)+'</td><td style="width:'+Math.floor(scalef*24)+'px;text-align:center;font-weight:bold">'+textinitialsfor(1)+'</td><td style="width:'+Math.floor(scalef*24)+'px;text-align:center;font-weight:bold">'+textinitialsfor(2)+'</td><td style="width:'+Math.floor(scalef*24)+'px;text-align:center;font-weight:bold">'+textinitialsfor(3)+'</td></tr><tr><td style="width:'+Math.floor(scalef*24)+'px;text-align:center;font-weight:bold">'+somescores[0]+'</td><td style="width:'+Math.floor(scalef*24)+'px;text-align:center;font-weight:bold">'+somescores[1]+'</td><td style="width:'+Math.floor(scalef*24)+'px;text-align:center;font-weight:bold">'+somescores[2]+'</td><td style="width:'+Math.floor(scalef*24)+'px;text-align:center;font-weight:bold">'+somescores[3]+'</td></tr></table>'}
-if (somegametype==3) {return '<table border=1 cellpadding=0 cellspacing=0 width=100%><tr><td style="width:'+Math.floor(scalef*32)+'px;text-align:center;font-weight:bold">'+textinitialsfor(0)+'</td><td style="width:'+Math.floor(scalef*32)+'px;text-align:center;font-weight:bold">'+textinitialsfor(1)+'</td><td style="width:'+Math.floor(scalef*32)+'px;text-align:center;font-weight:bold">'+textinitialsfor(2)+'</td></tr><tr><td style="width:'+Math.floor(scalef*32)+'px;text-align:center;font-weight:bold">'+somescores[0]+'</td><td style="width:'+Math.floor(scalef*32)+'px;text-align:center;font-weight:bold">'+somescores[1]+'</td><td style="width:'+Math.floor(scalef*32)+'px;text-align:center;font-weight:bold">'+somescores[2]+'</td></tr></table>'}
-if (somegametype==2) {return '<table border=1 cellpadding=0 cellspacing=0 width=100%><tr><td style="width:'+Math.floor(scalef*48)+'px;text-align:center;font-weight:bold">'+textinitialsfor(0)+' & '+textinitialsfor(1)+'</td><td style="width:'+Math.floor(scalef*48)+'px;text-align:center;font-weight:bold">Nobody</td></tr><tr><td style="width:'+Math.floor(scalef*48)+'px;text-align:center;font-weight:bold">'+(somescores[0]+somescores[1])+'</td><td style="width:'+Math.floor(scalef*48)+'px;text-align:center;font-weight:bold">'+somescores[2]+'</td></tr></table>'}
-if (somegametype==1) {return '<table border=1 cellpadding=0 cellspacing=0 width=100%><tr><td style="width:'+Math.floor(scalef*48)+'px;text-align:center;font-weight:bold">'+textinitialsfor(0)+' & '+textinitialsfor(2)+'</td><td style="width:'+Math.floor(scalef*48)+'px;text-align:center;font-weight:bold">'+textinitialsfor(1)+' & '+textinitialsfor(3)+'</td></tr><tr><td style="width:'+Math.floor(scalef*48)+'px;text-align:center;font-weight:bold">'+(somescores[0]+somescores[2])+'</td><td style="width:'+Math.floor(scalef*48)+'px;text-align:center;font-weight:bold">'+(somescores[1]+somescores[3])+'</td></tr></table>'}
+if (somegametype==4) {return '<table border=1 cellpadding=0 cellspacing=0 width=100%><tr><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*24)+'px;text-align:center;font-weight:bold">'+textinitialsfor(0)+'</td><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*24)+'px;text-align:center;font-weight:bold">'+textinitialsfor(1)+'</td><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*24)+'px;text-align:center;font-weight:bold">'+textinitialsfor(2)+'</td><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*24)+'px;text-align:center;font-weight:bold">'+textinitialsfor(3)+'</td></tr><tr><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*24)+'px;text-align:center;font-weight:bold">'+somescores[0]+'</td><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*24)+'px;text-align:center;font-weight:bold">'+somescores[1]+'</td><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*24)+'px;text-align:center;font-weight:bold">'+somescores[2]+'</td><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*24)+'px;text-align:center;font-weight:bold">'+somescores[3]+'</td></tr></table>'}
+if (somegametype==3) {return '<table border=1 cellpadding=0 cellspacing=0 width=100%><tr><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*32)+'px;text-align:center;font-weight:bold">'+textinitialsfor(0)+'</td><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*32)+'px;text-align:center;font-weight:bold">'+textinitialsfor(1)+'</td><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*32)+'px;text-align:center;font-weight:bold">'+textinitialsfor(2)+'</td></tr><tr><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*32)+'px;text-align:center;font-weight:bold">'+somescores[0]+'</td><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*32)+'px;text-align:center;font-weight:bold">'+somescores[1]+'</td><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*32)+'px;text-align:center;font-weight:bold">'+somescores[2]+'</td></tr></table>'}
+if (somegametype==2) {return '<table border=1 cellpadding=0 cellspacing=0 width=100%><tr><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*48)+'px;text-align:center;font-weight:bold">'+textinitialsfor(0)+' & '+textinitialsfor(1)+'</td><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*48)+'px;text-align:center;font-weight:bold">Anon.</td></tr><tr><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*48)+'px;text-align:center;font-weight:bold">'+(somescores[0]+somescores[1])+'</td><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*48)+'px;text-align:center;font-weight:bold">'+somescores[2]+'</td></tr></table>'}
+if (somegametype==1) {return '<table border=1 cellpadding=0 cellspacing=0 width=100%><tr><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*48)+'px;text-align:center;font-weight:bold">'+textinitialsfor(0)+' & '+textinitialsfor(2)+'</td><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*48)+'px;text-align:center;font-weight:bold">'+textinitialsfor(1)+' & '+textinitialsfor(3)+'</td></tr><tr><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*48)+'px;text-align:center;font-weight:bold">'+(somescores[0]+somescores[2])+'</td><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*48)+'px;text-align:center;font-weight:bold">'+(somescores[1]+somescores[3])+'</td></tr></table>'}
 
 }
 
@@ -1460,15 +1594,7 @@ someselected=removeitem(somenum, someselected)
 }
 else
 {
-if (someselected.length<somesetselection.length)
-{
 someselected=someselected.concat([somenum])
-}
-else
-{
-settextvalue('workpad', '<span style="color:red">You may select only '+somesetselection.length+' words</span>')
-return
-}
 }
 SetLocalVal('solveselection', convertlisttotext('number', someselected))
 continuechallenge()
@@ -1484,7 +1610,25 @@ var somestatus=GetLocalList('linxemstatus')
 somestatus[3]=somenum
 SetLocalVal('linxemstatus', somestatus)
 if (somestatus[3]==1 || somestatus[3]==5) {starttimer()}
-if (somenum==7) {SetLocalVal('scoreadded', 0)}
+if (somenum==7) 
+{
+var somescoring=calculatescoretable()
+var someyourtotal=somescoring[2]
+var someopptotal=somescoring[3]
+distributescores(someyourtotal,someopptotal) 
+}
+if (somenum==9)
+{
+distributescores(0, failcompleteset) 
+}
+if (somenum==10)
+{
+distributescores(0, cluerejection) 
+}
+if (somenum==11)
+{
+distributescores(0, failcompletesolve) 
+}
 continuechallenge()
 }
 
@@ -1519,7 +1663,7 @@ runtimer()
 function displaycountdown(countdown)
 {
 var somebg
-settextvalue('timerdisplay', countdown)
+changetextvalue('timerdisplay', countdown)
 if (countdown<=15) {somebg='orange'} else {somebg='yellow'}
 changebgcolor('timerdisplay', somebg)
 
@@ -1553,7 +1697,7 @@ return
 }
 if (somestatus[3]==5) 
 {
-if (GetLocalEval('solveselection').length<GetLocalEval('setselection').length)
+if (GetLocalEval('solveselection').length!=GetLocalEval('setselection').length)
 {
 goto(11)
 return
@@ -1571,7 +1715,7 @@ return
 function setcountdown(sometime)
 {
 SetLocalVal('timeallowed', sometime)
-for (var i=60; i<=240; i=i+60)
+for (var i=60; i<=300; i=i+60)
 {
 document.getElementById('setcd'+i).style.backgroundColor = '#FFFFEE'
 document.getElementById('setcd'+i).style.color = 'silver'
@@ -1655,15 +1799,24 @@ function writethegame()
 documentwrite('<div id="theboard" style="display:none; background-color:silver">')
 documentwrite('<center>')
 documentwrite('<table width=100% border=0 cellspacing=0 cellpadding=0 style = "background-color:none" align=center>')
+
+
 documentwrite('<tr><td width=100% id="wordtable">')
 
 documentwrite('</td></tr>')
-documentwrite('<tr><td  style="text-align:center; background-color:white;height:'+Math.floor(scalef*15)+'px;font-size:'+Math.floor(scalef*10)+'px"><table border=1 width=100% height=100% cellspacing=0 cellpadding=0 align=center valign=middle><tr><td id="workpad" style="text-align:center">WW PA PB PC</td></tr></table></td></tr>')
-documentwrite('<tr><td  style="text-align:center; "><img src="empty.png" width='+Math.floor(scalef*230)+'  height='+Math.floor(scalef*3)+' style="display:block"></td></tr>')
 
-documentwrite('<tr><td ><table border=1 cellpadding=0 cellspacing=0 width=100%><tr><td onClick="setzoom(0)" style="background-color:black;color:white;width:'+Math.floor(scalef*50)+'px;text-align:center">ZOom -</td><td style="background-color:yellow;text-align:center;font-weight:bold" id="timerdisplay">&nbsp;</td><td onClick="setzoom(1)" style="background-color:black;color:white;width:'+Math.floor(scalef*50)+'px;text-align:center">zoOM +</td></tr></table></td></tr>')
+documentwrite('<tr><td ><table border=1 cellpadding=0 cellspacing=0 width=100%><tr><td onClick="setzoom(0)" style="background-color:silver;color:white;width:'+Math.floor(scalef*50)+'px;text-align:center" valign=middle id="col3"><table border=0 valign=middle height=100% cellspacing=0 cellpadding=0 align=center><tr><td valign=middle><span style="display:block;font-size:'+Math.floor(scalef*5)+'px;color:white;background-color:black">&nbsp;Word&nbsp;</span></td><td><img src="empty.png" width='+Math.floor(scalef*2)+'  height='+Math.floor(scalef*4)+' style="display:block"></td><td valign=middle><span style="display:block;font-size:'+Math.floor(scalef*5)+'px;color:white;background-color:black">&nbsp;Word&nbsp;</span></td><td><img src="empty.png" width='+Math.floor(scalef*2)+'  height='+Math.floor(scalef*4)+' style="display:block"></td><td valign=middle><span style="display:block;font-size:'+Math.floor(scalef*5)+'px;color:white;background-color:black">&nbsp;Word&nbsp;</span></td></tr></table></td><td style="font-size:'+Math.floor(scalef*10)+'px;background-color:yellow;text-align:center;font-weight:bold" id="timerdisplay">&nbsp;</td><td onClick="setzoom(1)" style="background-color:silver;color:white;width:'+Math.floor(scalef*50)+'px;text-align:center" valign=middle id="col2"><table border=0 valign=middle cellspacing=0 cellpadding=0 align=center><tr><td valign=middle><span style="display:block;font-size:'+Math.floor(scalef*8)+'px;color:white;background-color:black">&nbsp;Word&nbsp;</span></td><td><img src="empty.png" width='+Math.floor(scalef*2)+'  height='+Math.floor(scalef*4)+'  style="display:block"></td><td valign=middle><span style="display:block;font-size:'+Math.floor(scalef*8)+'px;color:white;background-color:black">&nbsp;Word&nbsp;</span></td></tr></table></td></tr></table></td></tr>')
+/*
+documentwrite('<tr><td ><table border=1 cellpadding=0 cellspacing=0 width=100%><tr><td onClick="setzoom(0)" style="background-color:silver;color:white;width:'+Math.floor(scalef*50)+'px;text-align:center" valign=middle id="col3"><table border=0 valign=middle cellspacing=0 cellpadding=0 align=center><tr><td><img valign=top src="solid.png" width='+Math.floor(scalef*14)+' height='+Math.floor(scalef*5)+' style="display:block"></td><td><img src="empty.png" width='+Math.floor(scalef*2)+'  height='+Math.floor(scalef*4)+' style="display:block"></td><td><img valign=top src="solid.png" width='+Math.floor(scalef*14)+' height='+Math.floor(scalef*5)+' style="display:block"></td><td><img src="empty.png" width='+Math.floor(scalef*2)+'  height='+Math.floor(scalef*4)+' style="display:block"></td><td><img valign=top src="solid.png" width='+Math.floor(scalef*14)+' height='+Math.floor(scalef*5)+' style="display:block"></td></tr></table></td><td style="font-size:'+Math.floor(scalef*10)+'px;background-color:yellow;text-align:center;font-weight:bold" id="timerdisplay">&nbsp;</td><td onClick="setzoom(1)" style="background-color:silver;color:white;width:'+Math.floor(scalef*50)+'px;text-align:center" valign=middle id="col2"><table border=0 valign=middle cellspacing=0 cellpadding=0 align=center><tr><td><img src="solid.png" width='+Math.floor(scalef*21)+' height='+Math.floor(scalef*8)+'  style="display:block"></td><td><img src="empty.png" width='+Math.floor(scalef*4)+'  height='+Math.floor(scalef*4)+'  style="display:block"></td><td><img src="solid.png" width='+Math.floor(scalef*21)+' height='+Math.floor(scalef*8)+'  style="display:block"></td></tr></table></td></tr></table></td></tr>')
+*/
 documentwrite('<tr><td ><img src="empty.png" width='+Math.floor(scalef*230)+'  height='+Math.floor(scalef*2)+' style="display:block"></td></tr>')
+// documentwrite('<tr><td  style="text-align:center; "><img src="empty.png" width='+Math.floor(scalef*230)+'  height='+Math.floor(scalef*3)+' style="display:block"></td></tr>')
+documentwrite('<tr><td  style="text-align:center; font-weight:bold; height:'+Math.floor(scalef*15)+'px;font-size:'+Math.floor(scalef*10)+'px"><input type="text" value="" id="linxemtext" style="background-color:#FFAAAA;color:black; border-color:silver; border-style:inset; border-width:3px;text-align:center;font-size:'+Math.floor(scalef*10)+'px; width:'+Math.floor(scalef*170)+'px" onChange="savelinxemtext()"></td></tr>')
+documentwrite('<tr><td ><img src="empty.png" width='+Math.floor(scalef*230)+'  height='+Math.floor(scalef*2)+' style="display:block"></td></tr>')
+documentwrite('<tr><td  style="text-align:center; background-color:white;height:'+Math.floor(scalef*15)+'px;font-size:'+Math.floor(scalef*10)+'px"><table border=1 width=100% height=100% cellspacing=0 cellpadding=0 align=center valign=middle><tr><td id="workpad" style="font-size:'+Math.floor(scalef*10)+'px;text-align:center"></td></tr></table></td></tr>')
 
+
+documentwrite('<tr><td ><img src="empty.png" width='+Math.floor(scalef*230)+'  height='+Math.floor(scalef*2)+' style="display:block"></td></tr>')
 
 documentwrite('<tr><td style="text-align:center; " id="scoresbuttons"></td></tr>')
 
@@ -1692,6 +1845,7 @@ continuechallenge()
 
 
 
+
 // End main app code
 
 </script>
@@ -1707,7 +1861,6 @@ var adbreakcounter
 
 
 
-var displayadnum=0
 
 function openwebpage(someurl)
 {
@@ -1717,7 +1870,9 @@ document.location.href=someurl
 var displayadnum=0
 var displayhelptexts=
 [
-'<table width=100% border=0 bgcolor=cyan  onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="icon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*9)+'px"><b>Help</b> gives help; <b>New</b> starts a new game<br><b>Small</b> selects 1-10; <b>Large</b> selects 25-100<br><b>Design</b> target doable, <b>Random</b> not always</td></tr></table>',
+'<table width=100% border=0 bgcolor=cyan  onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="icon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*9)+'px"><b>Help</b> gives help; <b>New</b> starts a new game<br><b>Word Word Word</b> 3-columns (smaller text)<br><b>Word Word</b> 2-columns (larger text)</td></tr></table>',
+'<table width=100% border=0 bgcolor=cyan  onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="icon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*9)+'px"><b>2 pts</b> for each correct selection<br><b>4 pts</b> bonus for 3 or more all correct</td></tr></table>',
+'<table width=100% border=0 bgcolor=cyan  onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="icon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*9)+'px"><b>4 pts to opp\'n</b> for selection originally yellow<br><b>10 pts to opp\'n</b> for missing countdown<br><b>10 pts to opp\'n</b> for invalid Linxem</td></tr></table>',
 '<table width=100% border=0 bgcolor=cyan  onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="icon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*9)+'px"><span style="font-weight:bold">TopAccolades</span><br>Apps and web services</td></tr></table>',
 '<table width=100% border=0 bgcolor="lightblue" onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="compactfuniconlarge.png" align=center valign=middle  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b> i.compactfun.com</b><br>This app and other apps are also accessible online from many devices at i.compactfun.com</td></tr></table>'
 
@@ -1832,7 +1987,7 @@ function ith(someitem, somearray)
 {
 for (var i=0; i<somearray.length; i++)
 {
-if (someitem==somearray[i]) {return i}
+if (someitem===somearray[i]) {return i}
 
 }
 
@@ -1864,10 +2019,35 @@ var preventbuttonactions=0
 
 <script language="Javascript">
 
-
-
-
 function runonload()
+{
+if (adsrequired==0)
+{
+runonloadproper()
+}
+else
+{
+document.getElementById('theboard').style.display='none'
+preventbuttonactions=1
+var somemessage='<span style="color:red;font-weight:bold">Trial Version</span><br><br>This is a free trial version of Linxem. It is fully functional, but has approximately one third of the words and names that are available for presentation in the full version.  This means that you will normally see more repetitions of words/names from one challenge to the next than you would in the full version.<br><br>You may, of course, purchase the full version from the store at any time to obtain the full set of words/names and, hence, more varied challenges.<br>'
+somemessage=somemessage+'<br><br><table align=center border=0><tr><td onClick="continuerunonload()" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table><br>'
+
+changetextvalue('output',  '<br><table width=100% height='+Math.floor(scalef*100)+' border=1 cellpadding=0 cellspacing=0  align=center bgcolor=lemonchiffon><tr><td><table width=100% border=0><tr><td height='+Math.floor(scalef*50)+' align=center valign=middle><br>'+centralimage()+'</td></tr><table></td></tr><tr><td  height='+Math.floor(scalef*75)+' align=center valign=middle>'+somemessage+'</td></tr><tr height='+Math.floor(scalef*3)+'><td></td></tr></table>')
+
+document.getElementById('output').style.display='inline'
+
+
+}
+
+}
+
+function continuerunonload()
+{
+preventbuttonactions=0
+runonloadproper()
+}
+
+function runonloadproper()
 {
 // first deal with remoteads
 eval(GetLocalVal('remoteads'))
@@ -1889,7 +2069,7 @@ return
 // otherwise continue game
 if (GetLocalList('linxemstatus')[3]>-1)
 {
-continuegame()
+restartgame()
 }
 else
 {
@@ -1938,6 +2118,18 @@ sometext=sometext+'</table><table border=0 width=100% height='+Math.floor(scalef
 return sometext
 }
 
+// this is for testing only: changes linxemwords diplayed and reloads
+function changewords()
+{
+var somewords=shufflearray(shufflearray(linxemwords)).slice(0, numberwords)
+
+SetLocalVal('setwords', convertlisttotext('text', shufflearray(somewords)))
+SetLocalVal('solvewords', convertlisttotext('text', shufflearray(somewords)))
+
+
+location.reload()
+}
+
 function centralimage()
 {
 var sometext=''
@@ -1951,9 +2143,9 @@ return sometext
 }
 
 // static
-documentwrite('<div style="width:100%;height:'+Math.floor(scalef*360)+'px;background-color:#DDDDFF"><table border=0 align=center valign=top cellspacing=0 cellpadding=0 width='+Math.floor(scalef*230)+'>')
+documentwrite('<div style="width:100%;height:'+Math.floor(scalef*360)+'px;background-color:powderblue"><table border=0 align=center valign=top cellspacing=0 cellpadding=0 width='+Math.floor(scalef*230)+'>')
 documentwrite('<tr height='+Math.floor(scalef*3)+'><td width='+Math.floor(scalef*50)+'><img src="empty.png" width='+Math.floor(scalef*50)+'  height='+Math.floor(scalef*2)+' style="display:block"></td><td width='+Math.floor(scalef*10)+'><img src="empty.png" width='+Math.floor(scalef*10)+'  height='+Math.floor(scalef*2)+' style="display:block"></td><td colspan=3></td><td width='+Math.floor(scalef*10)+'><img src="empty.png" width='+Math.floor(scalef*10)+'  height='+Math.floor(scalef*2)+' style="display:block"></td><td width='+Math.floor(scalef*50)+'><img src="empty.png" width='+Math.floor(scalef*50)+'  height='+Math.floor(scalef*2)+' style="display:block"></td></tr>')
-documentwrite('<tr height='+Math.floor(scalef*20)+'><td width='+Math.floor(scalef*50)+' onClick="newgame()">'+graphicfor('New')+'</td><td width='+Math.floor(scalef*10)+'><img src="empty.png" width='+Math.floor(scalef*10)+'></td><td colspan=3 style="text-align:center;font-weight:bold;color:red;font-size:'+Math.floor(scalef*14)+'px">'+titleimage('Linxem')+'</td><td width='+Math.floor(scalef*10)+'><img src="empty.png" width='+Math.floor(scalef*10)+'></td><td width='+Math.floor(scalef*50)+' onClick="showhelp()">'+graphicfor('Help')+'</td></tr>')
+documentwrite('<tr height='+Math.floor(scalef*20)+'><td width='+Math.floor(scalef*50)+' onClick="newgame()">'+graphicfor('New')+'</td><td width='+Math.floor(scalef*10)+'><img src="empty.png" width='+Math.floor(scalef*10)+'></td><td onClick="changewords()" colspan=3 style="text-align:center;font-weight:bold;color:red;font-size:'+Math.floor(scalef*14)+'px">'+titleimage('Linxem')+'</td><td width='+Math.floor(scalef*10)+'><img src="empty.png" width='+Math.floor(scalef*10)+'></td><td width='+Math.floor(scalef*50)+' onClick="showhelp()">'+graphicfor('Help')+'</td></tr>')
 documentwrite('<tr ><td colspan=7 style="width:'+Math.floor(scalef*230)+'px;text-align:left;color:black;font-size:'+Math.floor(scalef*10)+'px"><div style="height:'+(pushdown+Math.floor(scalef*3))+'px;width='+Math.floor(scalef*230)+'px"></div></td></tr>')
 documentwrite('<tr ><td colspan=7 style="width:'+Math.floor(scalef*230)+'px;text-align:left;color:black;font-size:'+Math.floor(scalef*10)+'px"><div style="display:inline;width:100%" id="maingame">')
 
@@ -2005,17 +2197,35 @@ showinghelp=0
 </div>
 
 <div id="helpgeneral" style="display:inline">
-Linxem is a word game for 2-4 players playing in Play and Pass mode.  I
+<br>Linxem is a word game for 2-4 players playing in Play and Pass mode.
+<br><br><span style="font-weight:bold">Overview</span>
 <br>
 <br>The game involves a series of <i>challenges</i> directly involving a pair of the players, who are, in essence, working together to win the challenge. 
 <br>
-<br>In a challenge, one player of the pair, the <i>setter</i>, is shown a set of words or names with different backgrounds, some are <script language="Javascript">documentwrite(good)</script>, some are <script language="Javascript">documentwrite(bad)</script>, and some are <script language="Javascript">documentwrite(terrible)</script>.  The backgrounds are important, but we will cover this issue later.  
+<br>In a challenge, one player of the pair, the <i>setter</i>, is shown a set of words or names with different backgrounds. Some of these backgrounds are <script language="Javascript">documentwrite(good)</script> and some are <script language="Javascript">documentwrite(bad)</script>.  The backgrounds are important.  
 <br>
-<br>The setter must look at these words and select 2 or more of the words/names that are linked together in some way.  
+<br>The setter must look at these words/names and select 2 or more of the words/names that are linked together in some way.  Generally, words/names with a <script language="Javascript">documentwrite(good)</script> background are selected, as those with <script language="Javascript">documentwrite(bad)</script> ones lead to penalties.
 <br>
-<br>Having selected these, the setter must then say out loud a <i>Linxem word</i>: a word, name or title that links them (-> links 'em, -> Linxem) together in some way.
+<br>Having selected these, the setter must then input or say out loud a <b><i>Linxem</i></b>.  A Linxem is a word, name, title, occupation, number or date that links them (&#65515;&nbsp;"links&nbsp;'em", &#65515;&nbsp;"Linxem") in some way.
 <br>
-<br>A valid Linxem word is a word, a hyphenated word or a compound word found in an English dictionary.  So, the following would all normally be considered valid (even though unlikely in the Linxem game):
+<br>The other player of the pair, the <i>solver</i>, is then shown the full set of words/names, rearranged and with no distinctive backgrounds, and must then try to identify the words/names selected by the setter from the Linxem given by the setter.
+<br>
+<br>Points are won for correct identification of the words/names selected, but are lost for identifying words/names whose original backgrounds were <script language="Javascript">documentwrite(bad)</script>.  Points are also lost for failing to complete the setting or solving within the specified countdown time and for providing an invalid Linxem.
+<br><br><span style="font-weight:bold">What is a Linxem?</span>
+<br><br>
+A Linxem connects the selected words/names in some way.<br><br>
+It could be a word that encompasses the selected words, e.g. 'Mammals' for the words 'Cat' and 'Dog'.  
+<br><br>It might also be something that is associated with them, e.g. 'America' for the words 'Washington' and 'Texas'.
+<br><br>It might have two different meanings and be related to the selected words individually, e.g. 'Twist' for words/names 'Dance' and 'Dickens'.
+<br><br>It might be something that could go before or after the selected words, e.g. 'Cream' for the words 'Ice' and 'Hand'.
+<br><br>It might describe the word structure in some way, e.g. 'Monosyllabic' for 'Ice' and 'Hand', or 'Reversals' for 'God' and 'Dog', or even 'Rhyming' for 'White' and 'Right'.
+<br><br>It might even be applicable to a homophone of a selected word, e.g. 'Fish' for the words 'Place' and 'Perch'.
+<br><br>Overall, as long as the Linxem is valid as defined above, it is acceptable. Of course, whether your partner in the challenge will get it is a different matter. It is acceptable to say the Linxem in a way that suggests some unusual meaning, e.g. with an upward inflection at the end to make it sound questionable.
+
+<br>
+<br><span style="font-weight:bold">Valid and invalid Linxems</span>
+<br>
+<br>A valid Linxem is a word, a hyphenated word or a compound word found in an English dictionary.  So, the following would all normally be considered valid (even though unlikely in the Linxem game):
 <ul>
 <li>Coal
 <li>Coalman
@@ -2028,8 +2238,10 @@ Linxem is a word game for 2-4 players playing in Play and Pass mode.  I
 </ul>
 Note: expressions such as 'French cheeses', 'Animals native to Australia' or 'Words containing 10 letters' would not be acceptable as they wouldn't be found in a dictionary.
 <br><br>
-Additionally, a Linxem word may be a recognized name (fact or fiction) or title, e.g. of a book, play, song, album, series, TV programme painting or movie.
-So, the following would also normally be considered valid Linxem words:
+A Linxem may also be an occupation, e.g. 'Tennis player', a number, e.g. '2012', an address, e.g. '221B Baker Street', or a date/time, e.g. '23 April 1616', 'July 4th' or '10:50'.
+<br><br>
+Additionally, a Linxem may be a recognized name or title (fact or fiction), e.g. of a person, animal, team, event, building, brand, place, book, play, band, song, album, series, TV programme, painting, art work, or movie.
+So, the following would also normally be considered valid Linxems:
 <ul>
 <li>Nat King Cole
 <li>Old King Cole
@@ -2040,29 +2252,39 @@ So, the following would also normally be considered valid Linxem words:
 <li>Verdi
 <li>Giuseppe Verdi
 <li>La Traviata
+<li>Red Rum
+<li>The Empire State Building
+<li>London
 <li>The Thinker
 <li>The Great Escape
 <li>Daft Punk
 <li>Get Lucky
 <li>Saudi Arabia
 <li>New Zealand
+<li>Forty-niners
 <li>The Queen of England
 <li>Princess Diana
 <li>U.S. President
 <li>Hillary Clinton
 </ul>
-There are, of course, words or names that can't be used with certain selected words.  The principle is simple: for a given selected word/name and Linxem word, one may not include the other, either in spelling or in sound, and may not be directly derived from or be an inflection of the same root word.
-<p>So, if one of the words were 'Go', the other could not be:
+The name/title should be reasonably well-known and can be subject to checking.  Stating the name 'French cheeses' or 'Australian animals' in the hope (or maybe even knowledge) that there might be an obscure book with such a name (and there probably is), as a way of giving an otherwise invalid Linxem, is not allowed.
+<br><br>
+There are, of course, words or names that can't be used with certain selected words.  The principle is simple: for a given selected word/name and Linxem, one may not include the other, either in spelling or in sound, and may not be directly derived from or be an inflection of the same root word.
+<br><br>
+So, if one of the words were 'Go', the other could not be:
 <ul>
 <li>Goes
 <li>Gone
 <li>Went
 <li>Forgo
 <li>Forwent
-<li>Gobi (includes both the sound and the spelling of Go)
+<li>Golly (includes the spelling of Go)
+<li>Gauche (includes the sound of Go)
 </ul>
-In the case of the selected word/name or Linxem word containing more than one word, this applies to the individual words also, so, if the selected name were 'New York', the following would not be valid Linxem words:
 
+Likewise, if one of the words were 'Grass', the other could not be 'Graze' or 'Grazing'.
+<br><br>
+In the case of the selected word/name or Linxem containing more than one word, this applies to the individual words also, so, if the selected name were 'New York', the following would not be valid Linxems:
 <ul>
 <li>New Yorker
 <li>New England
@@ -2071,28 +2293,44 @@ In the case of the selected word/name or Linxem word containing more than one wo
 <li>Yorkshire
 <li>Yorker
 </ul>
+<span style="font-weight:bold">Points won and lost</span>
+<br>
+<br>
+All points won go to the pair involved in the challenge, while points lost in the challenge go to the opposition.
+<br>
+<br>The pair gain <script language="Javascript">documentwrite(correctscore)</script> points for each word identified by the solver that the setter had selected;
+<br>
+<br>The pair gain a bonus of <script language="Javascript">documentwrite(bonusscore)</script> points if the setter has selected 3 or more words and the solver gets them all correct;
+<br>
+<br>The pair lose <script language="Javascript">documentwrite(badscore)</script> points for each word selected by the solver that originally had a <script language="Javascript">documentwrite(bad)</script> background;
+<br>
+<br>The pair lose <script language="Javascript">documentwrite(failcompleteset)</script> points if the setter fails to select at least two words/names before the countdown ends;
+
+<br>
+<br>The pair lose <script language="Javascript">documentwrite(cluerejection)</script> points if the Linxem is successfully challenged and rejected as being invalid;
+
+<br>
+<br>The pair lose <script language="Javascript">documentwrite(failcompletesolve)</script> points if the solver fails to select the exact number of words/names selected by the setter before the countdown ends.
+
 <br><br>
-The Linxem word could be a word that encompasses the selected words, e.g. 'Mammals' for the words 'Cat' and 'Dog'.  
-<br><br>It might also be something that is associated with them, e.g. 'America' for the words 'Washington' and 'Texas'.
-<br><br>It might be something that could go before or after the selected words, e.g. 'Cream' for the words 'Ice' and 'Hand'.
-<br><br>It might describe the word structure in some way, e.g. 'Monosyllabic' for 'Ice' and 'Hand', or 'Reversals' for 'God' and 'Dog', or even 'Rhyming' for 'White' and 'Right'.
-<br><br>It might even be applicable to a homophone of a selected word, e.g. 'Fish' for the words 'Place' and 'Perch'.
-<br><br>Overall, as long as the Linxem word is valid as defined above, it is acceptable; whether your partner in the challenge will get it is a different matter. It is acceptable to say the Linxem word in a way that suggests some unusual meaning, e.g. with an upward inflection at the end to make it sound like a question.
-<br>
-<br>Once a valid Linxem word has been specified, the other player in the pair, the <i>solver</i>, must then try to identify the words selected by the first player, based on the Linxem word or clue given, from the complete set of words (shuffled around and no longer with any distinguishing backgrounds).  
-<br>
-<br>The pair gain points for words identified that the setter had selected, but they lose points, which go to the other players (the opposition during the challenge), for any words identified that originally had a <script language="Javascript">documentwrite(bad)</script> background or, worse still, as more points go to the opposition, ones that originally had a <script language="Javascript">documentwrite(terrible)</script> background.
-<br>
-<br>
+Clearly, given this scoring system, the setter would normally select words/names with a <script language="Javascript">documentwrite(good)</script> background, since these do not incur a penalty, and would be wary of selecting any with a <script language="Javascript">documentwrite(bad)</script> background.  However, the setter may sometimes choose to select words/names with a <script language="Javascript">documentwrite(bad)</script> background.  Consider the following scenarios:
+<ul>
+<li> the setter cannot see a link between even two of the words with a <script language="Javascript">documentwrite(good)</script> background.  Failure to select two would result in the loss of <script language="Javascript">documentwrite(failcompleteset)</script> points.  However, selecting one word with a <script language="Javascript">documentwrite(bad)</script> background as well as one with a <script language="Javascript">documentwrite(good)</script> background could result in a gain of <script language="Javascript">documentwrite(2*correctscore)</script> points if the solver gets them both correct, balanced by a loss of <script language="Javascript">documentwrite(badscore)</script> points because one had a <script language="Javascript">documentwrite(bad)</script> background.
+<li> the setter can see a link between two words with a <script language="Javascript">documentwrite(good)</script> background and one with a <script language="Javascript">documentwrite(bad)</script> background.  Although there would be a loss of <script language="Javascript">documentwrite(badscore)</script> points because one had a <script language="Javascript">documentwrite(bad)</script> background, assuming the solver identified them correctly, this would be more than compensated for by the <script language="Javascript">documentwrite(3*correctscore)</script> points for the three correct selections plus the bonus of <script language="Javascript">documentwrite(bonusscore)</script> points for getting all three correct.
+</ul>
+
 At the end of the game, i.e. when the last challenge in the series has been completed, the winner is the individual or team (see next) with the highest score.
+<br>
+<br>
+<span style="font-weight:bold">2, 3 or 4 players</span>
 <br>
 <br>
 The standard game is for four players playing as two teams of two players.  In this game, players in a given team alternate in being the setter and solver, and any points won during the challenge go to their team, while the other team receives the points lost.
 
 <br>
-<br>The game may also be played by just two players, as a pastime, in a similar way, where points lost go to a non-existent team.  The objective is to gain more points than you lose to the opposition. 
+<br>The game may also be played by just two players, as a pastime, in a similar way, where points lost go to a non-existent team called Anon.  The objective is to gain more points than you lose to the opposition or, of course, just to have fun setting and solving the challenges. 
 <br>
-<br>The game may also by played by 3 or 4 players trying to win as individuals.  In these games, players come together to play as pairs in a challenge.  Any points won in the challenge are shared by the two players in the pair, while the opposition (the one or 2 other players) take an equal share of any points lost during the challenge.  All players act as setter and solver in challenges with every other player.  The winner is the individual with the highest total at the end of the game. 
+<br>The game may also by played by 3 or 4 players trying to win as individuals.  In these games, players come together to play as pairs in a challenge.  Any points won in the challenge are shared equally by the two players in the pair, while the opposition takes the points lost during the challenge; in the case of 4 players, the points lost are shared equally by the two other players.  All players act as setter and solver in challenges with every other player.  The winner is the individual with the highest total at the end of the game. 
 
 <br><br><span style="font-weight:bold">Playing the game</span>
 <br>
@@ -2103,18 +2341,18 @@ A game is started by tapping the <i>New</i> button. You then have to choose the 
 The next screen shown explains the mode of play, including, importantly for a game for two pairs, who is to play with whom as partners (N.B. players 1 and 3 play together against 2 and 4 in a game for two pairs, as it is best for partners in a team to sit opposite each other around a table).  Initials are used to refer to the players (initially set to PA, PB, PC and PD). You may choose to change the initials used by tapping the <i>Change</i> button.  Note: in the unlikely event that there are duplicates in the initials, the only option on this screen is to change the initials.
 <br>
 <br>
-The screen also lets you define the length of the countdown used; simply tap the time, which then has a green background.  The countdown is used both in the setting and solving phases.  The default countdown time is 3 minutes - probably a good countdown time to start with.
+The screen also lets you define the length of the countdown used. Simply tap the countdown time you wish to select, which then takes on a green background.  The countdown is used both in the setting and solving phases.  The default countdown time is 3 minutes - probably a good countdown time to start with.
 <br>
 <br>
 Once the initials and countdown time are set appropriately, you generally, except in the game for 4 individual players, have a choice of game length, specified by the number of challenges involved.  In all these choices, every player has the same number of turns at being setter and solver.
 
-<br><br><span style="font-weight:italics">Playing a challenge</span>
+<br><br><span style="font-weight:bold">Playing a challenge</span>
 <br>
 <br>
 The system chooses who is to be the setter (and the solver in 3- or 4-player individual games), and advises that the device should be passed to the setter. The setter should take the device and tap <i>OK</i> to reveal the main screen.
 <br>
 <br>
-The main screen displays <script language="Javascript">documentwrite(numberwords)</script>, <script language="Javascript">documentwrite(numbergood)</script> <script language="Javascript">documentwrite(good)</script> ones, <script language="Javascript">documentwrite(numberbad)</script> <script language="Javascript">documentwrite(bad)</script> ones, and <script language="Javascript">documentwrite(numberterrible)</script> <script language="Javascript">documentwrite(terrible)</script> ones.  The countdown starts and the setter must select, by tapping, 2 or more of the words that can be linked.  Clearly, the main focus should be on the <script language="Javascript">documentwrite(good)</script> ones, as encouraging the solver to select other ones will incur penalties.
+The main screen displays <script language="Javascript">documentwrite(numberwords)</script> words/names: <script language="Javascript">documentwrite(numbergood)</script> <script language="Javascript">documentwrite(good)</script> ones, and <script language="Javascript">documentwrite(numberbad)</script> <script language="Javascript">documentwrite(bad)</script> ones.  The countdown starts and the setter must select, by tapping, 2 or more of the words that can be linked.  Clearly, the main focus should be on the <script language="Javascript">documentwrite(good)</script> ones, as encouraging the solver to select <script language="Javascript">documentwrite(bad)</script> ones will lead to penalties.
 <br><br>
 Points to note about selecting words in this phase and in the solving stage are:
 <ul>
@@ -2122,21 +2360,44 @@ Points to note about selecting words in this phase and in the solving stage are:
 <li> tapping the word again deselects it, if you wish to change your selection.
 </ul>
 
-<br><br>
-Once this is complete, the setter may tap an <i>OK</i> button.
+
+Once this is complete, the setter may tap an <i>OK</i> button.  An error message is displayed if fewer than 2 words/names have been selected, and the game continues.
 <br><br>
 Note that the background of the countdown display changes to orange when it is within 15 seconds of stopping. If the countdown stops before the <i>OK</i> button is tapped, play continues as if it had been tapped, unless fewer than two words have been selected, in which case the challenge ends and the pair involved in the challenge lose <script language="Javascript">documentwrite(failcompleteset)</script> points to the opposition. 
 <br><br>
-Advice is then given that the setter should state the Linxem word.  In all games apart from the two-player version, other players then have the opportunity to check that they are happy with the Linxem word.  If valid objections are raised, the <i>Reject</i> button should be tapped.  This ends the challenge and the opposition receives <script language="Javascript">documentwrite(cluerejection)</script> points.  If the Linxem word is acceptable (and all players should be generous in this regard), the <i>OK</i> button should be tapped, which then brings up a screen advising that the device should be handed to the solver.
+Advice is then given that the setter should input (through the device keyboard) or say the Linxem out loud (one or the other, not both).  The Linxem is input through the field with the light red background just below the red countdown field.  In all games apart from the two-player version, other players (apart from the solver) should then be consulted about the choice of Linxem.  If valid objections are raised about a Linxem that has been typed in, the setter should be given an opportunity to modify it.  If valid objections are raised about a Linxem that has been said out loud, the <i>Reject</i> button should be tapped.  This ends the challenge and the opposition receive <script language="Javascript">documentwrite(cluerejection)</script> points.  If the Linxem is acceptable (and all players should be generous in this regard), the <i>OK</i> button should be tapped, which then brings up a screen advising that the device should be handed to the solver.
 <br><br>
-Note that all players except the solver may see the device during the setting phase, and all players may see it during the solving phase.  This keeps everyone involved and able to see how cunning the choice of Linxem word is.
+Note that all players except the solver may see the device during the setting phase, and all players may see it during the solving phase.  This keeps everyone involved and able to see how cunning the choice of Linxem is and how the solver seems to be doing.
 <br><br>
-The device should then be handed to the solver, who should click <i>OK</i> to see the main screen.  The <script language="Javascript">documentwrite(numberwords)</script> words are redisplayed, but re-ordered from the setting stage and all with a <script language="Javascript">documentwrite(neutral)</script> background.  The countdown starts and the solver must tap on 
+The device should then be handed to the solver, who is informed by the system how many words/names need to be selected and should click <i>OK</i> to see the main screen.  The <script language="Javascript">documentwrite(numberwords)</script> words/names are redisplayed, but re-ordered from the setting stage and all with a <script language="Javascript">documentwrite(neutral)</script> background.  The countdown starts and the solver must tap on the exact number of words/names that appear to best match the stated Linxem.  Note: during the countdown the solver may select more than the number of words/names selected by the setter to help decision-making, but the number must be exactly equal to the number selected by the setter when the countdown ends or when the <i>OK</i> button is tapped to end the countdown early.  If the numbers do not match when the countdown reaches zero, the pair involved in the challenge lose <script language="Javascript">documentwrite(failcompletesolve)</script> points to the opposition and the challenge ends. If the numbers do not match when the <i>OK</i> button is tapped, an error message is displayed and the game continues.  
+
+<br>
+<br>
+<span style="font-weight:bold">Scoring</span>
+<br>
+<br>
+Once the solving stage is over, a <i>Score</i> button should be tapped.  The points gained by the pair in the challenge and lost to the opposition are displayed, together with the new running totals.  Tapping <i>OK</i> takes you on to the next challenge, assuming there are still some to go.
+<br>
+<br>
+<span style="font-weight:bold">Starting a new game</span>
+<br>
+<br>
+The <i>New</i> button may be tapped at any time to start a new game.  If a game is already underway and not over, you will be asked to confirm that you wish to start a new game.
+<br>
+<br>
+<span style="font-weight:bold">Continuing a game</span>
+<br>
+<br>
+If you exit the app once a game is underway, the game state is stored.  The game continues when you open the app again.
+<br>
+<br>
+<span style="font-weight:bold">Layout of words/names</span>
+<br>
+<br>
+The standard layout of the <script language="Javascript">documentwrite(numberwords)</script> words/names is in 3 columns.  If you are using a small device, you may wish to see them with a larger font.  You are able to so this by tapping the <i>Word Word</i> button to the right of the countdown field, which lays them out in 2 columns.  You may change back to 3 columns by tapping the <i>Word Word Word</i> button to the left of the countdown field.  The layout button for the current layout option is displayed with a white background.
 
 
-
-
-<p><span style="font-weight: bold">About Linxem</sup></span>
+<p><span style="font-weight: bold">About Linxem</span>
 
 <p>Linxem has been designed and developed by Dr David Wolstenholme.
 <p><span style="font-weight: bold">Terms of use</span><p>This software may be used for personal purposes only.  It may not be used for commercial purposes.</p> 
@@ -2193,7 +2454,7 @@ documentwrite('<sc'+'ript src="http://www.compactfun.com/remoteads/largeadsuntim
 
 </script>
 <script language="javascript">
-showcurrentad()
+// showcurrentad()
 
 </script>
 
@@ -2205,6 +2466,7 @@ var linxemwords=
 // Enter list from spreadsheet here
 
 
+"Abbott",
 "Abraham",
 "Accent",
 "Ace",
@@ -2223,12 +2485,16 @@ var linxemwords=
 "Africa",
 "Age",
 "Ahmed",
+"Aid",
 "Air",
 "Ajax",
+"Alberta",
+"Alexander",
 "Ali",
 "Allen",
 "Alpha",
 "Amazon",
+"Amber",
 "America",
 "Anchor",
 "Anderson",
@@ -2242,10 +2508,12 @@ var linxemwords=
 "Apollo",
 "Appeal",
 "Apple",
+"Aquarius",
 "Arab",
 "Arch",
 "Archer",
 "Architect",
+"Aries",
 "Arm",
 "Armstrong",
 "Army",
@@ -2261,6 +2529,7 @@ var linxemwords=
 "Atkinson",
 "Atlantic",
 "Atlas",
+"Atom",
 "Attack",
 "Aunt",
 "Austen",
@@ -2322,6 +2591,7 @@ var linxemwords=
 "Bennett",
 "Berlin",
 "Berry",
+"Better",
 "Big",
 "Bill",
 "Bind",
@@ -2339,6 +2609,7 @@ var linxemwords=
 "Block",
 "Blood",
 "Bloom",
+"Blossom",
 "Blow",
 "Blubber",
 "Blue",
@@ -2351,10 +2622,14 @@ var linxemwords=
 "Bob",
 "Body",
 "Boil",
+"Bold",
+"Bolster",
 "Bolt",
 "Bomb",
 "Bond",
+"Bone",
 "Bonnet",
+"Boob",
 "Book",
 "Boom",
 "Boot",
@@ -2386,6 +2661,7 @@ var linxemwords=
 "Broad",
 "Broke",
 "Bronze",
+"Brook",
 "Brooks",
 "Brother",
 "Brow",
@@ -2407,6 +2683,7 @@ var linxemwords=
 "Burger",
 "Burns",
 "Burton",
+"Bury",
 "Bush",
 "Bust",
 "Butcher",
@@ -2433,11 +2710,13 @@ var linxemwords=
 "Cancer",
 "Cane",
 "Canteen",
+"Canton",
 "Cap",
 "Cape",
 "Capital",
 "Cappuccino",
 "Capricorn",
+"Captain",
 "Capture",
 "Car",
 "Card",
@@ -2453,6 +2732,7 @@ var linxemwords=
 "Castle",
 "Cat",
 "Catch",
+"Catherine",
 "Cell",
 "Cent",
 "Central",
@@ -2471,6 +2751,7 @@ var linxemwords=
 "Charge",
 "Charles",
 "Charlie",
+"Charlotte",
 "Charm",
 "Check",
 "Checkers",
@@ -2489,11 +2770,12 @@ var linxemwords=
 "Chin",
 "China",
 "Chink",
-"Chip",
+"Chips",
 "Chocolate",
 "Chop",
 "Chopin",
 "Chopper",
+"Chord",
 "Christie",
 "Chuck",
 "Church",
@@ -2528,6 +2810,7 @@ var linxemwords=
 "Code",
 "Coffee",
 "Cognac",
+"Coin",
 "Coke",
 "Cold",
 "Cole",
@@ -2540,14 +2823,18 @@ var linxemwords=
 "Compact",
 "Company",
 "Compound",
+"Con",
 "Conductor",
 "Cone",
 "Console",
 "Constable",
+"Constance",
+"Contract",
 "Convert",
 "Cook",
 "Cookie",
 "Cool",
+"Coop",
 "Cooper",
 "Copper",
 "Copy",
@@ -2665,13 +2952,18 @@ var linxemwords=
 "Doc",
 "Dock",
 "Doctor",
+"Does",
 "Dog",
+"Doings",
 "Doll",
 "Dollar",
+"Dolly",
 "Dolphin",
 "Donkey",
+"Door",
 "Dot",
 "Dough",
+"Douglas",
 "Dove",
 "Down",
 "Doyle",
@@ -2707,10 +2999,12 @@ var linxemwords=
 "Echo",
 "Edge",
 "Edinburgh",
+"Edison",
 "Edward",
 "Edwards",
 "Egg",
 "Egypt",
+"Eight",
 "Eisenhower",
 "Elephant",
 "Elf",
@@ -2727,6 +3021,7 @@ var linxemwords=
 "Europe",
 "Evans",
 "Eve",
+"Even",
 "Evening",
 "Everest",
 "Ewe",
@@ -2735,6 +3030,7 @@ var linxemwords=
 "Execution",
 "Exercise",
 "Exhaust",
+"Exit",
 "Exodus",
 "Expectant",
 "Express",
@@ -2745,6 +3041,7 @@ var linxemwords=
 "Faint",
 "Fair",
 "Fairy",
+"Faith",
 "Fall",
 "Falls",
 "False",
@@ -2762,6 +3059,9 @@ var linxemwords=
 "Felt",
 "Fence",
 "Fencing",
+"Fender",
+"Fern",
+"Fiddle",
 "Field",
 "Figure",
 "File",
@@ -2791,6 +3091,7 @@ var linxemwords=
 "Float",
 "Florida",
 "Flounder",
+"Flower",
 "Flu",
 "Flush",
 "Flute",
@@ -2818,6 +3119,7 @@ var linxemwords=
 "Frank",
 "Frankenstein",
 "Frankfurter",
+"Fraser",
 "Fray",
 "Free",
 "French",
@@ -2828,6 +3130,7 @@ var linxemwords=
 "Frog",
 "Front",
 "Fruit",
+"Fry",
 "Function",
 "Funeral",
 "Fungus",
@@ -2850,6 +3153,7 @@ var linxemwords=
 "General",
 "Genesis",
 "George",
+"Georgia",
 "Germ",
 "Germany",
 "Gibson",
@@ -2861,6 +3165,7 @@ var linxemwords=
 "Glare",
 "Glass",
 "Glasses",
+"Globe",
 "Go",
 "Goal",
 "Goat",
@@ -2901,6 +3206,8 @@ var linxemwords=
 "Grub",
 "Guernsey",
 "Guide",
+"Guinea",
+"Guinness",
 "Guitar",
 "Gulf",
 "Gum",
@@ -2908,8 +3215,10 @@ var linxemwords=
 "Gush",
 "Guy",
 "Habit",
+"Hack",
 "Hail",
 "Hair",
+"Half",
 "Halifax",
 "Hall",
 "Ham",
@@ -2923,6 +3232,7 @@ var linxemwords=
 "Happy",
 "Harbo(u)r",
 "Hard",
+"Hardy",
 "Hare",
 "Harp",
 "Harris",
@@ -2937,13 +3247,16 @@ var linxemwords=
 "Haunt",
 "Hawk",
 "Hayes",
+"Hazel",
 "Head",
 "Hear",
+"Hearing",
 "Heart",
 "Heat",
 "Heath",
 "Heather",
 "Heaven",
+"Hector",
 "Hedge",
 "Heel",
 "Helium",
@@ -2959,12 +3272,14 @@ var linxemwords=
 "Hip",
 "Hitler",
 "Hives",
+"Hockey",
 "Hog",
 "Hold",
 "Hole",
 "Holly",
 "Hollywood",
 "Holmes",
+"Holy",
 "Home",
 "Homer",
 "Honey",
@@ -2974,6 +3289,7 @@ var linxemwords=
 "Hooker",
 "Hoop",
 "Hoover",
+"Hope",
 "Hops",
 "Horn",
 "Hornet",
@@ -2991,6 +3307,7 @@ var linxemwords=
 "Hue",
 "Hughes",
 "Hull",
+"Humbug",
 "Hume",
 "Humo(u)r",
 "Hunt",
@@ -3036,6 +3353,7 @@ var linxemwords=
 "Japan",
 "Jar",
 "Jason",
+"Jasper",
 "Java",
 "Jay",
 "Jeep",
@@ -3045,14 +3363,18 @@ var linxemwords=
 "Jersey",
 "Jet",
 "Jig",
+"Jimmy",
 "Jingle",
+"Job",
+"Joe",
 "John",
 "Johnson",
 "Joint",
 "Joker",
 "Jones",
 "Joseph",
-"Judge",
+"Joy",
+"Judges",
 "Juliet",
 "July",
 "Jumbo",
@@ -3065,6 +3387,8 @@ var linxemwords=
 "Justice",
 "Kale",
 "Kangaroo",
+"Kate",
+"Keating",
 "Keel",
 "Kelly",
 "Kennedy",
@@ -3076,33 +3400,43 @@ var linxemwords=
 "Killer",
 "Kilo",
 "Kind",
+"Kindle",
 "King",
 "Kingdom",
+"Kingston",
 "Kink",
 "Kirk",
 "Kite",
+"Kitty",
 "Kiwi",
 "Knee",
 "Knife",
 "Knight",
+"Knockers",
 "Knot",
+"Knows",
+"Lab",
 "Labo(u)r",
 "Labrador",
 "Lace",
 "Lager",
 "Lamb",
+"Lamp",
 "Lancaster",
 "Land",
 "Lane",
 "Lap",
 "Large",
+"Laser",
 "Lash",
 "Last",
+"Laurel",
 "Law",
 "Lawrence",
 "Lead",
 "Leader",
 "Leaf",
+"League",
 "Lean",
 "Leaves",
 "Lee",
@@ -3129,6 +3463,7 @@ var linxemwords=
 "Lily",
 "Lima",
 "Lime",
+"Limerick",
 "Limp",
 "Limpet",
 "Lincoln",
@@ -3155,6 +3490,7 @@ var linxemwords=
 "Los Angeles",
 "Loss",
 "Lot",
+"Lotus",
 "Louis",
 "Lounge",
 "Love",
@@ -3163,18 +3499,22 @@ var linxemwords=
 "Luke",
 "Lung",
 "Lyon",
+"Mac",
 "Macaroni",
 "Macbeth",
 "Mace",
 "Mad",
+"Madonna",
 "Madrid",
 "Magazine",
 "Maid",
 "Maiden",
 "Mail",
+"Main",
 "Major",
 "Man",
 "Manchester",
+"Mandarin",
 "Mandela",
 "Manners",
 "Mao",
@@ -3205,6 +3545,7 @@ var linxemwords=
 "Matthew",
 "Matthews",
 "May",
+"Mayo",
 "McDonald",
 "McKinley",
 "Meal",
@@ -3215,6 +3556,7 @@ var linxemwords=
 "Mesh",
 "Mess",
 "Meter",
+"Mews",
 "Mexican",
 "Miami",
 "Mickey",
@@ -3289,20 +3631,27 @@ var linxemwords=
 "Navy",
 "Neck",
 "Needles",
+"Neigh",
 "Nelson",
 "Neon",
 "Neptune",
 "Nerve",
 "Net",
+"Neutral",
+"New",
 "New York",
 "Newman",
 "News",
 "Newton",
 "Nice",
+"Nicholas",
 "Nick",
 "Nickel",
+"Night",
 "Nike",
 "Nile",
+"Nine",
+"Nip",
 "Nixon",
 "Noah",
 "Noise",
@@ -3317,7 +3666,10 @@ var linxemwords=
 "Nut",
 "Oaks",
 "Oasis",
+"Oats",
+"Object",
 "Odd",
+"Ode",
 "Oil",
 "Olive",
 "Oliver",
@@ -3335,9 +3687,11 @@ var linxemwords=
 "Otter",
 "Ounce",
 "Outfit",
+"Oval",
 "Owen",
 "Owl",
 "Own",
+"Ox",
 "Oxford",
 "Pace",
 "Pacific",
@@ -3347,9 +3701,12 @@ var linxemwords=
 "Page",
 "Paint",
 "Painting",
+"Pair",
+"Pale",
 "Palette",
 "Palm",
 "Palmer",
+"Pan",
 "Panama",
 "Panel",
 "Pansy",
@@ -3370,6 +3727,7 @@ var linxemwords=
 "Paste",
 "Pat",
 "Patel",
+"Patience",
 "Patient",
 "Pattern",
 "Paul",
@@ -3377,6 +3735,7 @@ var linxemwords=
 "Payne",
 "Pea",
 "Peace",
+"Peak",
 "Pearce",
 "Pearson",
 "Peck",
@@ -3393,6 +3752,7 @@ var linxemwords=
 "Perch",
 "Perfect",
 "Period",
+"Perk",
 "Permit",
 "Perry",
 "Persian",
@@ -3403,6 +3763,7 @@ var linxemwords=
 "Phillips",
 "Phoenix",
 "Phone",
+"Piano",
 "Pick",
 "Picket",
 "Picture",
@@ -3417,6 +3778,7 @@ var linxemwords=
 "Pine",
 "Pipe",
 "Piping",
+"Pisces",
 "Pit",
 "Pitch",
 "Pitcher",
@@ -3452,6 +3814,8 @@ var linxemwords=
 "Pop",
 "Pope",
 "Popeye",
+"Poppy",
+"Pore",
 "Pork",
 "Port",
 "Portal",
@@ -3477,15 +3841,19 @@ var linxemwords=
 "Prison",
 "Private",
 "Prize",
+"Pro",
 "Proceeds",
 "Product",
 "Program",
 "Progress",
 "Project",
 "Proof",
+"Prop",
 "Propose",
 "Protest",
+"Prudence",
 "Prune",
+"Puck",
 "Pull",
 "Puma",
 "Pump",
@@ -3517,10 +3885,12 @@ var linxemwords=
 "Rap",
 "Rare",
 "Rash",
+"Rat",
 "Rate",
 "Rattle",
 "Ratty",
 "Reading",
+"Real",
 "Rear",
 "Rebel",
 "Recess",
@@ -3539,6 +3909,7 @@ var linxemwords=
 "Relish",
 "Remote",
 "Rent",
+"Rep",
 "Report",
 "Reservation",
 "Reserve",
@@ -3547,6 +3918,7 @@ var linxemwords=
 "Retract",
 "Retreat",
 "Return",
+"Reverse",
 "Review",
 "Revolution",
 "Reynolds",
@@ -3564,6 +3936,7 @@ var linxemwords=
 "Rim",
 "Ring",
 "Road",
+"Rob",
 "Roberts",
 "Robin",
 "Robinson",
@@ -3580,6 +3953,7 @@ var linxemwords=
 "Rook",
 "Room",
 "Roosevelt",
+"Rooster",
 "Root",
 "Rose",
 "Rosemary",
@@ -3589,9 +3963,11 @@ var linxemwords=
 "Roundabout",
 "Row",
 "Rowan",
+"Rowling",
 "Rubber",
 "Rubbish",
 "Ruby",
+"Rude",
 "Rug",
 "Rule",
 "Ruler",
@@ -3605,8 +3981,10 @@ var linxemwords=
 "Sack",
 "Safe",
 "Sage",
+"Sagittarius",
 "Sailor",
 "Sake",
+"Sale",
 "Sally",
 "Salsa",
 "Salt",
@@ -3617,21 +3995,25 @@ var linxemwords=
 "Sandwich",
 "Santa",
 "Sap",
+"Sat",
 "Saturn",
 "Saunders",
 "Saw",
+"Sax",
 "Scales",
 "Scene",
 "Scent",
 "School",
 "Scoop",
-"Scorpion",
+"Score",
+"Scorpio",
 "Scotland",
 "Scott",
 "Scout",
 "Scrap",
 "Scratch",
 "Screen",
+"Screw",
 "Screwdriver",
 "Scrubs",
 "Scum",
@@ -3643,10 +4025,13 @@ var linxemwords=
 "Secretary",
 "See",
 "Seine",
+"Semi",
 "Sense",
+"Sent",
 "Sentence",
 "Service",
 "Set",
+"Seven",
 "Sewer",
 "Sex",
 "Shade",
@@ -3681,18 +4066,23 @@ var linxemwords=
 "Side",
 "Sierra",
 "Sign",
+"Sikhs",
 "Silver",
 "Simpson",
+"Sin",
 "Sinatra",
 "Singer",
 "Singh",
 "Sink",
 "Sister",
+"Six",
+"Skate",
 "Sketch",
 "Skied",
 "Skin",
 "Skip",
 "Skirt",
+"Skull",
 "Skunk",
 "Sky",
 "Slate",
@@ -3701,6 +4091,8 @@ var linxemwords=
 "Sling",
 "Slip",
 "Slippers",
+"Sloth",
+"Slough",
 "Slug",
 "Smack",
 "Small",
@@ -3716,6 +4108,7 @@ var linxemwords=
 "Snuff",
 "Soap",
 "Sock",
+"Sod",
 "Soda",
 "Sofa",
 "Soil",
@@ -3726,6 +4119,8 @@ var linxemwords=
 "Sore",
 "Sound",
 "South",
+"South Africa",
+"Sovereign",
 "Sow",
 "Space",
 "Spade",
@@ -3746,6 +4141,7 @@ var linxemwords=
 "Spider",
 "Spiderman",
 "Spirit",
+"Spit",
 "Split",
 "Spoke",
 "Spoon",
@@ -3788,6 +4184,7 @@ var linxemwords=
 "Still",
 "Sting",
 "Stir",
+"Stirling",
 "Stitch",
 "Stock",
 "Stole",
@@ -3815,6 +4212,7 @@ var linxemwords=
 "Stud",
 "Stump",
 "Stupid",
+"Sub",
 "Subject",
 "Sue",
 "Sugar",
@@ -3822,6 +4220,7 @@ var linxemwords=
 "Sullivan",
 "Summer",
 "Sun",
+"Super",
 "Superman",
 "Sushi",
 "Suspect",
@@ -3855,6 +4254,7 @@ var linxemwords=
 "Tarzan",
 "Taste",
 "Tattoo",
+"Taurus",
 "Tax",
 "Taxi",
 "Taylor",
@@ -3893,6 +4293,7 @@ var linxemwords=
 "Tip",
 "Tire",
 "Tit",
+"Titanic",
 "Toad",
 "Toast",
 "Toe",
@@ -3907,8 +4308,10 @@ var linxemwords=
 "Tool",
 "Tooth",
 "Top",
+"Topic",
 "Tornado",
 "Toronto",
+"Tot",
 "Total",
 "Touch",
 "Tower",
@@ -3919,6 +4322,7 @@ var linxemwords=
 "Trafalgar",
 "Trail",
 "Train",
+"Tramp",
 "Transfer",
 "Transform",
 "Transport",
@@ -3932,6 +4336,7 @@ var linxemwords=
 "Troop",
 "Trotter",
 "Truck",
+"Trudeau",
 "Truffle",
 "Truman",
 "Trump",
@@ -3944,10 +4349,13 @@ var linxemwords=
 "Turkey",
 "Turn",
 "Turner",
+"Tutu",
+"Twain",
 "Tweed",
 "Twins",
 "Twist",
 "Twister",
+"Twitter",
 "Two",
 "Tyler",
 "Type",
@@ -3958,6 +4366,7 @@ var linxemwords=
 "Upset",
 "Uranus",
 "Urchin",
+"Vacuum",
 "Vain",
 "Van",
 "Vat",
@@ -3977,6 +4386,7 @@ var linxemwords=
 "View",
 "Violet",
 "Virginia",
+"Virgo",
 "Virtue",
 "Virus",
 "Vision",
@@ -4010,6 +4420,8 @@ var linxemwords=
 "Web",
 "Webb",
 "Webster",
+"Wed",
+"Weed",
 "Well",
 "Wellington",
 "Wells",
@@ -4043,7 +4455,6 @@ var linxemwords=
 "Wizard",
 "Wolf",
 "Woman",
-"Won",
 "Wonder",
 "Wood",
 "Woods",
@@ -4067,6 +4478,7 @@ var linxemwords=
 "York",
 "Young",
 "Zebra",
+"Zero",
 "Zest",
 "Zeus",
 "Zip",
@@ -4076,9 +4488,58 @@ var linxemwords=
 
 
 
+
+
+
+
+
+
 // End
 "Finish"
 ]
+
+// reduce linxemwords for trial
+var reducedlinxemwords
+var linxemindex
+if (adsrequired==1)
+{
+reducedlinxemwords=[]
+linxemindex=0
+for (var i=0; i<linxemwords.length; i++)
+{
+if (linxemindex==0) {reducedlinxemwords=reducedlinxemwords.concat([linxemwords[i]])}
+linxemindex++
+if (linxemindex==3) {linxemindex=0}
+}
+linxemwords=reducedlinxemwords
+}
+/*
+var linxemstats=[]
+for (var i=0; i<linxemwords.length; i++)
+{
+linxemstats[i]=0
+}
+var linxemshuffle
+var somei
+for (var k=0; k<1000; k++)
+{
+linxemshuffle=shufflearray(linxemwords).slice(0, 32)
+for (var i=0; i<linxemshuffle.length; i++)
+{
+somei=ith(linxemshuffle[i], linxemwords)
+linxemstats[somei]++
+
+}
+}
+
+for (var i=0; i<linxemstats.length; i++)
+{
+linxemstats[i]=[linxemwords[i], linxemstats[i], '\n']
+}
+documentwrite('<textarea id="checks" style="width:300px;height:100px">')
+changetextvalue('checks', linxemstats)
+*/
+
 </script>
 
 </body></html>
