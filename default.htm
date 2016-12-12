@@ -539,7 +539,7 @@ else
 sometext=sometype[0]
 }
 
-return '<a name="Top"></a><table border=0 cellspacing=0 cellpadding=0 width=100% height='+screenheight+'><tr bgcolor="#FFBBBB"><td height='+Math.floor(scalef*12)+'><table border=0 width=100%><tr><td width=20% align=center onClick="gotopage('+theminpage+')"><img width='+Math.floor(scalef*10)+' src="homeicon.png"></td><td width=15% align=center onClick="backpage()" style="font-size:'+Math.floor(scalef*10)+'px"><b>&lt;</b></td><td align=center style="font-size:'+Math.floor(scalef*10)+'px"><b>'+sometext+'</b></td><td width=15% align=center onClick="nextpage()"  style="font-size:'+Math.floor(scalef*10)+'px"><b>&gt;</b></td><td width=20% onClick="showhelp()" style="font-size:'+Math.floor(scalef*10)+'px;text-align:center"><b><span style="font-size:'+Math.floor(scalef*8)+'px">A</span>A+?</b></td></tr></table></td></tr>'
+return '<table border=0 cellspacing=0 cellpadding=0 width=100% height='+screenheight+'><tr bgcolor="#FFBBBB"><td height='+Math.floor(scalef*12)+'><table border=0 width=100%><tr><td width=20% align=center onClick="gotopage('+theminpage+')"><img width='+Math.floor(scalef*10)+' src="homeicon.png"></td><td width=15% align=center onClick="backpage()" style="font-size:'+Math.floor(scalef*10)+'px"><b>&lt;</b></td><td align=center style="font-size:'+Math.floor(scalef*10)+'px"><b>'+sometext+'</b></td><td width=15% align=center onClick="nextpage()"  style="font-size:'+Math.floor(scalef*10)+'px"><b>&gt;</b></td><td width=20% onClick="showhelp()" style="font-size:'+Math.floor(scalef*10)+'px;text-align:center"><b><span style="font-size:'+Math.floor(scalef*8)+'px">A</span>A+?</b></td></tr></table></td></tr>'
 
 }
 
@@ -639,7 +639,7 @@ somereferencetext=somereferencetext+thereferences[somereferences[i]-1][0]+': '+t
 }
 }
 changetextvalue('output', thebuttons(['page', thecontents[thepage-1][0]])+'<tr ><td colspan=5 style="position:relative" onClick="nextpage()" valign=top><table width=100% valign=top><tr><td  valign=top>'+thecontents[thepage-1][1]+somereferencetext+'<br></td></tr></table></td></tr></table>')
-document.location.href="#Top"
+// document.location.href="#Top"
 scrollTo(0,0)
 }
 
@@ -678,7 +678,7 @@ var somelinktext
 if (somepagename=='contents')
 {
 // alert(thecontents.length)
-var sometext='<center>Tap <span style="font-size:'+Math.floor(scalef*8)+'px">A</span>A+? above for Settings and Help.<br><span style="color:red">On main pages, tap page to move to next page.</span><h1>The Dark Sides of the Bible</h1><center><a href="javascript:gotopage(1)">Start reading book</a><br><br><img src="cover.png" width='+Math.floor(scalef*80)+'></center><h2>Contents</h2></center><table border=0>'
+var sometext='<center>Tap <span style="font-size:'+Math.floor(scalef*0.8*basetextsize)+'px">A</span>A+? above for Settings and Help.<br><span style="color:red">On main pages, tap page to move to next page.</span><h1>The Dark Sides of the Bible</h1><center><a href="javascript:gotopage(1)">Start reading book</a><br><br><img src="cover.png" width='+Math.floor(scalef*80)+'></center><h2>Contents</h2></center><table border=0>'
 for (var i=0; i<thecontents.length; i++)
 {
 for (var j=0; j<thecontents[i][2].length; j++)
