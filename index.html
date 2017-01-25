@@ -1,0 +1,45 @@
+<!DOCTYPE HTML ><html style="height:100%;width:100%"><head ><title>Flagalot</title>
+<meta name = "viewport" content = "user-scalable=no,width=device-width" />
+</head>
+<body TOPMARGIN=0 LEFTMARGIN=0 MARGINHEIGHT=0 MARGINWIDTH=0 style="background-color:#DDFFFF;height:100%;width:100%" onLoad="doit()"> 
+
+<script language="Javascript">
+var thefullwidth=0
+var thefullheight=0
+
+
+
+var changingpage='flagalot'
+
+var cfpackage='Flagalot'
+
+
+
+var toptimer=null
+
+
+function doit()
+{
+
+toptimer = setTimeout("loadinit()",2000);
+}
+
+var scalef
+var screenwidth
+var screenheight
+
+function loadinit()
+{
+document.location.href="default.htm"
+
+}
+
+function documentwrite(X)
+{
+document.write(X)
+}
+
+documentwrite('<table border=0 cellspacing=0 cellpadding=0 align=center valign=middle style="width:100%;height:100%;background-color:#DDFFFF;text-align:center;font-family:sans-serif" ><tr><td id="maintable" valign=middle align=center style="background-color:#DDFFFF"><table border=0 cellspacing=0 cellpadding=0 align=center valign=middle id="testsize" style="font-size:12px;width:50%;height:50%;text-align:center;color:purple" ><tr><td style="font-size:16px;text-align:center;color:purple" valign=middle><img align=center valign=middle border=0 src="icon.png" height=80 ><br><br></td></tr></table></td></tr></table>')
+
+</script>
+</body></html>
