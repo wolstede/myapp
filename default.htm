@@ -332,6 +332,91 @@ return eval(somestore)
 
 
 
+// code only for touch control of main cells
+var thetouchstart
+var thetouches
+function definetouchareas(somelist)
+{
+if ("ontouchstart" in window)
+{
+var sometouchzone
+thetouchstart=[]
+thetouches=0
+for (var i=0; i<somelist.length; i++)
+{
+sometouchzone=document.getElementById("cell"+somelist[i]);
+sometouchzone.addEventListener("touchstart", starttouch, false);
+sometouchzone.addEventListener("touchend", endtouch, false);
+sometouchzone.addEventListener("touchmove", movetouch, false);
+}
+}
+}
+
+function starttouch(event)
+{
+event.preventDefault();
+var somefingers=event.touches.length
+var somey=event.touches[0].pageY
+var somex=event.touches[0].pageX
+thetouchstart=[somey, somex, event.currentTarget.id]
+thetouches=somefingers
+}
+
+function movetouch(event)
+{
+
+event.preventDefault();
+if (thetouches==1)
+{
+var somey=event.touches[0].pageY
+var somex=event.touches[0].pageX
+thetouchstart=[thetouchstart[0], thetouchstart[1], thetouchstart[2], somey, somex]
+}
+}
+
+function endtouch(event)
+{
+event.preventDefault();
+if (event.touches.length==0)
+{
+if (thetouches==1)
+{
+if (thetouchstart.length==3) // a tap not a slide
+{
+// alert(['touch', 1*thetouchstart[2].slice(4)])
+choosecommon(1*thetouchstart[2].slice(4))
+}
+else // a slide
+{
+var somediffy=thetouchstart[3]-thetouchstart[0]
+var somediffx=thetouchstart[4]-thetouchstart[1]
+if (Math.abs(somediffy)<3*scalef && Math.abs(somediffx)<3*scalef) // if very small move treat as tap
+{
+// alert(['slide', 1*thetouchstart[2].slice(4)])
+choosecommon(1*thetouchstart[2].slice(4))
+}
+else
+{
+// do nothing - no sliding (using touches only for faster response
+}
+}
+thetouchstart=[]
+thetouches=0
+}
+}
+}
+
+// end code for touch events of main cells
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1146,7 +1231,7 @@ for (var j=0; j<3; j++)
 someindex=3*i+j
 if (member(someindex, somepositions))
 {
-somecell='<table cellpadding=0 cellspacing=0 border=0 valign=top align=center onClick="choosecommon('+someindex+')"><tr><td valign=top align=center height=1><img src="flags/'+somecard[somecardselect]+'_button.png" width='+Math.floor(scalef*65)+' border=0  style="display:block"></td></tr><tr><td align=center id="namebg_'+someindex+'" valign=top style="font-size:'+Math.floor(scalef*9)+'px">'+presentationname(somecard[somecardselect])+'</td></tr></table>'
+somecell='<table cellpadding=0 cellspacing=0 border=0 valign=top align=center id="cell'+someindex+'" onClick="choosecommon('+someindex+')"><tr><td valign=top align=center height=1><img src="flags/'+somecard[somecardselect]+'_button.png" width='+Math.floor(scalef*65)+' border=0  style="display:block"></td></tr><tr><td align=center id="namebg_'+someindex+'" valign=top style="font-size:'+Math.floor(scalef*9)+'px">'+presentationname(somecard[somecardselect])+'</td></tr></table>'
 if (cardindex>0 && somecommon==somecard[somecardselect]) {thecurrentcommon=someindex}
 somecardselect++
 }
@@ -1166,6 +1251,7 @@ sometext=sometext+'</td></tr><tr><td style="font-weight:bold; text-align:center;
 
 changetextvalue('output', sometext)
 starttimer()
+definetouchareas(somepositions)
 
 }
 
@@ -1429,7 +1515,7 @@ somecell='<table cellpadding=0 cellspacing=0 border=0 valign=top align=center ><
 }
 else // show buttons for answer and two wrong ones
 {
-somecell='<table cellpadding=0 cellspacing=0 border=0 valign=bottom align=center onClick="choosecommon('+someindex+')"><tr><td valign=top align=center height=1 id="flagimage'+someindex+'"><div style="position:relative"><img src="noflag.png" width='+Math.floor(scalef*65)+' border=0  style="display:block"><table border=0 width='+Math.floor(scalef*65)+' height=100% style="display:block;position:absolute;top:0px;left:0px" valign=top align=center><tr><td valign=bottom width='+Math.floor(scalef*65)+' align=center><br><br>'+graphicfor(j+1)+'</td></tr></table></div></td></tr><tr><td align=center id="namebg_'+someindex+'" valign=top style="font-size:'+Math.floor(scalef*9)+'px">'+presentationname(someanswers[j])+'</td></tr></table>'
+somecell='<table cellpadding=0 cellspacing=0 border=0 valign=bottom align=center id="cell'+someindex+'" onClick="choosecommon('+someindex+')"><tr><td valign=top align=center height=1 id="flagimage'+someindex+'"><div style="position:relative"><img src="noflag.png" width='+Math.floor(scalef*65)+' border=0  style="display:block"><table border=0 width='+Math.floor(scalef*65)+' height=100% style="display:block;position:absolute;top:0px;left:0px" valign=top align=center><tr><td valign=bottom width='+Math.floor(scalef*65)+' align=center><br><br>'+graphicfor(j+1)+'</td></tr></table></div></td></tr><tr><td align=center id="namebg_'+someindex+'" valign=top style="font-size:'+Math.floor(scalef*9)+'px">'+presentationname(someanswers[j])+'</td></tr></table>'
 if (someflag==someanswers[j]) {thecurrentcommon=someindex}
 }
 }
@@ -1442,7 +1528,7 @@ somecell='<table cellpadding=0 cellspacing=0 border=0 valign=top align=center ><
 }
 else // show flags for country and two wrong ones
 {
-somecell='<table cellpadding=0 cellspacing=0 border=0 valign=top align=center onClick="choosecommon('+someindex+')"><tr><td valign=top align=center height=1 id="flagimage'+someindex+'"><img src="flags/'+someanswers[j]+'_button.png" width='+Math.floor(scalef*65)+' border=0  style="display:block"></td></tr><tr><td align=center id="namebg_'+someindex+'" valign=top style="font-size:'+Math.floor(scalef*9)+'px">&nbsp;</td></tr></table>'
+somecell='<table cellpadding=0 cellspacing=0 border=0 valign=top align=center id="cell'+someindex+'" onClick="choosecommon('+someindex+')"><tr><td valign=top align=center height=1 id="flagimage'+someindex+'"><img src="flags/'+someanswers[j]+'_button.png" width='+Math.floor(scalef*65)+' border=0  style="display:block"></td></tr><tr><td align=center id="namebg_'+someindex+'" valign=top style="font-size:'+Math.floor(scalef*9)+'px">&nbsp;</td></tr></table>'
 if (someflag==someanswers[j]) {thecurrentcommon=someindex}
 }
 
@@ -1467,7 +1553,9 @@ sometext=sometext+'</table>'
 sometext=sometext+'</td></tr><tr><td style="font-weight:bold; text-align:center; color:white" id="countdowntimer">&nbsp;</td></tr><tr><td style="font-weight:bold; text-align:center; color:black" id="gamescore">'+quizscoresdisplay()+'</td></tr></table>'
 
 changetextvalue('output', sometext)
+
 starttimer()
+definetouchareas([6,7,8])
 
 }
 
