@@ -1,0 +1,106 @@
+var cardindex
+var packlength=50
+var thepack
+var base
+var first
+var numsymbols
+var cardvalues=[]
+var baseindices
+
+/*
+function generatevalues()
+{
+cardvalues=[]
+first=[]
+for (var i=0; i<numsymbols; i++)
+{
+first[i]=i
+}
+base=[]
+var someval=numsymbols
+for (var i=0; i<numsymbols-1; i++)
+{
+base[i]=[]
+for (var j=0; j<numsymbols-1; j++)
+{
+base[i][j]=someval
+someval++
+}
+}
+cardvalues[0]=returnit(first)
+for (var i=0; i<base.length; i++)
+{
+cardvalues=cardvalues.concat([returnit([first[0]].concat(base[i]))])
+}
+// alert([cardvalues.length, ' : ', cardvalues])
+// define baseindices used to determine item to take from base
+var someintegers=genintegers(numsymbols-2)
+// alert(someintegers)
+baseindices=[]
+baseindices[0]=[]
+for (var i=0; i<numsymbols-1; i++)
+{
+baseindices[0][i]=0
+}
+for (var i=0; i<numsymbols-2; i++)
+{
+baseindices[i+1]=[0].concat(someintegers)
+someintegers=shiftlist(someintegers)
+}
+
+var somediff=0
+var somenewlist
+var someindex
+for (var i=1; i<first.length; i++)
+{
+for (var j=0; j<base.length; j++)
+{
+somenewlist=[first[i]]
+someindex=j
+for (var k=0; k<base.length; k++)
+{
+somenewlist=somenewlist.concat([base[k][someindex]])
+someindex=cycledindex(base[j].length, someindex+somediff)
+}
+cardvalues=cardvalues.concat([returnit(somenewlist)])
+
+}
+somediff++
+}
+// alert([cardvalues.length, ' : ', cardvalues])
+// startonelinxem()
+
+}
+
+
+function cycledindex(somelength, someindex)
+{
+if (someindex<somelength) {return someindex} else {return someindex-somelength}
+}
+*/
+/*
+function checkcorrectness(somelist)
+{
+for (var i=0; i<somelist.length; i++)
+{
+for (var k=0; k<somelist.length; k++)
+{
+if (i!=k)
+{
+somecheck=0
+for (var j=0; j<somelist[i].length; j++)
+{
+if (member(somelist[i][j], somelist[k])==true)
+{
+somecheck++
+}
+}
+if (somecheck!=1) {changetextvalue("textoutput", gettextvalue("textoutput")+[somecheck, ': ', somelist[i], '&', somelist[k]]+'\n')}
+}
+
+}
+
+}
+alert('Finished')
+}
+*/
