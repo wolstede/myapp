@@ -3,7 +3,7 @@
 
 <script language="Javascript">
 var appname='volcano'
-var appversion='2.0 (20170215)'
+var appversion='1.0 (20170215)'
 // localStorage.clear()
 var restartconfirmationrequired=1
 var adsrequired=0
@@ -907,12 +907,12 @@ function titleimage(somename)
 {
 var sometext=''
 var someindex=0
-sometext=sometext+'<div style="position:relative;top:0px;left:0px"><table border=0 cellspacing=0 cellpadding=0 align=center valign=middle bgcolor=black>'
+sometext=sometext+'<div style="position:relative;top:0px;left:0px" onClick="stoptimer()"><table border=0 cellspacing=0 cellpadding=0 align=center valign=middle bgcolor=black>'
 
 sometext=sometext+'<tr>'
 for (var i=0; i<5; i++)
 {
-sometext=sometext+'<td><img src="blank.gif" style="display:block" width='+Math.floor(scalef*20)+' height='+Math.floor(scalef*20)+'></td>'
+sometext=sometext+'<td><img src="blackshade.png" style="display:block" width='+Math.floor(scalef*20)+' height='+Math.floor(scalef*20)+'></td>'
 }
 sometext=sometext+'</tr>'
 
@@ -1120,7 +1120,7 @@ for (var i=0; i<height; i++)
 for (var j=0; j<width; j++)
 {
 piecename='piece'+j+'_'+i
-documentwrite('<img  src="blank.gif" name="'+piecename+'" width='+blocksize+' height='+blocksize+' style="display:block;position:absolute;top:'+(i*blocksize)+'px;left:'+(j*blocksize)+'px;width:'+(1*blocksize)+'px;height:'+(1*blocksize)+'px;">')
+documentwrite('<img  src="blank.png" name="'+piecename+'" width='+blocksize+' height='+blocksize+' style="display:block;position:absolute;top:'+(i*blocksize)+'px;left:'+(j*blocksize)+'px;width:'+(1*blocksize)+'px;height:'+(1*blocksize)+'px;">')
 }
 }
 
@@ -1649,7 +1649,7 @@ for (var i=0; i<width; i++)
 for (var j=0; j<height; j++)
 {
 piecename='piece'+i+'_'+j
-document.images[piecename].src=piecearray[i][j]+'.gif'
+document.images[piecename].src=piecearray[i][j]+'.png'
 // document.all[piecename].bgColor=colourcode(piecearray[i][j])
 // piececolour=piecearray[i][j]
 // if (member(piececolour, ["blank", "red", "grey"])==true) {bordersize=0} else {bordersize=1}
@@ -1675,7 +1675,7 @@ for (var j=0; j<height; j++)
 if (piecearray[i][j] != temppiecearray[i][j])
 {
 piecename='piece'+i+'_'+j
-document.images[piecename].src=temppiecearray[i][j]+'.gif'
+document.images[piecename].src=temppiecearray[i][j]+'.png'
 // document.all[piecename].bgColor=colourcode(temppiecearray[i][j])
 // piececolour=temppiecearray[i][j]
 // if (member(piececolour, ["blank", "red", "grey"])==true) {bordersize=0} else {bordersize=1}
@@ -1693,7 +1693,7 @@ for (var n=0; n<vaporizedlasttime.length; n++)
 i=vaporizedlasttime[n][0]
 j=vaporizedlasttime[n][1]
 piecename='piece'+i+'_'+j
-document.images[piecename].src=piecearray[i][j]+'.gif'
+document.images[piecename].src=piecearray[i][j]+'.png'
 
 // document.all[piecename].bgColor=colourcode(piecearray[i][j])
 // piececolour=piecearray[i][j]
@@ -1708,7 +1708,7 @@ for (var n=0; n<vaporizedthistime.length; n++)
 i=vaporizedthistime[n][0]
 j=vaporizedthistime[n][1]
 piecename='piece'+i+'_'+j
-document.images[piecename].src='explosion.gif'
+document.images[piecename].src='explosion.png'
 // document.all[piecename].bgColor="#871F78"
 // document.all[piecename].border=1
 }
@@ -2158,7 +2158,7 @@ var diffrow=somerow-corerow
 if (diffcol==0 && diffrow==0) 
 {
 playstate="stop"
-document.images['piece'+somecol+'_'+somerow].src='explosion.gif'
+document.images['piece'+somecol+'_'+somerow].src='explosion.png'
 
 // document.all['piece'+somecol+'_'+somerow].bgColor="#871F78"
 }
@@ -2325,8 +2325,8 @@ playstate="stop"
 restartconfirmationrequired=0
 
 displaymessage("Eruption: Lost!")
-score=0
-showscore()
+// score=0
+// showscore()
 for (var col=0; col<width; col++)
 {
 for (var row=0; row<height; row++)
@@ -2358,11 +2358,19 @@ i=wi
 for (var j=height-2; j>height-grounddepth; j--)
 {
 piecename='piece'+i+'_'+j
-document.images[piecename].src="red.gif"
+document.images[piecename].src="red.png"
 // document.all[piecename].bgColor=colourcode("red")
 // document.all[piecename].border=0
 }
 
+}
+
+function stoptimer()
+{
+/*
+if (timer != null) 
+{clearTimeout(timer)}
+*/
 }
 
 function turnemred()
@@ -2373,7 +2381,7 @@ if (cellstowipeout.length > 10)
 for (var i=0; i<10; i++)
 {
 piecename='piece'+cellstowipeout[i][0]+'_'+cellstowipeout[i][1]
-document.images[piecename].src="red.gif"
+document.images[piecename].src="red.png"
 // document.all[piecename].bgColor=colourcode("red")
 // document.all[piecename].border=0
 }
@@ -2387,7 +2395,7 @@ else
 for (var i=0; i<cellstowipeout.length; i++)
 {
 piecename='piece'+cellstowipeout[i][0]+'_'+cellstowipeout[i][1]
-document.images[piecename].src="red.gif"
+document.images[piecename].src="red.png"
 
 // document.all[piecename].bgColor=colourcode("red")
 // document.all[piecename].border=0
@@ -2427,7 +2435,7 @@ for (var j=1; j<height-1; j++)
 {
 if (member(piecearray[i][j], ["green", "purple", "red", "brown", "white"])==false)
 piecename='piece'+i+'_'+j
-document.images[piecename].src="sky.gif"
+document.images[piecename].src="sky.png"
 }
 }
 var sunx=(width-1)/2
@@ -2436,7 +2444,7 @@ var sunarray=[[sunx, suny], [sunx+1, suny], [sunx-1, suny], [sunx, suny+1]]
 for (var i=0; i<sunarray.length; i++)
 {
 piecename='piece'+sunarray[i][0]+'_'+sunarray[i][1]
-document.images[piecename].src="sun.gif"
+document.images[piecename].src="sun.png"
 }
 
 }
@@ -2511,7 +2519,7 @@ documentwrite('<div style="width:100%;height:'+Math.floor(scalef*10)+'px;display
 documentwrite('<tr><td colspan=3 valign=bottom>')
 documentwrite('<div id="messagedisplay" style="display:none;text-align: center; color:white">Press New</div><div id="score" style="display:block;text-align: center; color:white">&nbsp;</div>')
 
-documentwrite('</td></tr></table><div style="width:100%" id="currentadtext"> </div></div>')
+documentwrite('</td></tr></table><div style="display:block;width:100%" id="currentadtext"> </div></div>')
 
 
 
@@ -2562,7 +2570,12 @@ function hidehelp()
 document.getElementById('maingame').style.display='inline'
 document.getElementById('help').style.display='none'
 showinghelp=0
-backtogame()
+var somedisp=document.getElementById('theboard').style.display
+
+if (somedisp=='block' || somedisp=='inline')
+{
+backtogame() // go back to game if theboard is being displayed
+}
 }
 
 
@@ -2572,11 +2585,11 @@ backtogame()
 </div>
 
 <div id="helpgeneral" style="display:inline">
-      <p>The scenario (bearing little relation to reality) is that there is a volcano known to be close to eruption. The dark, smoke-filled, brooding sky emphasizes the imminence of the danger. The volcano has a crater, and seismologists believe that eruption can be prevented by completely filling the crater, i.e. by plugging the volcano. This is a delicate and dangerous operation. You are in control of a flying craft (the white block) designed to catch blocks (blue) being dropped from above, so that you gradually build up a plug that will fill the crater, with no gaps, up to the level of rim of the volcano. As the falling blocks are incorporated into the plug, they change colour to become brown, so that you know which blocks form the body of the plug. Once you have formed a plug of the right shape, you must then lower the plug into the crater and prevent the eruption. </p>
-
+      <p>The scenario (bearing little relation to reality) is that there is a volcano known to be close to eruption. The dark, smoke-filled, brooding sky emphasizes the imminence of the danger. The volcano has a crater, and seismologists believe that eruption can be prevented by completely filling the crater, i.e. by plugging the volcano. This is a delicate and dangerous operation. You are in control of a flying craft (the white block) designed to catch blocks (blue) being dropped from above, so that you gradually build up a plug that will fill the crater, with no gaps, up to the level of rim of the volcano. As the falling blocks are incorporated into the plug, they change colour to become brown, so that you know which blocks form the body of the plug. Once you have formed a plug of the right shape (as shown in the image below), you must then lower the plug into the crater and prevent the eruption. Remember that you will normally have to turn the plug upside down before lowering it into the crater once you have created it.</p>
+<script language="Javascript">documentwrite('<p style="text-align:center"><img src="icon.png" height='+Math.floor(scalef*150)+'  width='+Math.floor(scalef*150)+'></p>')</script>
 <p>If a block is not caught by the craft and, instead, falls into the crater (denoted by purple blocks), the impact destroys part of the natural plug (a purple block is removed) - and, of course, also changes the shape of the plug required to fill the crater. And if the falling blocks break through the plug material to expose the magma (red) an eruption takes place and the game is over. Any blocks that fall onto the rim of the volcano or the mountain side (green blocks) are themselves destroyed, but the mountain itself is not destroyed by the impact. However, each impact, whether onto the mountain or into the crater, increases the chance of eruption. If fifty blocks crash to the ground an eruption takes place - and, again, the game is over.</p>
 
-<p>You are also able to launch missiles (yellow blocks) from the missile launchers at the sides (magenta blocks). These can be used both to destroy falling blocks, and so prevent dangerous impacts on the ground, and to remove blocks that form part of the plug you have created, if the shape is wrong. But make sure you don't accidentally shoot down the craft as the explosion caused by this will trigger an eruption. Note: if you remove a block from the plug and this leaves other blocks in the plug no longer with a means of connection, direct or indirect, to the craft, then these unattached blocks are also removed.</p>
+<p>You are also able to launch missiles (yellow) from the missile launchers at the sides (magenta blocks). These fly horizontally and can be used both to destroy falling blocks, and so prevent dangerous impacts on the ground, and to remove blocks that form part of the plug you have created, if the shape is wrong. But make sure you don't accidentally shoot down the craft as the explosion caused by this will trigger an eruption. Note: if you remove a block from the plug and this leaves other blocks in the plug no longer with a means of connection, direct or indirect, to the craft, then these unattached blocks are also removed.</p>
 
 
 <p><a name="objective"></a><b>Objective</b></p>
@@ -2609,12 +2622,12 @@ documentwrite('<table border=0 cellspacing=0 cellpadding=0 align=center><tr><td 
 <p>To fire missiles, tap on one of the red buttons.  This fires missiles from all the missile launchers at the same time - so be wary.</p>
 <p>Movements of falling blocks, plug and missiles occur at the end of a cycle, but please note that falling blocks move at only half the speed of missiles and the plug (every two cycles). You may specify only one movement or rotation of the plug in a cycle, so if, for example, you tap a rotation button then a movement button during one cycle, only the last one, the movement, will be executed.  Missiles will not be fired if this will result in adjacent missiles; there is always a gap between missiles. 
 
-<p>If you have a touch-sensitive screen, you may use gestures on the main playing frame (with silver sides and top) instead of these buttons. Use up, down, left and right gestures to move the plug/white craft.  Use diagonal gestures to rotate the plug: SE or NW for clockwise, SW or NE for anticlockwise. Hint: to help remember these directions, swipe from the middle of the frame towards a relevant rotation button.  Assuming you have selected this as an option when starting the game (see below), you may tap to fire missiles.     
+<p>If you have a touch-sensitive screen, you may use gestures on the main playing frame (with silver sides and top) instead of these buttons. Use up, down, left and right gestures to move the plug/white craft.  Use diagonal gestures to rotate the plug: SE or NW for clockwise, SW or NE for anticlockwise. Hint: to help remember these directions, swipe from the middle of the frame towards a relevant rotation button.  Assuming you have selected this as an option when starting the game (see below), you may tap on the main frame to fire missiles.     
        <p><a name="newgame"></a><b>New Game</b></p>
              
       <p>A new game, with a new crater shape, may be generated at any time by tapping on the <i>
-      New </i>button.  You will be asked to select the speed, 1-4 (4 fastest) by tapping the appropriate <i>Play</i> button. The initial crater varies in shape, but always requires a total plug size of 16 blocks to fill it.  If you tap <i>New</i> accidentally during a game, just tap the <i>Back</i> button to return to the game.</p>
-<p>Before tapping <i>Play</i>, you may change the option concerned with allowing missiles to be fired by tapping on the main board (assuming you have a touch-sensitive screen).  This has been made an option as it can be easy to fire missiles accidentally when trying to control the white craft.  You may also change this setting at any time mid-game by tapping the <i>New</i> button, selecting the desired option, then tapping <i>Back</i> to return to the game.
+      New </i>button.  You will be asked to select the speed, 1-4 (4 fastest), by tapping the appropriate <i>Play</i> button. The initial crater varies in shape, but always requires a total plug size of 16 blocks to fill it.  If you tap <i>New</i> accidentally during a game, just tap the <i>Back</i> button to return to the game.</p>
+<p>Before tapping <i>Play</i>, you may change the option concerned with allowing missiles to be fired by tapping on the main frame (assuming you have a touch-sensitive screen).  This has been made an option as it can be easy to fire missiles accidentally when trying to control the white craft.  You may also change this setting at any time mid-game by tapping the <i>New</i> button, selecting the desired option, then tapping <i>Back</i> to return to the game.
 <br><br><span style="font-weight:bold">Button graphics</span>
 <br><br>The control button images are in the public domain and were downloaded or adapted from http://www.wpclipart.com.
 
