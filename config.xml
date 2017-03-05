@@ -3,11 +3,11 @@
 <!-- config.xml reference: https://build.phonegap.com/docs/config-xml -->
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
-        id        = "com.topaccolades.linxem"
+        id        = "com.topaccolades.linxemtrial"
         versionCode = "11"
         version   = "1.1">
 
-    <name>Linxem</name>
+    <name>Linxem Trial</name>
 
     <description>
         Word game: Select 2 or more words and say a linking word, then your partner must identify the words from your linking word.
