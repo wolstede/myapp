@@ -3,7 +3,7 @@
 
 <script language="Javascript">
 var appname='linxem'
-var appversion='1.0 (20161003)'
+var appversion='1.1 (20170305)'
 // localStorage.clear()
 var restartconfirmationrequired=1
 var adsrequired=1
@@ -144,7 +144,7 @@ else
 {
 if (localstorageworks==1)
 {
-localStorage.setItem(somename, someval)
+localStorage.setItem(appname+somename, someval)
 }
 else
 {
@@ -163,7 +163,7 @@ else
 {
 if (localstorageworks==1)
 {
-return localStorage.getItem(somename)
+return localStorage.getItem(appname+somename)
 }
 else
 {
@@ -442,6 +442,20 @@ newgame3()
 </script>
 <script language="Javascript">
 
+function greenonlychoice(sometype)
+{
+var somename
+if (sometype==0) {somename='unselected.gif'} else {somename='selected.gif'}
+return '<img valign=bottom src="'+somename+'" width='+Math.floor(scalef*10)+' height='+Math.floor(scalef*10)+'>'
+}
+
+function togglegreenonlychoice()
+{
+var somegreenonly=GetLocalVal('greenonly')*1
+var somenew=1-somegreenonly
+SetLocalVal('greenonly', somenew)
+changetextvalue('greenonlychoice', greenonlychoice(somenew))
+}
 
 function newgame3()
 {
@@ -465,6 +479,11 @@ SetLocalVal('countdown', 180)
 if (GetLocalVal('zoom')==null)
 {
 SetLocalVal('zoom', 0)
+}
+
+if (GetLocalVal('greenonly')==null)
+{
+SetLocalVal('greenonly', 0)
 }
 
 var someinfo=''
@@ -514,7 +533,12 @@ else
 sometext=sometext+'You may tap <i>Change</i> to redefine the initials.'
 sometext=sometext+'<br><br><table align=center><tr><td onClick="resetinitials()">'+graphicfor('Change')+'</td></tr></table>'
 
-sometext=sometext+'<br>The game uses a countdown.  The current setting is shown with a green background below.  Tap to change if you wish.'
+var somegreenonly=GetLocalVal('greenonly')*1
+sometext=sometext+'<br>Option - Use green backgrounds only: <div style="display:inline" id="greenonlychoice" onClick="togglegreenonlychoice()">'+greenonlychoice(somegreenonly)+'</div>'
+
+
+
+sometext=sometext+'<br><br>The game uses a countdown.  The current setting is shown with a green background below.  Tap to change if you wish.'
 
 sometext=sometext+'<br><br><table border=1 align=center cellpadding=0 cellspacing=0><tr><td onClick="setcountdown(60)" id="setcd60" style="width:'+Math.floor(scalef*40)+'px;background-color:#FFFFEE;color:silver;text-align:center">1 min</td><td onClick="setcountdown(120)" id="setcd120" style="width:'+Math.floor(scalef*40)+'px;background-color:#FFFFEE;color:silver;text-align:center">2 mins</td><td onClick="setcountdown(180)" id="setcd180" style="width:'+Math.floor(scalef*40)+'px;background-color:#FFFFEE;color:silver;text-align:center">3 mins</td><td onClick="setcountdown(240)" id="setcd240" style="width:'+Math.floor(scalef*40)+'px;background-color:#FFFFEE;color:silver;text-align:center">4 mins</td><td onClick="setcountdown(300)" id="setcd300" style="width:'+Math.floor(scalef*40)+'px;background-color:#FFFFEE;color:silver;text-align:center">5 mins</td></tr></table>'
 sometext=sometext+'<br>'+somebuttons
@@ -903,12 +927,17 @@ return '[['+convertresulttotext(somearray[0][0])+','+convertresulttotext(somearr
 
 
 var thewords=[]
+var basicgoodstart=0
+var basicgoodend=17
+var basicbadstart=18
+var basicbadend=29
+
 var goodstart=0
 var goodend=17
 var badstart=18
 var badend=29
-var numbergood=goodend-goodstart+1
-var numberbad=badend-badstart+1
+var numbergood=basicgoodend-basicgoodstart+1
+var numberbad=basicbadend-basicbadstart+1
 var numberwords=numbergood+numberbad
 var goodscore=0
 var badscore=4
@@ -1041,6 +1070,21 @@ var somesolver=someplayers[somepattern[1]]
 var somesettername=textinitialsfor(somesetter)
 var somesolvername=textinitialsfor(somesolver)
 var sometimeallowed=GetLocalVal('timeallowed')
+// new code for offering green-only game
+var somegreenonly=GetLocalVal('greenonly')*1
+if (somegreenonly==0)
+{
+goodend=basicgoodend
+badstart=basicbadstart
+badend=basicbadend
+}
+else
+{
+goodend=basicbadend
+badstart=basicbadend+1
+badend=badstart
+}
+
 var somelinxemtext=unescape(GetLocalVal('linxemtext'))
 var sometext=''
 var somesetwords
@@ -2295,7 +2339,7 @@ showinghelp=0
 <br>
 <br>The game involves a series of <b><i>challenges</i></b> directly involving a pair of the players, who are, in essence, working together to win the challenge. 
 <br>
-<br>In a challenge, one player of the pair, the <b><i>setter</i></b>, is shown a set of <b><i>display words</i></b> (actually words or names) with different backgrounds. Some of these backgrounds are <script language="Javascript">documentwrite(good)</script> and some are <script language="Javascript">documentwrite(bad)</script>.  The backgrounds are important.  
+<br>In a challenge, one player of the pair, the <b><i>setter</i></b>, is shown a set of <b><i>display words</i></b> (actually words or names) with different backgrounds. Some of these backgrounds are <script language="Javascript">documentwrite(good)</script> and, normally, some are <script language="Javascript">documentwrite(bad)</script>, although there is an option to play with only <script language="Javascript">documentwrite(good)</script> ones.  The backgrounds are important.  
 <br>
 <br>The setter must look at these display words and select 2 or more of them that are linked together in some way.  Generally, display words with a <script language="Javascript">documentwrite(good)</script> background are selected, as those with <script language="Javascript">documentwrite(bad)</script> ones lead to penalties.
 <br>
@@ -2442,6 +2486,11 @@ The standard game is for four players playing as two teams of two players.  In t
 <br>The game may also by played by 3 or 4 players trying to win as individuals.  In these games, players come together to play as pairs in a challenge.  Any points won in the challenge are shared equally by the two players in the pair, while the opposition takes the points lost during the challenge; in the case of 4 players, the points lost are shared equally by the two other players.  All players act as setter and solver in challenges with every other player.  The winner is the individual with the highest total at the end of the game. 
 <br>
 <br>The game may also by played by one player in practice mode, as a pastime.  The setter tries to select linkable display words and mentally choose a Linxem, but there is no solving phase: selections made by the setter are assumed to be successfully selected by the non-existent solver.  Points lost through selecting display words with a yellow background or through failing to select at least two display words before the countdown ends go to a non-existent team called Anon., but the real objective is, of course, to practise setting challenges, so the scores shown are simply indicative of how well you might have done in a real game with a good solver. 
+<br>
+<br>
+<span style="font-weight:bold">Green-only variant</span>
+<br>
+<br>The game may also be played using backgrounds that are only green for the setter, i.e. with no yellow backgrounds.  This means that points cannot be lost by the solver for choosing words that originally had a yellow background. Clearly, this is a simpler game. It may be appropriate when playing with those new to the game, or when playing as a pastime rather than playing competitively.
 
 <br><br><span style="font-weight:bold">Playing the game</span>
 <br>
@@ -2450,8 +2499,14 @@ A game is started by tapping the <i>New</i> button. You then have to choose the 
 <br>
 <br>
 The next screen shown explains the mode of play, including, importantly for a game for two pairs, who is to play with whom as partners.  N.B. players 1 and 3 play together against 2 and 4 in a game for two pairs, as it is best for partners in a team to sit opposite each other around a table so that the opposition players can both see the device easily.  Initials are used to refer to the players (initially set to PA, PB, PC and PD). You may choose to change the initials used by tapping the <i>Change</i> button.  Note: in the unlikely event that there are duplicates in the initials, the only option on this screen is to change the initials.
+
 <br>
 <br>
+Underneath the <i>Change</i> button, you can select or deselect the option to play the variant with green backgrounds only.  Tap on the small empty box to select the option, which turns the box black.  Tapping again deselects the option, and turns it to empty again.
+<br>
+<br>
+
+
 The screen also lets you define the length of the countdown used. Simply tap the countdown time you wish to select, which then takes on a green background.  The countdown is used both in the setting and solving phases.  The default countdown time is 3 minutes - probably a good countdown time to start with.
 <br>
 <br>
