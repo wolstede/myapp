@@ -3,7 +3,7 @@
 
 <script language="Javascript">
 var appname='flagalot'
-var appversion='1.0 (20170125)'
+var appversion='1.1 (20170315)'
 // localStorage.clear()
 var restartconfirmationrequired=1
 var adsrequired=1
@@ -21,6 +21,30 @@ document.write(someitem)
 var scalef
 var screenwidth=window.innerWidth
 var screenheight=window.innerHeight
+
+</script>
+
+<script language="Javascript">
+// checks whether local storage works.  Often doesn't with Internet Explorer
+var localstorageworks=0
+localStorage.setItem('testcheck', '43')
+if (localStorage.getItem('testcheck')=='43') {localstorageworks=1}
+
+</script>
+<script language="Javascript">
+
+var thescales=[]
+thescales=[screenwidth, screenheight]
+if (localstorageworks==1)
+{
+var storedwindimensions=[localStorage.getItem('thewindowdimensionswidth'), localStorage.getItem('thewindowdimensionsheight')]
+thescales=thescales.concat(storedwindimensions)
+if (storedwindimensions[0]<screenwidth) {screenwidth=storedwindimensions[0]}
+if (storedwindimensions[1]<screenheight) {screenheight=storedwindimensions[1]}
+thescales=thescales.concat([screenwidth, screenheight])
+}
+
+
 var overallwidthscale=screenwidth/240
 var overallheightscale=screenheight/360
 if (overallwidthscale<overallheightscale) {scalef=Math.floor(10*overallwidthscale)/10} else {scalef=Math.floor(10*overallheightscale)/10}
@@ -90,17 +114,7 @@ if (GetCookie('dummy')==null) {usecookies=0}
 // For this app cookies not adequate, so must use local storage, so set usecookies to 0
 usecookies=0
 </script>
-<script language="Javascript">
-// checks whether local storage works.  Often doesn't with Internet Explorer
-var localstorageworks=0
-localStorage.setItem('testcheck', '43')
-if (localStorage.getItem('testcheck')=='43') {localstorageworks=1}
 
-</script>
-<script language="Javascript">
-
-
-</script>
 <script language="Javascript">
 var localstoragesubstitute=[]
 
