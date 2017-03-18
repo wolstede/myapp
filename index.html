@@ -8,6 +8,15 @@ var appversion='1.1 (20170305)'
 var restartconfirmationrequired=1
 var adsrequired=1
 
+var thedate = new Date();
+var thenow = thedate.getTime();
+ 
+var thelater=thenow+2000
+
+while (thedate.getTime()<thelater)
+{
+thedate=new Date()
+}
 
 
 function documentwrite(someitem)
@@ -15,7 +24,7 @@ function documentwrite(someitem)
 document.write(someitem)
 }
 
-var thewindowsizes=[window.innerWidth, window.innerHeight,document.documentElement.clientWidth, document.documentElement.clientHeight]
+// var thewindowsizes=[window.innerWidth, window.innerHeight,document.documentElement.clientWidth, document.documentElement.clientHeight]
 
 var scalef
 var screenwidth=document.documentElement.clientWidth
