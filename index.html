@@ -15,7 +15,7 @@ function documentwrite(someitem)
 document.write(someitem)
 }
 
-var thewindowsizes=[window.innerWidth, window.innerHeight,document.documentElement.clientWidth, document.documentElement.clientHeight]
+// var thewindowsizes=[window.innerWidth, window.innerHeight,document.documentElement.clientWidth, document.documentElement.clientHeight]
 
 var scalef
 var screenwidth=document.documentElement.clientWidth
@@ -29,7 +29,7 @@ if (scalef*370 < screenheight)
 {
 pushdown=Math.floor((screenheight-(scalef*370))/2)
 }
-pushdown=0
+pushdown=0 // not using pushdown
 documentwrite('<style type="text/css">      \nbody {color: black; background-color: white; font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; text-align: left}      \nh1 {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: bold; font-style: normal; text-align: left} \nh2 {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: italic; text-align: left} \np {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; text-align: left} \ndt {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; text-align: left} \ndd {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; text-align: left} \nli {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; text-align: left} \ntable {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; text-align: left} \ntd {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; } \ntextarea {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; overflow:hidden;} \ninput {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; }  \n * {-webkit-tap-highlight-color: rgba(0, 0, 0, 0);}\n</style> \n')
 
 </script>
@@ -2586,7 +2586,7 @@ The standard layout of the <script language="Javascript">documentwrite(numberwor
 <p >TopAccolades Limited shall not be liable for any damages whatsoever arising out of the use of or inability to use this application or the provision of or failure to provide support.</p> 
 <p style="font-style: italic;">Copyright TopAccolades Limited<br>www.topaccolades.com</p>
 <p><br>Version <script language="Javascript">documentwrite(appversion)</script><br>
-Scale <script language="Javascript">documentwrite(scalef); documentwrite('\n'+thewindowsizes)</script>
+Scale <script language="Javascript">documentwrite(scalef)</script>
 
 
 
