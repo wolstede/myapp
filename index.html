@@ -1,45 +1,4760 @@
-<!DOCTYPE HTML ><html style="height:100%;width:100%"><head ><title>Linxem</title>
+<!DOCTYPE HTML><html><head><title>Linxem</title>
 <meta name = "viewport" content = "user-scalable=no,width=device-width" />
-</head>
-<body TOPMARGIN=0 LEFTMARGIN=0 MARGINHEIGHT=0 MARGINWIDTH=0 style="background-color:#DDFFFF;height:100%;width:100%" onLoad="doit()"> 
 
 <script language="Javascript">
-var thefullwidth=0
-var thefullheight=0
+var appname='linxem'
+var appversion='1.1 (20170305)'
+// localStorage.clear()
+var restartconfirmationrequired=1
+var adsrequired=1
 
 
 
-var changingpage='linxem'
-
-var cfpackage='Linxem'
-
-
-
-var toptimer=null
-
-
-function doit()
+function documentwrite(someitem)
 {
-
-toptimer = setTimeout("loadinit()",2000);
+document.write(someitem)
 }
 
+
+// alert([window.innerWidth, window.innerHeight,document.documentElement.clientWidth, document.documentElement.clientHeight])
 var scalef
-var screenwidth
-var screenheight
-
-function loadinit()
+var screenwidth=document.documentElement.clientWidth
+var screenheight=document.documentElement.clientHeight
+var overallwidthscale=screenwidth/240
+var overallheightscale=screenheight/360
+if (overallwidthscale<overallheightscale) {scalef=Math.floor(10*overallwidthscale)/10} else {scalef=Math.floor(10*overallheightscale)/10}
+if (scalef<1.0) {scalef=1.0}
+var pushdown=0
+if (scalef*370 < screenheight)
 {
-document.location.href="default.htm"
-
+pushdown=Math.floor((screenheight-(scalef*370))/2)
 }
-
-function documentwrite(X)
-{
-document.write(X)
-}
-
-documentwrite('<table border=0 cellspacing=0 cellpadding=0 align=center valign=middle style="width:100%;height:100%;background-color:#DDFFFF;text-align:center;font-family:sans-serif" ><tr><td id="maintable" valign=middle align=center style="background-color:#DDFFFF"><table border=0 cellspacing=0 cellpadding=0 align=center valign=middle id="testsize" style="font-size:12px;width:50%;height:50%;text-align:center;color:purple" ><tr><td style="font-size:16px;text-align:center;color:purple" valign=middle><img align=center valign=middle border=0 src="icon.png" height=80 ><br><br></td></tr></table></td></tr></table>')
+pushdown=0
+documentwrite('<style type="text/css">      \nbody {color: black; background-color: white; font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; text-align: left}      \nh1 {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: bold; font-style: normal; text-align: left} \nh2 {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: italic; text-align: left} \np {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; text-align: left} \ndt {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; text-align: left} \ndd {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; text-align: left} \nli {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; text-align: left} \ntable {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; text-align: left} \ntd {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; } \ntextarea {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; overflow:hidden;} \ninput {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; }  \n * {-webkit-tap-highlight-color: rgba(0, 0, 0, 0);}\n</style> \n')
 
 </script>
+
+</head>
+<body onLoad="runonload()" TOPMARGIN=0 LEFTMARGIN=0 MARGINHEIGHT=0 MARGINWIDTH=0 style="background-color:#DDFFFF; width:100%; height:100%">
+<SCRIPT LANGUAGE="JavaScript">
+
+
+var dialogueborder='border-style:outset;border-width:'+Math.floor(scalef*4)+'px;border-color:silver;border-radius:'+Math.floor(scalef*15)+'px;'
+
+// Local storage
+// SetLocalVal and GetLocalVal - use cookies if available, if not local storage
+// Reason: for testing, local storage doesn't seem to work.  On devices, local storage works but not always cookies.  Should cover everything.
+
+var daystoExpire = 2000;
+var expirydate = new Date(); 
+expirydate.setTime(expirydate.getTime() + (daystoExpire*24*60*60*1000));
+
+
+function GetCookie(name) 
+{  
+var thecookie=document.cookie
+var namestring = name+'='  
+var cookieval = null
+var cookievalbeg=-1
+var cookievalend=thecookie.length
+for (var beg=0; beg<thecookie.length; beg++)
+{
+var end=beg+namestring.length
+if (thecookie.substring(beg, end) == namestring)
+{
+cookievalbeg=end
+}
+}
+if (cookievalbeg > -1)
+{
+cookievalend=thecookie.indexOf(';', cookievalbeg) // look for next ; after beginning of value
+if (cookievalend == -1) (cookievalend = thecookie.length)
+cookieval = unescape(thecookie.substring(cookievalbeg, cookievalend))
+} 
+
+return cookieval
+}
+
+
+function SetCookie(name, val) 
+{  
+var cookiestring = name+'='+escape(val)+'; expires='+ expirydate.toGMTString()
+document.cookie=cookiestring
+}
+
+var usecookies=1
+SetCookie('dummy', 'answer')
+if (GetCookie('dummy')==null) {usecookies=0}
+
+// For this app cookies not adequate, so must use local storage, so set usecookies to 0
+usecookies=0
+</script>
+<script language="Javascript">
+// checks whether local storage works.  Often doesn't with Internet Explorer
+var localstorageworks=0
+localStorage.setItem('testcheck', '43')
+if (localStorage.getItem('testcheck')=='43') {localstorageworks=1}
+
+</script>
+<script language="Javascript">
+
+
+</script>
+<script language="Javascript">
+var localstoragesubstitute=[]
+
+function SetLocalStorageSubstitute(someitem, someval)
+{
+someval=someval+''
+var someset=0
+for (var i=0; i<localstoragesubstitute.length; i++)
+{
+if (localstoragesubstitute[i][0]==someitem)
+{
+localstoragesubstitute[i][1]=someval
+someset=1
+break
+}
+}
+if (someset==0) {localstoragesubstitute=localstoragesubstitute.concat([[someitem, someval]])}
+}
+
+function GetLocalStorageSubstitute(someitem)
+{
+for (var i=0; i<localstoragesubstitute.length; i++)
+{
+if (localstoragesubstitute[i][0]==someitem)
+{
+return localstoragesubstitute[i][1]
+}
+}
+return null
+}
+</script>
+<script language="Javascript">
+
+function SetLocalVal(somename, someval)
+{
+if (usecookies==1) 
+{
+SetCookie(somename, someval)
+}
+else
+{
+if (localstorageworks==1)
+{
+localStorage.setItem(appname+somename, someval)
+}
+else
+{
+SetLocalStorageSubstitute(somename, someval)
+}
+}
+}
+
+function GetLocalVal(somename)
+{
+if (usecookies==1) 
+{
+return GetCookie(somename)
+}
+else
+{
+if (localstorageworks==1)
+{
+return localStorage.getItem(appname+somename)
+}
+else
+{
+return GetLocalStorageSubstitute(somename)
+}
+}
+}
+
+// end Local Storage
+
+
+
+
+function continueafterad()
+{
+showingads=0
+continuegame()
+}
+
+
+
+function changetextvalue(someitem, someval)
+{
+document.getElementById(someitem).innerHTML = someval
+}
+
+function gettextvalue(someitem)
+{
+return document.getElementById(someitem).innerHTML
+}
+
+function changebgcolor(someitem, somecolor)
+{
+document.getElementById(someitem).style.backgroundColor=somecolor
+}
+
+function genintegers(somenum)
+{
+var someresult=[]
+for (var i=1; i<=somenum; i++)
+{
+someresult[i-1]=i
+}
+return someresult
+}
+
+function member(someitem, somelist)
+{
+for (var i=0; i<somelist.length; i++)
+{
+if (someitem==somelist[i]) {return true}
+}
+return false
+}
+
+function randomnumber(num) {
+// returns a random number from 1 to num
+var ran=Math.round(Math.random()*num)
+if (ran == 0) {ran = num}  // ran initially 0 to num - but 0 and num have half the probability of the other numbers
+return ran
+}
+
+function shufflearray(somearray)
+{
+
+var temparray=somearray
+var shuffled=new Array()
+var packsize=somearray.length
+var ran
+
+for (var i=0; i<packsize; i++)
+{
+ran = randomnumber(temparray.length)
+shuffled[i] = temparray[ran-1]
+temparray = removeElement(ran-1, temparray)
+}
+return shuffled
+}
+
+function removeElement(index, somearray)
+{
+var beg=somearray.slice(0, index)
+var end=[]
+if (index+1 < somearray.length) {end = somearray.slice(index+1)}
+return beg.concat(end)
+}
+
+function removeitem(someitem, somearray)
+{
+var somebeg=[]
+var someend=[]
+for (var i=0; i<somearray.length; i++)
+{
+if (somearray[i]==someitem) {return somearray.slice(0, i).concat(somearray.slice(i+1))}
+}
+return somearray
+}
+
+function copylist(somelist)
+{
+var somereturn=[]
+for (var i=0; i<somelist.length; i++)
+{
+somereturn[i]=somelist[i]
+}
+return somereturn
+}
+
+
+
+</script>
+<script language="Javascript">
+
+/*
+function settextvalue(somename, someval)
+{
+changetextvalue(somename, someval)
+SetLocalVal('textvalue'+somename, escape(someval))
+}
+
+function resettextvalue(somename)
+{
+changetextvalue(somename, unescape(GetLocalVal('textvalue'+somename)))
+}
+*/
+
+function graphicfor(somename)
+{
+if (somename=='blank') {return ''}
+// return '<div style="position:relative"><img width='+Math.floor(scalef*50)+' height='+Math.floor(scalef*20)+' src="blackwordbg.png" style="display:block"><div style="position:absolute;top:0px;left:0px;width:100%;height:100%;display:inline"><table border=0 cellspacing=0 cellpadding=0 align=center valign=middle ><tr height='+Math.floor(scalef*20)+'><td align=center valign=middle style="text-align:center;font-weight:bold;color:white">'+somename+'</td></tr></table></div></div>'
+
+return '<div style="position:relative"><img width='+Math.floor(scalef*50)+' height='+Math.floor(scalef*20)+' src="greybluebutton.png" style="display:block"><div style="position:absolute;top:0px;left:0px;width:100%;height:100%;display:inline"><table border=0 cellspacing=0 cellpadding=0 align=center valign=middle ><tr height='+Math.floor(scalef*20)+'><td align=center valign=middle style="font-size:'+Math.floor(scalef*10)+'px;text-align:center;font-weight:bold;color:white">'+somename+'</td></tr></table></div></div>'
+}
+
+
+
+function GetLocalList(somename)
+{
+var somestore=GetLocalVal(somename)
+if (somestore==null) {return []}
+return eval('['+somestore+']')
+}
+
+function GetLocalString(somename)
+{
+var somestore=GetLocalVal(somename)
+if (somestore==null) {return ''}
+return somestore
+}
+
+function GetLocalNum(somename)
+{
+var somestore=GetLocalVal(somename)
+return somestore*1
+}
+
+function GetLocalEval(somename)
+{
+var somestore=GetLocalVal(somename)
+return eval(somestore)
+}
+
+
+</script>
+<script language="Javascript">
+
+
+
+
+
+
+function messagedisplay(messagetext)
+{
+changetextvalue('statusmessage', messagetext)
+
+}
+
+
+</script>
+<script language="Javascript">
+
+
+function copyarray(somearray)
+{
+var temparray=[]
+for (var i=0; i<somearray.length; i++)
+{
+temparray[i]=copysimplevalues(somearray[i])
+}
+return temparray
+}
+
+function copysimplevalues(somearray)
+{
+var temparray=[]
+for (var i=0; i<somearray.length; i++)
+{
+temparray[i]=somearray[i]
+}
+return temparray
+}
+
+function uniquelist(somearray)
+{
+var somereturn=[]
+for (var i=0; i<somearray.length; i++)
+{
+if (member(somearray[i], somereturn)==false) {somereturn=somereturn.concat([somearray[i]])}
+}
+return somereturn
+}
+
+
+
+
+function backtogame()
+{
+continuegame()
+}
+
+function newgame()
+{
+if (showingads==1 || showinghelp==1 || preventbuttonactions==1) {return}
+if (timer != null) {clearTimeout(timer)}
+if (GetLocalList('linxemstatus')[3]>=0 )
+{
+if (GetLocalList('linxemstatus')[3]<13)
+
+{
+
+mydecision('Please confirm that you wish to begin a new game', 'selectthegame()', 'backtogame()')
+}
+else
+{
+selectthegame()
+}
+}
+else
+{
+selectthegame()
+}
+}
+
+// linxemstatus: [gametype (0=none, 1=2 pairs, 2=2 players against 'opponent' who just receives losses, 3=3 players, 4=4 individual players), numberofplayers
+function selectthegame()
+{
+SetLocalVal('linxemstatus', [0,0,-1,-1])
+
+var sometext='<br><table border=0 cellpadding='+Math.floor(scalef*3)+' cellspacing=0 style="'+dialogueborder+'width:100%;background-color:lemonchiffon"><tr><td>'
+sometext=sometext+'<br><table align=center cellspacing=2 cellpadding=1 border=0>'
+sometext=sometext+'<tr><td align=left ><b>Choose the type of game to play</b><br></i></td><td align=center valign=top><br>'+centralimage()+'</td></tr>'
+sometext=sometext+'<tr><td align=left>4 players: 1 pair against another<br><i>Winner has higher total</i></td><td onClick="newgame2(1)">'+graphicfor('Play')+'</td></tr>'
+sometext=sometext+'<tr><td align=left>2 players: 1 pair against Anon.<br><i>Winner has higher total</i></td><td onClick="newgame2(2)">'+graphicfor('Play')+'</td></tr>'
+sometext=sometext+'<tr><td align=left>3 players: Playing all pairs<br><i>Winner has highest total</i></td><td onClick="newgame2(3)">'+graphicfor('Play')+'</td></tr>'
+sometext=sometext+'<tr><td align=left>4 players: Playing all pairs<br><i>Winner has highest total</i></td><td onClick="newgame2(4)">'+graphicfor('Play')+'</td></tr>'
+sometext=sometext+'<tr><td align=left>1 player in practice mode</td><td onClick="newgame2(0.5)">'+graphicfor('Play')+'</td></tr>'
+
+sometext=sometext+'</table><br>&nbsp;</td></tr></table>'
+
+document.getElementById('theboard').style.display='none'
+changetextvalue('output', sometext)
+document.getElementById('output').style.display='inline'
+
+}
+
+</script>
+<script language="Javascript">
+function newgame2(sometype)
+{
+var numplayers=numberofplayers(sometype)
+SetLocalVal('linxemstatus', [sometype, numplayers, -1, -1])
+newgame3()
+
+}
+
+</script>
+<script language="Javascript">
+
+function greenonlychoice(sometype)
+{
+var somename
+if (sometype==0) {somename='unselected.gif'} else {somename='selected.gif'}
+return '<img valign=bottom src="'+somename+'" width='+Math.floor(scalef*10)+' height='+Math.floor(scalef*10)+'>'
+}
+
+function togglegreenonlychoice()
+{
+var somegreenonly=GetLocalVal('greenonly')*1
+var somenew=1-somegreenonly
+SetLocalVal('greenonly', somenew)
+changetextvalue('greenonlychoice', greenonlychoice(somenew))
+}
+
+function newgame3()
+{
+
+blankmappings=[]
+var somestatus=GetLocalList('linxemstatus')
+var sometype=somestatus[0]
+var numplayers=somestatus[1]*1
+
+if (GetLocalVal('gameinitials')==null) {SetLocalVal('gameinitials', [15, 0, 15, 1, 15, 2, 15, 3])}
+gameinitials=GetLocalList('gameinitials')
+
+
+
+
+if (GetLocalVal('countdown')==null)
+{
+SetLocalVal('countdown', 180)
+}
+
+if (GetLocalVal('zoom')==null)
+{
+SetLocalVal('zoom', 0)
+}
+
+if (GetLocalVal('greenonly')==null)
+{
+SetLocalVal('greenonly', 0)
+}
+
+SetLocalVal('linxemtext', '')
+
+var someinfo=''
+var somebuttons
+var someinitials=[]
+for (var i=0; i<numplayers; i++)
+{
+someinitials[i]=textinitialsfor(i)
+}
+if (sometype==0.5)
+{
+someinfo='Players 1:'+textinitialsfor(0)+' will play in practice mode against a non-playing opposition team, Anon., who receive any points lost.<br><br>'
+somebuttons='You may choose to play 4, 8 or 12 challenges in the game.  Tap one button below when you are ready.<br><br><table align=center><tr><td onClick="playgame(0.5, 1)">'+graphicfor('4')+'</td><td><img src="empty.png" width='+Math.floor(scalef*20)+'  height='+Math.floor(scalef*3)+' style="display:block"></td><td onClick="playgame(0.5,2)">'+graphicfor('8')+'</td><td><img src="empty.png" width='+Math.floor(scalef*20)+'  height='+Math.floor(scalef*3)+' style="display:block"></td><td onClick="playgame(0.5, 3)">'+graphicfor('12')+'</td></tr></table>'
+}
+if (sometype==1)
+{
+someinfo='Players 1:'+textinitialsfor(0)+' and 3:'+textinitialsfor(2)+' will play with each other against 2:'+textinitialsfor(1)+' and 4:'+textinitialsfor(3)+'.  Points lost go to the opponents.<br><br>'
+somebuttons='You may choose to play 4, 8 or 12 challenges in the game.  Tap one button below when you are ready.<br><br><table align=center><tr><td onClick="playgame(1, 1)">'+graphicfor('4')+'</td><td><img src="empty.png" width='+Math.floor(scalef*20)+'  height='+Math.floor(scalef*3)+' style="display:block"></td><td onClick="playgame(1, 2)">'+graphicfor('8')+'</td><td><img src="empty.png" width='+Math.floor(scalef*20)+'  height='+Math.floor(scalef*3)+' style="display:block"></td><td onClick="playgame(1, 3)">'+graphicfor('12')+'</td></tr></table>'
+}
+if (sometype==2)
+{
+someinfo='Players 1:'+textinitialsfor(0)+' and 2:'+textinitialsfor(1)+' will play with each other against a non-playing opposition team, Anon., who receive any points lost.<br><br>'
+somebuttons='You may choose to play 4, 8 or 12 challenges in the game.  Tap one button below when you are ready.<br><br><table align=center><tr><td onClick="playgame(2, 1)">'+graphicfor('4')+'</td><td><img src="empty.png" width='+Math.floor(scalef*20)+'  height='+Math.floor(scalef*3)+' style="display:block"></td><td onClick="playgame(2,2)">'+graphicfor('8')+'</td><td><img src="empty.png" width='+Math.floor(scalef*20)+'  height='+Math.floor(scalef*3)+' style="display:block"></td><td onClick="playgame(2, 3)">'+graphicfor('12')+'</td></tr></table>'
+}
+if (sometype==3)
+{
+someinfo='Players 1:'+textinitialsfor(0)+', 2:'+textinitialsfor(1)+' and 3:'+textinitialsfor(2)+' will combine to play one pair at a time. Points won are shared equally by the two players in the pair, while points lost go to the third player.<br><br>'
+somebuttons='You may choose to play 6 or 12 challenges in the game.  Tap one button below when you are ready.<br><br><table align=center><tr><td onClick="playgame(3, 1)">'+graphicfor('6')+'</td><td><img src="empty.png" width='+Math.floor(scalef*20)+'  height='+Math.floor(scalef*3)+' style="display:block"></td><td onClick="playgame(3,2)">'+graphicfor('12')+'</td></tr></table>'
+}
+if (sometype==4)
+{
+someinfo='Players 1:'+textinitialsfor(0)+', 2:'+textinitialsfor(1)+', 3:'+textinitialsfor(2)+' and 4:'+textinitialsfor(3)+' will combine to play one pair at a time. Points won are shared equally by the two players in the pair, while points lost are shared equally by the other two players.<br><br>'
+somebuttons='There are 12 challenges in the game.  Tap the button below when you are ready.<br><br><table align=center><tr><td onClick="playgame(4, 1)">'+graphicfor('12')+'</td></tr></table>'
+}
+var sometext='<br><table border=0 cellpadding='+Math.floor(scalef*3)+' style="'+dialogueborder+'width:100%;background-color:lemonchiffon"><tr><td>'
+sometext=sometext+someinfo
+var someeffectivenumplayers=numplayers
+if (sometype==0.5) {someeffectivenumplayers=1}
+if (sometype==2) {someeffectivenumplayers=2}
+if (uniquelist(someinitials.slice(0, someeffectivenumplayers)).length<someinitials.slice(0, someeffectivenumplayers).length)
+{
+sometext=sometext+'As you can see above, there are duplicate initials.  You must tap <i>Change</i> to redefine the initials and remove duplicates.'
+sometext=sometext+'<br><br><table align=center><tr><td onClick="resetinitials()">'+graphicfor('Change')+'</td></tr></table>'
+}
+else
+{
+sometext=sometext+'You may tap <i>Change</i> to redefine the initials.'
+sometext=sometext+'<br><br><table align=center><tr><td onClick="resetinitials()">'+graphicfor('Change')+'</td></tr></table>'
+
+var somegreenonly=GetLocalVal('greenonly')*1
+sometext=sometext+'<br>Option - Use green backgrounds only: <div style="display:inline" id="greenonlychoice" onClick="togglegreenonlychoice()">'+greenonlychoice(somegreenonly)+'</div>'
+
+
+
+sometext=sometext+'<br><br>The game uses a countdown.  The current setting is shown with a green background below.  Tap to change if you wish.'
+
+sometext=sometext+'<br><br><table border=1 align=center cellpadding=0 cellspacing=0><tr><td onClick="setcountdown(60)" id="setcd60" style="width:'+Math.floor(scalef*40)+'px;background-color:#FFFFEE;color:silver;text-align:center">1 min</td><td onClick="setcountdown(120)" id="setcd120" style="width:'+Math.floor(scalef*40)+'px;background-color:#FFFFEE;color:silver;text-align:center">2 mins</td><td onClick="setcountdown(180)" id="setcd180" style="width:'+Math.floor(scalef*40)+'px;background-color:#FFFFEE;color:silver;text-align:center">3 mins</td><td onClick="setcountdown(240)" id="setcd240" style="width:'+Math.floor(scalef*40)+'px;background-color:#FFFFEE;color:silver;text-align:center">4 mins</td><td onClick="setcountdown(300)" id="setcd300" style="width:'+Math.floor(scalef*40)+'px;background-color:#FFFFEE;color:silver;text-align:center">5 mins</td></tr></table>'
+sometext=sometext+'<br>'+somebuttons
+
+}
+
+sometext=sometext+'</td></tr></table>'
+
+document.getElementById('theboard').style.display='none'
+changetextvalue('output', sometext)
+if (GetLocalVal('timeallowed')==null) {SetLocalVal('timeallowed', 180)}
+setcountdown(GetLocalNum('timeallowed'))
+}
+
+</script>
+<script language="Javascript">
+
+// initials
+
+function letterfromnum(someletter)
+{
+if (someletter>=0 && someletter<26) {return String.fromCharCode(65+someletter)}
+if (someletter==26) {return '?'}
+if (someletter==-1) {return ''}
+}
+
+function textinitialsfor(somenum)
+{
+gameinitials=GetLocalList('gameinitials')
+return ''+letterfromnum(gameinitials[somenum*2])+''+letterfromnum(gameinitials[1+somenum*2])
+}
+
+var blankmappings=[]
+var gameinitials=[]
+
+function resetinitials()
+{
+var numplayers=GetLocalList('linxemstatus')[1]*1
+if (GetLocalList('linxemstatus')[0]*1==0.5) {numplayers=1} // a 2-player game is internally treated as 3 players, with 3rd receiving losses, but no name needed
+
+if (GetLocalList('linxemstatus')[0]*1==2) {numplayers=2} // a 2-player game is internally treated as 3 players, with 3rd receiving losses, but no name needed
+var somenum=numplayers*2
+var sometiles=[]
+
+for (var i=0; i<somenum; i++)
+{
+sometiles[i]=26
+}
+
+if (blankmappings.length>sometiles.length)
+{
+for (var i=0; i<sometiles.length; i++)
+{
+gameinitials[i]=blankmappings[i]
+}
+SetLocalVal('gameinitials', gameinitials)
+newgame3()
+return
+
+
+}
+else
+{
+for (var i=0; i<blankmappings.length; i++)
+{
+sometiles[i]=blankmappings[i]
+}
+mapinitialblank(blankmappings.length, sometiles, 26)
+
+}
+}
+
+function delinitial()
+{
+if (blankmappings.length==0) {return}
+if (blankmappings.length>0)
+{
+blankmappings=blankmappings.slice(0, blankmappings.length-1)
+}
+
+resetinitials()
+}
+
+function mapinitialblank(someindex, sometiles, somecurrent)
+{
+var sometype=GetLocalList('linxemstatus')[0]
+var sometext=''
+var racksize=sometiles.length
+sometext=sometext+'<br><table cellspacing=0 cellpadding=0 border=0 align=center ><tr>'
+for (var i=0; i<racksize; i++)
+{
+if (i!=someindex)
+{
+sometext=sometext+'<td height='+Math.floor(scalef*5)+' style="text-align:center;color:white;font-weight:bold;font-size:'+Math.floor(scalef*4)+'px">&nbsp;</td>'
+}
+else
+{
+sometext=sometext+'<td height='+Math.floor(scalef*5)+' style="background-color:black;text-align:center;color:white;font-weight:bold;font-size:'+Math.floor(scalef*4)+'px">&nbsp;</td>'
+}
+if (member(i, [1,3,5])==true)
+{
+sometext=sometext+'<td width='+Math.floor(scalef*5)+'></td>'
+}
+}
+sometext=sometext+'</tr><tr>'
+var someletter
+var somechar
+var someval
+
+for (var i=0; i<sometiles.length; i++)
+{
+someletter=sometiles[i]
+if (i==someindex) {someletter=somecurrent}
+somechar=letterfromnum(someletter)
+if (someletter==26) {somechar='&nbsp;'}
+sometext=sometext+'<td style="width:'+Math.floor(scalef*20)+'px;height:'+Math.floor(scalef*20)+'px" ><table height=100% width=100% style="border:1px solid gray;text-align:center;font-size:'+Math.floor(scalef*17)+'px;background-color:lemonchiffon;color:black;font-weight:bold"><tr><td style="font-size:'+Math.floor(scalef*13)+'px;font-weight:bold">'+somechar+'</td></tr></table></td>'
+if (member(i, [1,3,5])==true)
+{
+sometext=sometext+'<td width='+Math.floor(scalef*5)+'></td>'
+}
+}
+sometext=sometext+'</tr><tr>'
+for (var i=0; i<racksize; i++)
+{
+if (member(i, [0,2,4,6])==true)
+{sometext=sometext+'<td colspan=2 height='+Math.floor(scalef*10)+' style="background-color:'+playercolours[Math.floor(i/2)]+';text-align:center;color:black;font-weight:bold;font-size:'+Math.floor(scalef*10)+'px">'+(i+2)/2+'</td>'}
+if (member(i, [1,3,5])==true)
+{
+sometext=sometext+'<td width='+Math.floor(scalef*10)+'></td>'
+}
+}
+sometext=sometext+'</tr></table>'
+var someconfirmkey
+var somemessagetext=''
+if (sometype==1) {somemessagetext='<span style="color:red;">Note: Players 1 and 3 play against 2 and 4</span>'}
+if (someindex==sometiles.length)
+{
+sometext=sometext+'<p style="text-align:center">'+somemessagetext+'<br>Tap &gt; or any letter key below to confirm the initials (or &lt; to make changes)<br><br>'
+someconfirmkey='<td style="width:'+Math.floor(scalef*20)+'px;height:'+Math.floor(scalef*20)+'px" ><table height=100% width=100% style="border:1px solid gray;text-align:center;font-size:'+Math.floor(scalef*17)+'px;background-color:lemonchiffon;color:black;font-weight:bold" onClick="mapinitialto(0)"><tr><td style="font-size:'+Math.floor(scalef*13)+'px;font-weight:bold;background-color:green">&gt;</td></tr></table></td>'
+}
+else
+{
+sometext=sometext+'<p style="text-align:center">'+somemessagetext+'<br>Tap a letter below to specify the letter of the initials marked above<br><br>'
+someconfirmkey='<td></td>'
+}
+
+sometext=sometext+'<table cellspacing=0 cellpadding=0 border=0 align=center ><tr>'
+
+
+for (var i=0; i<9; i++)
+{
+someletter=i
+somechar=letterfromnum(someletter)
+sometext=sometext+'<td style="width:'+Math.floor(scalef*20)+'px;height:'+Math.floor(scalef*20)+'px" ><table height=100% width=100% style="border:1px solid gray;text-align:center;font-size:'+Math.floor(scalef*17)+'px;background-color:lemonchiffon;color:black;font-weight:bold" onClick="mapinitialto('+i+')"><tr><td style="font-size:'+Math.floor(scalef*13)+'px;font-weight:bold">'+somechar+'</td></tr></table></td>'
+}
+
+sometext=sometext+'<td style="width:'+Math.floor(scalef*20)+'px;height:'+Math.floor(scalef*20)+'px" ><table height=100% width=100% style="border:1px solid gray;text-align:center;font-size:'+Math.floor(scalef*17)+'px;background-color:lemonchiffon;color:black;font-weight:bold" onClick="delinitial()"><tr><td style="font-size:'+Math.floor(scalef*13)+'px;font-weight:bold;background-color:red">&lt;</td></tr></table></td></tr><tr>'
+
+for (var i=9; i<18; i++)
+{
+someletter=i
+somechar=letterfromnum(someletter)
+sometext=sometext+'<td style="width:'+Math.floor(scalef*20)+'px;height:'+Math.floor(scalef*20)+'px" ><table height=100% width=100% style="border:1px solid gray;text-align:center;font-size:'+Math.floor(scalef*17)+'px;background-color:lemonchiffon;color:black;font-weight:bold" onClick="mapinitialto('+i+')"><tr><td style="font-size:'+Math.floor(scalef*13)+'px;font-weight:bold">'+somechar+'</td></tr></table></td>'
+}
+
+sometext=sometext+someconfirmkey+'</tr><tr>'
+for (var i=18; i<26; i++)
+{
+someletter=i
+somechar=letterfromnum(someletter)
+sometext=sometext+'<td style="width:'+Math.floor(scalef*20)+'px;height:'+Math.floor(scalef*20)+'px" ><table height=100% width=100% style="border:1px solid gray;text-align:center;font-size:'+Math.floor(scalef*17)+'px;background-color:lemonchiffon;color:black;font-weight:bold" onClick="mapinitialto('+i+')"><tr><td style="font-size:'+Math.floor(scalef*13)+'px;font-weight:bold">'+somechar+'</td></tr></table></td>'
+}
+
+sometext=sometext+'<td></td><td></td></tr></table><br><br><table align=center border=0><tr><td onClick="newgame3()" width='+Math.floor(scalef*50)+'>'+graphicfor('Cancel')+'</td></tr></table>'
+
+changetextvalue('output', sometext)
+
+}
+
+function mapinitialto(someletter)
+{
+blankmappings=blankmappings.concat([someletter])
+resetinitials()
+}
+var playercolournames=['Red', 'Yellow', 'Green', 'Blue']
+var playercolours=['#FF8888', 'yellow', 'limegreen', 'cornflowerblue']
+
+
+// end 
+
+
+</script>
+<script language="Javascript">
+
+
+function restartgame()
+{
+var somestatus=GetLocalList('linxemstatus')
+if (somestatus[0]>0)
+{
+var someplayers=GetLocalEval('players')
+var somescores=GetLocalEval('scores')
+var somepatterns=GetLocalEval('patterns')
+var somechallenge=somestatus[2]
+var somepattern=somepatterns[somechallenge]
+var somesetter=someplayers[somepattern[0]]
+var somesolver=someplayers[somepattern[1]]
+
+var somesettername=textinitialsfor(somesetter)
+var somesolvername=textinitialsfor(somesolver)
+var sometext=''
+if (somestatus[3]>=1 && somestatus[3]<=3)
+{
+sometext='<br><table border=0 cellpadding='+Math.floor(scalef*3)+' style="'+dialogueborder+'width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
+var somespecialtext=' and '+somesolvername+' is the solver'
+if (somestatus[0]==0.5) {somespecialtext=' playing for practice'}
+sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br>'+somesettername+' is the setter'+somespecialtext+'.<br><br><span style="color:red">'+somesettername+'</span></span><br><br>should take the device and tap the <i>OK</i> button when ready to proceed.'
+
+if (somestatus[3]==1) 
+{
+sometext=sometext+'<br><br>The setting countdown will continue.'
+}
+sometext=sometext+'<br><br><table align=center border=0><tr><td onClick="continuegame()" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table>'
+
+
+sometext=sometext+'<br>&nbsp;</td></tr></table>'
+
+document.getElementById('theboard').style.display='none'
+
+changetextvalue('output', sometext)
+
+document.getElementById('output').style.display='inline'
+
+return
+}
+
+if (somestatus[3]>=5 && somestatus[3]<=8)
+{
+sometext='<br><table border=0 cellpadding='+Math.floor(scalef*3)+' style="'+dialogueborder+'width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
+
+sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br>'+somesettername+' is the setter and '+somesolvername+' is the solver.<br><br><span style="color:red">'+somesolvername+'</span></span><br><br>should take the device and tap the <i>OK</i> button when ready to proceed.'
+
+if (somestatus[3]==5) 
+{
+sometext=sometext+'<br><br>The solving countdown will continue.'
+}
+sometext=sometext+'<br><br><table align=center border=0><tr><td onClick="continuegame()" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table>'
+
+
+sometext=sometext+'<br>&nbsp;</td></tr></table>'
+
+document.getElementById('theboard').style.display='none'
+
+changetextvalue('output', sometext)
+
+document.getElementById('output').style.display='inline'
+
+return
+}
+}
+continuegame()
+
+}
+
+
+
+
+function continuegame()
+{
+var somestatus=GetLocalList('linxemstatus')
+if (somestatus[0]>0)
+{
+changebgcolor('timerdisplay', 'yellow')
+
+if (somestatus[3]==1 || somestatus[3]==5)
+{
+displaycountdown(GetLocalNum('countdown'))
+runtimer()
+}
+continuechallenge()
+}
+else
+{
+selectthegame()
+}
+}
+
+
+function convertlisttotext(somename, somelist)
+{
+var sometext='['
+var somearray=convertitemstotext(somename, somelist)
+sometext=sometext+somearray
+sometext=sometext+']'
+return sometext
+}
+
+
+function convertitemstotext(somename, somelist)
+{
+var somereturn=[]
+if (somename=='number')
+{
+for (var i=0; i<somelist.length; i++)
+{
+somereturn[i]=somelist[i]
+}
+}
+
+if (somename=='text')
+{
+for (var i=0; i<somelist.length; i++)
+{
+somereturn[i]='"'+somelist[i]+'"'
+}
+}
+
+if (somename=='listnumber')
+{
+for (var i=0; i<somelist.length; i++)
+{
+somereturn[i]=convertlisttotext('number', somelist[i])
+}
+}
+
+if (somename=='listtext')
+{
+for (var i=0; i<somelist.length; i++)
+{
+somereturn[i]=convertlisttotext('text', somelist[i])
+}
+}
+
+if (somename=='listlistnumber')
+{
+for (var i=0; i<somelist.length; i++)
+{
+somereturn[i]=convertlisttotext('listnumber', somelist[i])
+}
+}
+
+if (somename=='listlisttext')
+{
+for (var i=0; i<somelist.length; i++)
+{
+somereturn[i]=convertlisttotext('listtext', somelist[i])
+}
+}
+
+
+
+return somereturn
+}
+
+
+
+function emptytextornumber(someval)
+{
+if (someval==='') {return '""'} else {return someval}
+}
+
+// [[somerecorda, somerecordb, '+'], somerecorda[1]+somerecordb[1], somec]
+
+function convertresulttotext(somearray)
+{
+if (somearray.length==0) {return '""'}
+if (somearray[1]==1)
+{
+return '[[], 1, '+somearray[2]+']'
+}
+else
+{
+return '[['+convertresulttotext(somearray[0][0])+','+convertresulttotext(somearray[0][1])+',"'+somearray[0][2]+'"], '+somearray[1]+', '+somearray[2]+']'
+
+}
+
+}
+
+
+// Start main app code
+
+// All code copyright of TopAccolades Limited
+
+
+
+
+
+var thewords=[]
+var basicgoodstart=0
+var basicgoodend=17
+var basicbadstart=18
+var basicbadend=29
+
+var goodstart=0
+var goodend=17
+var badstart=18
+var badend=29
+var numbergood=basicgoodend-basicgoodstart+1
+var numberbad=basicbadend-basicbadstart+1
+var numberwords=numbergood+numberbad
+var goodscore=0
+var badscore=4
+var correctscore=2
+var good='green'
+var bad='yellow'
+var neutral='blue'
+
+var failcompleteset=10
+var failcompletesolve=10
+var cluerejection=10
+var bonusscore=4 // for all correct and length >=3
+
+var playpatterns=[[[0,2], [1,3], [2,0], [3,1]], [[0,1], [1,0], [0,1], [1,0]], [[0,1], [1,0], [2,1], [1,2], [2,0], [0,2]], [[0,1], [2,3], [1,2], [3,0], [2,1], [0,3], [3,2], [1,0], [0,2], [3,1], [2,0], [1,3]]]
+
+// linxemstatus=[gamestatus, numberofplayers, currentchallenge, challengepos (0=handtosetter/informwhoisinvolved, 1=setting, 2=handtoothers
+//                                           3=definingclue/approve, 4=handtosolver, 5=solving, 6=displayresult, 7=displayscore, 8=showsettings, 9=incompletesetting, 10=rejectedclue, 11=incompletesolution, 12=endround, 13=endgame)
+// 
+function playgame(gametype, somerounds)
+{
+
+var somepattern
+if (gametype==0.5)
+{
+somepattern=[[0,1], [0,1], [0,1], [0,1]]
+}
+else
+{
+somepattern=playpatterns[gametype-1]
+}
+var someactualpattern=[]
+for (var i=0; i<somerounds; i++)
+{
+someactualpattern=someactualpattern.concat(somepattern)
+} 
+SetLocalVal('patterns', convertlisttotext('listnumber', someactualpattern))
+// thewords=shufflearray(linxemwords).slice(numberwords)
+// SetLocalVal('words', convertlisttotext('text', thewords))
+// showcurrentad()
+stoptimer()
+// changetextvalue('workpad', '')
+SetLocalVal('linxemstatus', [gametype, numberofplayers(gametype), 0, 0])
+SetLocalVal('countdown', 0)
+var someplayers=[0,1,2,3].slice(0, numberofplayers(gametype))
+
+if (gametype==1)
+{
+var someran=randomnumber(4)-1
+var somereorderedplayers=someplayers.slice(someran).concat(someplayers.slice(0, someran))
+}
+if (gametype==4 || gametype==3)
+{
+var somereorderedplayers=shufflearray(someplayers)
+}
+if (gametype==2) {somereorderedplayers=shufflearray([0,1]).concat([2])} // make sure for 2 players that third (2) doesn't play
+if (gametype==0.5) {somereorderedplayers=[0,1,2]}
+SetLocalVal('players', convertlisttotext('number', somereorderedplayers))
+SetLocalVal('scores', convertlisttotext('number', [0,0,0,0]))
+
+continuechallenge()
+}
+
+function distributescores(someyourtotal, someopptotal)
+{
+
+var somestatus=GetLocalList('linxemstatus')
+var someplayers=GetLocalEval('players')
+var somescores=GetLocalEval('scores')
+var somepatterns=GetLocalEval('patterns')
+var somechallenge=somestatus[2]
+var somepattern=somepatterns[somechallenge]
+var somesetter=someplayers[somepattern[0]]
+var somesolver=someplayers[somepattern[1]]
+
+somescores[somesetter]=somescores[somesetter]+someyourtotal/2
+somescores[somesolver]=somescores[somesolver]+someyourtotal/2
+var oppplayers=[]
+for (var i=0; i<someplayers.length; i++)
+{
+if (member(someplayers[i], [somesetter, somesolver])==false) {oppplayers=oppplayers.concat([someplayers[i]])}
+}
+
+for (var i=0; i<oppplayers.length; i++)
+{
+somescores[oppplayers[i]]=somescores[oppplayers[i]]+someopptotal/oppplayers.length
+} 
+
+SetLocalVal('scores', convertlisttotext('number', somescores))
+
+}
+
+function highlightzoom()
+{
+if (GetLocalNum('zoom')==0)
+{
+changebgcolor('col3', 'white')
+changebgcolor('col2', 'silver')
+document.getElementById("linxemtext").style.fontSize=Math.floor(scalef*10)+'px'
+document.getElementById("currentplayer").style.fontSize=Math.floor(scalef*10)+'px'
+document.getElementById("linkedwords").style.fontSize=Math.floor(scalef*10)+'px'
+}
+else
+{
+changebgcolor('col3', 'silver')
+changebgcolor('col2', 'white')
+document.getElementById("linxemtext").style.fontSize=Math.floor(scalef*13)+'px'
+document.getElementById("currentplayer").style.fontSize=Math.floor(scalef*13)+'px'
+document.getElementById("linkedwords").style.fontSize=Math.floor(scalef*13)+'px'
+}
+}
+
+function savelinxemtext()
+{
+
+SetLocalVal('linxemtext', escape(document.getElementById('linxemtext').value))
+}
+
+function continuechallenge()
+{
+var somestatus=GetLocalList('linxemstatus')
+
+var someplayers=GetLocalEval('players')
+var somescores=GetLocalEval('scores')
+var somepatterns=GetLocalEval('patterns')
+var somechallenge=somestatus[2]
+var somepattern=somepatterns[somechallenge]
+var somesetter=someplayers[somepattern[0]]
+var somesolver=someplayers[somepattern[1]]
+
+var somesettername=textinitialsfor(somesetter)
+var somesolvername=textinitialsfor(somesolver)
+var sometimeallowed=GetLocalVal('timeallowed')
+// new code for offering green-only game
+var somegreenonly=GetLocalVal('greenonly')*1
+if (somegreenonly==0)
+{
+goodend=basicgoodend
+badstart=basicbadstart
+badend=basicbadend
+}
+else
+{
+goodend=basicbadend
+badstart=basicbadend+1
+badend=badstart
+}
+
+var somelinxemtext=unescape(GetLocalVal('linxemtext'))
+var sometext=''
+var somesetwords
+var somesolvewords
+var somebgcolor
+var somebgintensity
+var somesetselection
+var somesolveselection
+var somescorecard
+
+showcurrentad()
+highlightzoom()
+changetextvalue('challengenum', somechallenge+1)
+changetextvalue('numchallenges', somepatterns.length)
+document.getElementById("linxemtext").placeholder=''
+
+// Hand to Setter
+if (somestatus[3]==0)
+{
+
+
+var somewords=shufflearray(shufflearray(linxemwords)).slice(0, numberwords)
+
+SetLocalVal('setwords', convertlisttotext('text', shufflearray(somewords)))
+SetLocalVal('solvewords', convertlisttotext('text', shufflearray(somewords)))
+SetLocalVal('setselection', convertlisttotext('number', []))
+SetLocalVal('solveselection', convertlisttotext('number', []))
+SetLocalVal('linxemtext', '')
+sometext='<br><table border=0 cellpadding='+Math.floor(scalef*3)+' style="'+dialogueborder+'width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
+var somespecialtext=' for '+somesolvername
+if (somestatus[0]==0.5) {somespecialtext=' as practice'} // don't want to have a named solver for practice mode
+sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br>'+somesettername+' to set a challenge'+somespecialtext+'<br><br></span>'+somesettername+' must select at least 2 display words that can be connected by a Linxem.<br><br>The selection must be made before the countdown ends ('+sometimeallowed+' seconds).<br><br>'+somesettername+' should take the device and tap the <i>OK</i> button when ready to proceed.'
+
+sometext=sometext+'<br><br><table align=center border=0><tr><td onClick="goto(1)" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table>'
+
+
+sometext=sometext+'<br>&nbsp;</td></tr></table>'
+
+document.getElementById('theboard').style.display='none'
+
+changetextvalue('output', sometext)
+
+document.getElementById('output').style.display='inline'
+
+return
+}
+// Set challenge
+if (somestatus[3]==1)
+{
+writethewordtable()
+somesetwords=GetLocalEval('setwords')
+
+somesetselection=GetLocalEval('setselection')
+
+for (var i=0; i<somesetwords.length; i++)
+{
+
+if (i>=goodstart && i<=goodend) {somebgcolor=good; somebgintensity='light'}
+
+if (i>=badstart && i<=badend) {somebgcolor=bad; somebgintensity='light'}
+
+if (member(i, somesetselection)==true) {somebgintensity='dark'}
+changetextvalue('word'+i, imagefor(somebgintensity, somebgcolor, somesetwords[i]))
+
+}
+// show scores and OK buttons
+var somebutton='<td width='+Math.floor(scalef*50)+' onClick="commitset()">'+graphicfor('OK')+'</td>'
+if (somesetselection.length<2)
+{
+changetextvalue('workpad', 'Selected '+somesetselection.length+' - minimum 2 required')
+}
+else
+{
+changetextvalue('workpad', 'Selected '+somesetselection.length)
+}
+changetextvalue('scoresbuttons', '<table border=0 cellspacing=0 cellpadding=0 width='+Math.floor(scalef*230)+'><tr>'+somebutton+'<td width='+Math.floor(scalef*3)+'><img src="empty.png" width='+Math.floor(scalef*3)+'></td><td style="text-align:center;font-weight:bold;color:black;background-color:lemonchiffon;font-size:'+Math.floor(scalef*8)+'px">'+scorecard()+'</td><td width='+Math.floor(scalef*3)+'><img src="empty.png" width='+Math.floor(scalef*3)+'></td>'+somebutton+'</tr></table>')
+document.getElementById('linxemtext').value=somelinxemtext
+// changebgcolor('timerdisplay', 'yellow')
+// changetextvalue('timerdisplay', '&nbsp;')
+// document.getElementById("linxemtext").disabled=true
+document.getElementById("linxemtext").readOnly=true
+document.getElementById("linxemtext").style.backgroundColor='silver'
+document.getElementById('currentplayer').value=somesettername
+document.getElementById('linkedwords').value=somesetselection.length
+document.getElementById('theboard').style.display='inline'
+changetextvalue('output', '&nbsp;')
+document.getElementById('output').style.display='none'
+return
+}
+// Hand to Others for approval - no longer used!
+if (somestatus[3]==2)
+{
+somesetselection=GetLocalEval('setselection')
+
+sometext='<br><table border=0 cellpadding='+Math.floor(scalef*3)+' style="'+dialogueborder+'width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
+
+sometext=sometext+'<br><br>Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br>'+somesettername+' should state the Linxem and let others review this to accept or reject it.<br><br>Tap the <i>OK</i> button to see the board again with <i>Accept</i> and <i>Reject</i> buttons.'
+sometext=sometext+'<br><br><table align=center border=0><tr><td onClick="goto(3)" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table>'
+
+
+sometext=sometext+'</td></tr></table>'
+document.getElementById('theboard').style.display='none'
+changetextvalue('output', sometext)
+document.getElementById('output').style.display='inline'
+
+return
+}
+
+// State clue
+if (somestatus[3]==3)
+{
+writethewordtable()
+somesetwords=GetLocalEval('setwords')
+somesetselection=GetLocalEval('setselection')
+for (var i=0; i<somesetwords.length; i++)
+{
+if (i>=goodstart && i<=goodend) {somebgcolor=good; somebgintensity='light'}
+
+if (i>=badstart && i<=badend) {somebgcolor=bad; somebgintensity='light'}
+
+if (member(i, somesetselection)==true) {somebgintensity='dark'}
+changetextvalue('word'+i, imagefor(somebgintensity, somebgcolor, somesetwords[i]))
+}
+// show scores and OK buttons
+var somebutton='<td width='+Math.floor(scalef*50)+' onClick="goto(4)">'+graphicfor('OK')+'</td>'
+var somerejectbutton='<td width='+Math.floor(scalef*50)+' onClick="goto(10)">'+graphicfor('Reject')+'</td>'
+if (somestatus[0]==2)
+{
+changetextvalue('workpad', 'Input or say Linxem & tap OK')
+changetextvalue('scoresbuttons', '<table border=0 cellspacing=0 cellpadding=0 width='+Math.floor(scalef*230)+'><tr>'+somebutton+'<td width='+Math.floor(scalef*3)+'><img src="empty.png" width='+Math.floor(scalef*3)+'></td><td style="text-align:center;font-weight:bold;color:black;background-color:lemonchiffon;font-size:'+Math.floor(scalef*8)+'px">'+scorecard()+'</td><td width='+Math.floor(scalef*3)+'><img src="empty.png" width='+Math.floor(scalef*3)+'></td>'+somebutton+'</tr></table>')
+
+}
+else
+{
+changetextvalue('workpad', 'Input or say Linxem. Consult. Tap OK or Reject')
+changetextvalue('scoresbuttons', '<table border=0 cellspacing=0 cellpadding=0 width='+Math.floor(scalef*230)+'><tr>'+somerejectbutton+'<td width='+Math.floor(scalef*3)+'><img src="empty.png" width='+Math.floor(scalef*3)+'></td><td style="text-align:center;font-weight:bold;color:black;background-color:lemonchiffon;font-size:'+Math.floor(scalef*8)+'px">'+scorecard()+'</td><td width='+Math.floor(scalef*3)+'><img src="empty.png" width='+Math.floor(scalef*3)+'></td>'+somebutton+'</tr></table>')
+}
+changebgcolor('timerdisplay', 'red')
+changetextvalue('timerdisplay', '&nbsp;')
+document.getElementById('linxemtext').value=somelinxemtext
+
+// document.getElementById("linxemtext").disabled=false
+document.getElementById("linxemtext").readOnly=false
+
+document.getElementById("linxemtext").style.backgroundColor='#FFAAAA'
+document.getElementById('currentplayer').value=somesettername
+document.getElementById('linkedwords').value=somesetselection.length
+document.getElementById("linxemtext").placeholder='Linxem'
+
+document.getElementById('theboard').style.display='inline'
+changetextvalue('output', '&nbsp;')
+document.getElementById('output').style.display='none'
+return
+}
+
+
+// Hand to Solver
+if (somestatus[3]==4)
+{
+// var somewords=shufflearray(linxemwords).slice(0, numberwords)
+somesetselection=GetLocalEval('setselection')
+
+sometext='<br><table border=0 cellpadding='+Math.floor(scalef*3)+' style="'+dialogueborder+'width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
+
+sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br>'+somesolvername+' to solve the challenge set by '+somesettername+'<br><br><span style="font-size:'+Math.floor(scalef*14)+'px;background-color:red;color:white">&nbsp;&nbsp;&nbsp;'+somesetselection.length+'&nbsp;&nbsp;&nbsp;<br><br></span></span>'+somesolvername+' must select '+somesetselection.length+' words that can be linked by the Linxem given by '+somesettername+'.<br><br>The selection must be made before the countdown ends ('+sometimeallowed+' seconds).<br><br>'+somesolvername+' should take the device and tap the <i>OK</i> button when ready to proceed.'
+
+sometext=sometext+'<br><br><table align=center border=0><tr><td onClick="goto(5)" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table>'
+
+
+sometext=sometext+'<br>&nbsp;</td></tr></table>'
+document.getElementById('theboard').style.display='none'
+changetextvalue('output', sometext)
+document.getElementById('output').style.display='inline'
+
+return
+}
+
+// Solve challenge
+if (somestatus[3]==5)
+{
+writethewordtable()
+somesolvewords=GetLocalEval('solvewords')
+somesolveselection=GetLocalEval('solveselection')
+somesetselection=GetLocalEval('setselection')
+
+for (var i=0; i<somesolvewords.length; i++)
+{
+somebgcolor=neutral; somebgintensity='light'
+if (member(i, somesolveselection)==true) {somebgintensity='dark'}
+changetextvalue('word'+i, imagefor(somebgintensity, somebgcolor, somesolvewords[i]))
+}
+// show scores and OK buttons
+var somebutton='<td width='+Math.floor(scalef*50)+' onClick="commitsolve()">'+graphicfor('OK')+'</td>'
+if (somesolveselection.length > somesetselection.length)
+{
+changetextvalue('workpad', '<span style="color:red">Selected '+somesolveselection.length+' - only '+somesetselection.length+' required</span>')
+
+}
+else
+{
+changetextvalue('workpad', 'Selected '+somesolveselection.length+' of '+somesetselection.length)
+}
+changetextvalue('scoresbuttons', '<table border=0 cellspacing=0 cellpadding=0 width='+Math.floor(scalef*230)+'><tr>'+somebutton+'<td width='+Math.floor(scalef*3)+'><img src="empty.png" width='+Math.floor(scalef*3)+'></td><td style="text-align:center;font-weight:bold;color:black;background-color:lemonchiffon;font-size:'+Math.floor(scalef*8)+'px">'+scorecard()+'</td><td width='+Math.floor(scalef*3)+'><img src="empty.png" width='+Math.floor(scalef*3)+'></td>'+somebutton+'</tr></table>')
+document.getElementById('linxemtext').value=somelinxemtext
+
+
+// document.getElementById("linxemtext").disabled=true
+document.getElementById("linxemtext").readOnly=true
+document.getElementById("linxemtext").style.backgroundColor='#FFAAAA'
+document.getElementById("linxemtext").style.color='black'
+document.getElementById('currentplayer').value=somesolvername
+document.getElementById('linkedwords').value=somesetselection.length
+
+
+document.getElementById('theboard').style.display='inline'
+changetextvalue('output', '&nbsp;')
+document.getElementById('output').style.display='none'
+return
+}
+
+// Show Result
+if (somestatus[3]==6)
+{
+writethewordtable()
+somesetwords=GetLocalEval('setwords')
+somesolvewords=GetLocalEval('solvewords')
+somesolveselection=GetLocalEval('solveselection')
+somesetselection=GetLocalEval('setselection')
+var somei
+var someword
+for (var i=0; i<somesolvewords.length; i++)
+{
+somebgcolor=neutral; somebgintensity='light'
+someword=somesolvewords[i]
+somei=ith(someword, somesetwords)
+if (member(i, somesolveselection)==true) 
+{
+someword=somesolvewords[i]
+somei=ith(someword, somesetwords)
+if (somei>=goodstart && somei<=goodend) {somebgcolor=good; somebgintensity='light'}
+if (somei>=badstart && somei<=badend) {somebgcolor=bad; somebgintensity='light'}
+
+if (member(somei, somesetselection)==true) {somebgintensity='dark'}
+}
+changetextvalue('word'+i, imagefor(somebgintensity, somebgcolor, somesolvewords[i]))
+}
+// show scores and Score buttons
+var somebutton='<td width='+Math.floor(scalef*50)+' onClick="goto(7)">'+graphicfor('Score')+'</td>'
+changetextvalue('workpad', 'Tap Score to score your selections')
+changetextvalue('scoresbuttons', '<table border=0 cellspacing=0 cellpadding=0 width='+Math.floor(scalef*230)+'><tr>'+somebutton+'<td width='+Math.floor(scalef*3)+'><img src="empty.png" width='+Math.floor(scalef*3)+'></td><td style="text-align:center;font-weight:bold;color:black;background-color:lemonchiffon;font-size:'+Math.floor(scalef*8)+'px">'+scorecard()+'</td><td width='+Math.floor(scalef*3)+'><img src="empty.png" width='+Math.floor(scalef*3)+'></td>'+somebutton+'</tr></table>')
+changebgcolor('timerdisplay', 'red')
+changetextvalue('timerdisplay', '&nbsp;')
+document.getElementById('linxemtext').value=somelinxemtext
+
+// document.getElementById("linxemtext").disabled=true
+document.getElementById("linxemtext").readOnly=true
+
+document.getElementById("linxemtext").style.backgroundColor='#FFAAAA'
+document.getElementById('currentplayer').value=somesolvername
+document.getElementById('linkedwords').value=somesetselection.length
+
+
+document.getElementById('theboard').style.display='inline'
+changetextvalue('output', '&nbsp;')
+document.getElementById('output').style.display='none'
+return
+}
+
+// Score Solution
+if (somestatus[3]==7)
+{
+
+var somescoring=calculatescoretable()
+var somecorrect=somescoring[0]
+var somenumdefined=somescoring[1]
+var someyourtotal=somescoring[2]
+var someopptotal=somescoring[3]
+var sometable=somescoring[4]
+
+sometext='<br><table border=0 cellpadding='+Math.floor(scalef*3)+' style="'+dialogueborder+'width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
+
+sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br></span>'
+
+sometext=sometext+'<table border=1 cellspacing=0 style="width:90%;background-color:#FFDDDD"  align=center><tr><td colspan=3 style="font-weight:bold;text-align:center">Scores for this challenge</td></tr>'
+sometext=sometext+'<tr><td style="font-size:'+Math.floor(scalef*10)+'px;font-weight:bold;text-align:center">Word</td><td width=* style="font-size:'+Math.floor(scalef*10)+'px;font-weight:bold;text-align:center">You</td><td width=* style="font-size:'+Math.floor(scalef*10)+'px;font-weight:bold;text-align:center">Oppos\'n</td></tr>'
+
+for (var i=0; i<sometable.length; i++)
+{
+sometext=sometext+'<tr><td style="font-weight:bold;text-align:center">'+sometable[i][0]+'</td><td style="font-weight:bold;text-align:center">'+sometable[i][1]+'</td><td style="font-weight:bold;text-align:center">'+sometable[i][2]+'</td></tr>'
+}
+
+
+sometext=sometext+'</table>'
+
+sometext=sometext+'<br><table border=1 cellpadding=4 cellspacing=0 style="width:80%;background-color:#FFDDDD"  align=center><tr><td style="text-align:center;font-weight:bold">Current Score<br><table border=0 cellspacing=0 cellpadding=0 style="background-color:lemonchiffon" align=center><tr><td>'+scorecard()+'</td></tr></table>&nbsp;</td></tr></table>'
+
+if (somecorrect==somenumdefined)
+{
+sometext=sometext+'<br>Tap <i>OK</i> to continue.'
+sometext=sometext+'<br><br><table align=center border=0><tr><td onClick="goto(12)" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table>'
+
+}
+else
+{
+sometext=sometext+'<br>Tap <i>OK</i> to continue and to see the selections made by '+somesettername+'.'
+sometext=sometext+'<br><br><table align=center border=0><tr><td onClick="goto(8)" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table>'
+}
+
+sometext=sometext+'<br>&nbsp;</td></tr></table>'
+// if (GetLocalNum('scoreadded')==0) {distributescores(someyourtotal, someopptotal)} // Ensures that scores are added only once if app restarted in this phase
+// SetLocalVal('scoreadded', 1) 
+// changebgcolor('timerdisplay', 'yellow')
+// changetextvalue('timerdisplay', '&nbsp;')
+
+document.getElementById('theboard').style.display='none'
+changetextvalue('output', sometext)
+document.getElementById('output').style.display='inline'
+
+return
+}
+
+// Show Result
+if (somestatus[3]==8)
+{
+writethewordtable()
+somesetwords=GetLocalEval('setwords')
+somesolvewords=GetLocalEval('solvewords')
+somesolveselection=GetLocalEval('solveselection')
+somesetselection=GetLocalEval('setselection')
+var somei
+var someword
+for (var i=0; i<somesolvewords.length; i++)
+{
+somebgcolor=neutral; somebgintensity='light'
+someword=somesolvewords[i]
+somei=ith(someword, somesetwords)
+if (member(somei, somesetselection)==true) 
+{
+if (somei>=goodstart && somei<=goodend) {somebgcolor=good; somebgintensity='dark'}
+if (somei>=badstart && somei<=badend) {somebgcolor=bad; somebgintensity='dark'}
+
+}
+changetextvalue('word'+i, imagefor(somebgintensity, somebgcolor, somesolvewords[i]))
+}
+// show scores and buttons
+changebgcolor('timerdisplay', 'red')
+changetextvalue('timerdisplay', '&nbsp;')
+
+var somebutton='<td width='+Math.floor(scalef*50)+' onClick="goto(12)">'+graphicfor('OK')+'</td>'
+changetextvalue('workpad', 'Setter\'s selections - tap OK to proceed.')
+changetextvalue('scoresbuttons', '<table border=0 cellspacing=0 cellpadding=0 width='+Math.floor(scalef*230)+'><tr>'+somebutton+'<td width='+Math.floor(scalef*3)+'><img src="empty.png" width='+Math.floor(scalef*3)+'></td><td style="text-align:center;font-weight:bold;color:black;background-color:lemonchiffon;font-size:'+Math.floor(scalef*8)+'px">'+scorecard()+'</td><td width='+Math.floor(scalef*3)+'><img src="empty.png" width='+Math.floor(scalef*3)+'></td>'+somebutton+'</tr></table>')
+document.getElementById('linxemtext').value=somelinxemtext
+
+// document.getElementById("linxemtext").disabled=true
+document.getElementById("linxemtext").readOnly=true
+document.getElementById("linxemtext").style.backgroundColor='#FFAAAA'
+document.getElementById('currentplayer').value=somesolvername
+document.getElementById('linkedwords').value=somesetselection.length
+
+
+document.getElementById('theboard').style.display='inline'
+changetextvalue('output', '&nbsp;')
+document.getElementById('output').style.display='none'
+return
+}
+
+// Incomplete Setting
+if (somestatus[3]==9)
+{
+
+// somesetwords=GetLocalEval('setwords')
+// somesolvewords=GetLocalEval('solvewords')
+// somesolveselection=GetLocalEval('solveselection')
+// somesetselection=GetLocalEval('setselection')
+
+sometext='<br><table border=0 cellpadding='+Math.floor(scalef*3)+' style="'+dialogueborder+'width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
+
+sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br></span>'
+
+sometext=sometext+somesettername+' failed to select 2 words within the countdown: '+failcompleteset+ ' points go to the opposition.'
+sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">This ends the challenge.<br></span>'
+sometext=sometext+'<br><table border=1 cellpadding=4 cellspacing=0 style="width:80%;background-color:#FFDDDD"  align=center><tr><td style="text-align:center;font-weight:bold">Current Score<br><table border=0 cellspacing=0 cellpadding=0 style="background-color:lemonchiffon" align=center><tr><td>'+scorecard()+'</td></tr></table>&nbsp;</td></tr></table>'
+
+sometext=sometext+'<br>Tap <i>OK</i> to continue'
+sometext=sometext+'<br><br><table align=center border=0><tr><td onClick="goto(12)" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table>'
+
+sometext=sometext+'<br>&nbsp;</td></tr></table>'
+
+document.getElementById('theboard').style.display='none'
+changetextvalue('output', sometext)
+document.getElementById('output').style.display='inline'
+
+return
+}
+
+// Rejected Clue
+if (somestatus[3]==10)
+{
+
+// somesetwords=GetLocalEval('setwords')
+// somesolvewords=GetLocalEval('solvewords')
+// somesolveselection=GetLocalEval('solveselection')
+// somesetselection=GetLocalEval('setselection')
+
+sometext='<br><table border=0 cellpadding='+Math.floor(scalef*3)+' style="'+dialogueborder+'width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
+
+sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br></span>'
+
+sometext=sometext+'The Linxem given by '+somesettername+' was rejected: '+cluerejection+ ' points go to the opposition.'
+sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">This ends the challenge.<br></span>'
+sometext=sometext+'<br><table border=1 cellpadding=4 cellspacing=0 style="width:80%;background-color:#FFDDDD"  align=center><tr><td style="text-align:center;font-weight:bold">Current Score<br><table border=0 cellspacing=0 cellpadding=0 style="background-color:lemonchiffon" align=center><tr><td>'+scorecard()+'</td></tr></table>&nbsp;</td></tr></table>'
+
+sometext=sometext+'<br>Tap <i>OK</i> to continue'
+sometext=sometext+'<br><br><table align=center border=0><tr><td onClick="goto(12)" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table>'
+
+sometext=sometext+'<br>&nbsp;</td></tr></table>'
+
+document.getElementById('theboard').style.display='none'
+changetextvalue('output', sometext)
+document.getElementById('output').style.display='inline'
+
+return
+}
+
+// Incomplete Solving
+
+if (somestatus[3]==11)
+{
+somesetwords=GetLocalEval('setwords')
+somesolvewords=GetLocalEval('solvewords')
+somesolveselection=GetLocalEval('solveselection')
+somesetselection=GetLocalEval('setselection')
+
+sometext='<br><table border=0 cellpadding='+Math.floor(scalef*3)+' style="'+dialogueborder+'width:95%;background-color:lemonchiffon;text-align:center" align=center><tr><td>'
+
+sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">Challenge '+(somechallenge+1)+' of '+somepatterns.length+'<br><br></span>'
+
+sometext=sometext+somesolvername+' failed to select the required number of words within the countdown: '+failcompletesolve+ ' points go to the opposition.'
+sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">This ends the challenge.<br></span>'
+sometext=sometext+'<br><table border=1 cellpadding=4 cellspacing=0 style="width:80%;background-color:#FFDDDD"  align=center><tr><td style="text-align:center;font-weight:bold">Current Score<br><table border=0 cellspacing=0 cellpadding=0 style="background-color:lemonchiffon" align=center><tr><td>'+scorecard()+'</td></tr></table>&nbsp;</td></tr></table>'
+
+sometext=sometext+'<br>Tap <i>OK</i> to see the selections made by the setter'
+sometext=sometext+'<br><br><table align=center border=0><tr><td onClick="goto(8)" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table>'
+
+sometext=sometext+'<br>&nbsp;</td></tr></table>'
+document.getElementById('theboard').style.display='none'
+changetextvalue('output', sometext)
+document.getElementById('output').style.display='inline'
+
+return
+}
+
+
+// End Challenge
+if (somestatus[3]==12)
+{
+
+if (somestatus[2]+1==somepatterns.length) // end game
+{
+somestatus[3]=13
+}
+else
+{
+somestatus[2]++
+somestatus[3]=0
+}
+SetLocalVal('linxemstatus', somestatus)
+continuechallenge()
+}
+
+// End Game
+if (somestatus[3]==13)
+{
+
+sometext='<br><table border=0 cellpadding='+Math.floor(scalef*3)+' style="'+dialogueborder+'width:95%;background-color:#FFDDDD;text-align:center" align=center><tr><td>'
+
+sometext=sometext+'<br><br><span style="font-weight:bold;font-size:'+Math.floor(scalef*12)+'px">Game over<br><br>Final scores<br></span>'
+sometext=sometext+'<br><table border=0 cellspacing=0 cellpadding=0 style="background-color:lemonchiffon" align=center width=80%><tr><td>'+scorecard()+'</td></tr></table>'
+
+sometext=sometext+'<br><br>Tap <i>New</i> for a new game.<br><br>&nbsp;'
+
+
+
+sometext=sometext+'<br>&nbsp;</td></tr></table>'
+document.getElementById('theboard').style.display='none'
+changetextvalue('output', sometext)
+document.getElementById('output').style.display='inline'
+
+}
+
+}
+
+function commitset()
+{
+var somesetselection=GetLocalEval('setselection')
+var somegametype=GetLocalList('linxemstatus')[0]
+if (somesetselection.length>=2)
+{
+if (timer != null) {clearTimeout(timer)}
+if (somegametype==0.5) 
+{
+goto(7)
+
+} 
+else
+{
+goto(3)
+}
+}
+else
+{
+changetextvalue('workpad', '<span style="color:red">Select at least 2 words</span>')
+}
+}
+
+function commitsolve()
+{
+var somesetselection=GetLocalEval('setselection')
+var somesolveselection=GetLocalEval('solveselection')
+if (somesolveselection.length==somesetselection.length)
+{
+if (timer != null) {clearTimeout(timer)}
+
+goto(6)
+}
+else
+{
+changetextvalue('workpad', '<span style="color:red">Select exactly '+somesetselection.length+' words</span>')
+}
+}
+
+
+
+function calculatescoretable()
+{
+somesetwords=GetLocalEval('setwords')
+somesolvewords=GetLocalEval('solvewords')
+somesolveselection=GetLocalEval('solveselection')
+somesetselection=GetLocalEval('setselection')
+
+if (GetLocalList('linxemstatus')[0]==0.5)
+{
+somesolvewords=somesetwords
+somesolveselection=somesetselection
+}
+
+var sometable=[]
+
+var somei
+var someword
+var someyourscore
+var someoppscore
+var someyourtotal=0
+var someopptotal=0
+var somecorrect=0
+for (var i=0; i<somesolvewords.length; i++)
+{
+someyourscore=0
+someoppscore=0
+someword=somesolvewords[i]
+somei=ith(someword, somesetwords)
+if (member(i, somesolveselection)==true) 
+{
+someword=somesolvewords[i]
+somei=ith(someword, somesetwords)
+if (somei>=goodstart && somei<=goodend) {someyourscore=goodscore}
+if (somei>=badstart && somei<=badend) {someoppscore=badscore}
+
+
+if (member(somei, somesetselection)==true) {someyourscore=correctscore; somecorrect++}
+sometable=sometable.concat([[someword, someyourscore, someoppscore]])
+someyourtotal=someyourtotal+someyourscore
+someopptotal=someopptotal+someoppscore
+}
+
+}
+// calculate bonus
+var someyourbonus=0
+var someoppbonus=0
+if (somecorrect==somesolveselection.length && somecorrect>=3) {someyourbonus=bonusscore}
+sometable=sometable.concat([['<i>Bonus</i>', someyourbonus, someoppbonus]])
+
+
+someyourtotal=someyourtotal+someyourbonus
+someopptotal=someopptotal+someoppbonus
+sometable=sometable.concat([['<i>Total</i>', someyourtotal, someopptotal]])
+return [somecorrect, somesolveselection.length, someyourtotal, someopptotal, sometable]
+
+}
+
+
+function scorecard()
+{
+
+var somescores=GetLocalEval('scores')
+var somestatus=GetLocalList('linxemstatus')
+var somegametype=somestatus[0]
+
+if (somegametype==4) {return '<table border=1 cellpadding=0 cellspacing=0 width=100%><tr><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*24)+'px;text-align:center;font-weight:bold">'+textinitialsfor(0)+'</td><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*24)+'px;text-align:center;font-weight:bold">'+textinitialsfor(1)+'</td><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*24)+'px;text-align:center;font-weight:bold">'+textinitialsfor(2)+'</td><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*24)+'px;text-align:center;font-weight:bold">'+textinitialsfor(3)+'</td></tr><tr><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*24)+'px;text-align:center;font-weight:bold">'+somescores[0]+'</td><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*24)+'px;text-align:center;font-weight:bold">'+somescores[1]+'</td><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*24)+'px;text-align:center;font-weight:bold">'+somescores[2]+'</td><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*24)+'px;text-align:center;font-weight:bold">'+somescores[3]+'</td></tr></table>'}
+if (somegametype==3) {return '<table border=1 cellpadding=0 cellspacing=0 width=100%><tr><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*32)+'px;text-align:center;font-weight:bold">'+textinitialsfor(0)+'</td><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*32)+'px;text-align:center;font-weight:bold">'+textinitialsfor(1)+'</td><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*32)+'px;text-align:center;font-weight:bold">'+textinitialsfor(2)+'</td></tr><tr><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*32)+'px;text-align:center;font-weight:bold">'+somescores[0]+'</td><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*32)+'px;text-align:center;font-weight:bold">'+somescores[1]+'</td><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*32)+'px;text-align:center;font-weight:bold">'+somescores[2]+'</td></tr></table>'}
+if (somegametype==2) {return '<table border=1 cellpadding=0 cellspacing=0 width=100%><tr><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*48)+'px;text-align:center;font-weight:bold">'+textinitialsfor(0)+' & '+textinitialsfor(1)+'</td><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*48)+'px;text-align:center;font-weight:bold">Anon.</td></tr><tr><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*48)+'px;text-align:center;font-weight:bold">'+(somescores[0]+somescores[1])+'</td><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*48)+'px;text-align:center;font-weight:bold">'+somescores[2]+'</td></tr></table>'}
+if (somegametype==1) {return '<table border=1 cellpadding=0 cellspacing=0 width=100%><tr><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*48)+'px;text-align:center;font-weight:bold">'+textinitialsfor(0)+' & '+textinitialsfor(2)+'</td><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*48)+'px;text-align:center;font-weight:bold">'+textinitialsfor(1)+' & '+textinitialsfor(3)+'</td></tr><tr><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*48)+'px;text-align:center;font-weight:bold">'+(somescores[0]+somescores[2])+'</td><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*48)+'px;text-align:center;font-weight:bold">'+(somescores[1]+somescores[3])+'</td></tr></table>'}
+if (somegametype==0.5) {return '<table border=1 cellpadding=0 cellspacing=0 width=100%><tr><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*48)+'px;text-align:center;font-weight:bold">'+textinitialsfor(0)+'</td><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*48)+'px;text-align:center;font-weight:bold">Anon.</td></tr><tr><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*48)+'px;text-align:center;font-weight:bold">'+(somescores[0]+somescores[1])+'</td><td style="font-size:'+Math.floor(scalef*10)+'px;width:'+Math.floor(scalef*48)+'px;text-align:center;font-weight:bold">'+somescores[2]+'</td></tr></table>'}
+
+}
+
+function clickword(somenum)
+{
+var somestatus=GetLocalList('linxemstatus')
+if (somestatus[3]==1)
+{
+var someselected=GetLocalEval('setselection')
+if (member(somenum, someselected)==true)
+{
+someselected=removeitem(somenum, someselected)
+}
+else
+{
+someselected=someselected.concat([somenum])
+}
+SetLocalVal('setselection', convertlisttotext('number', someselected))
+continuechallenge()
+}
+
+if (somestatus[3]==5)
+{
+var someselected=GetLocalEval('solveselection')
+var somesetselection=GetLocalEval('setselection')
+if (member(somenum, someselected)==true)
+{
+someselected=removeitem(somenum, someselected)
+}
+else
+{
+someselected=someselected.concat([somenum])
+}
+SetLocalVal('solveselection', convertlisttotext('number', someselected))
+continuechallenge()
+}
+}
+
+
+
+
+function goto(somenum)
+{
+var somestatus=GetLocalList('linxemstatus')
+somestatus[3]=somenum
+SetLocalVal('linxemstatus', somestatus)
+if (somestatus[3]==1 || somestatus[3]==5) {starttimer()}
+if (somenum==7) 
+{
+var somescoring=calculatescoretable()
+var someyourtotal=somescoring[2]
+var someopptotal=somescoring[3]
+distributescores(someyourtotal,someopptotal) 
+}
+if (somenum==9)
+{
+distributescores(0, failcompleteset) 
+}
+if (somenum==10)
+{
+distributescores(0, cluerejection) 
+}
+if (somenum==11)
+{
+distributescores(0, failcompletesolve) 
+}
+continuechallenge()
+}
+
+function numberofplayers(sometype)
+{
+if (sometype==0.5) {return 2}
+if (sometype==1) {return 4}
+if (sometype==2) {return 3}
+return sometype
+}
+
+
+var thetarget
+var soltimer=null
+var timer = null
+var timeron = 0
+var countdown=0
+
+
+function stoptimer()
+{
+if (timer != null) {clearTimeout(timer)}
+}
+
+function starttimer()
+{
+
+if (timer != null) {clearTimeout(timer)}
+SetLocalVal('countdown', GetLocalNum('timeallowed'))
+runtimer()
+}
+
+function displaycountdown(countdown)
+{
+var somebg
+changetextvalue('timerdisplay', countdown)
+if (countdown<=15) {somebg='orange'} else {somebg='yellow'}
+changebgcolor('timerdisplay', somebg)
+
+}
+
+function runtimer()
+{
+var countdown=GetLocalNum('countdown')
+var somebg
+displaycountdown(countdown)
+if (countdown>0)
+{
+SetLocalVal('countdown', countdown-1)
+timer = setTimeout("runtimer()",1000);
+}
+else
+{
+var somestatus=GetLocalList('linxemstatus')
+if (somestatus[3]==1) 
+{
+if (GetLocalEval('setselection').length<2)
+{
+goto(9)
+return
+}
+else
+{
+if (somestatus[0]==0.5)
+{
+goto(7)
+
+}
+else
+{
+goto(3)
+}
+return
+}
+}
+if (somestatus[3]==5) 
+{
+if (GetLocalEval('solveselection').length!=GetLocalEval('setselection').length)
+{
+goto(11)
+return
+}
+else
+{
+goto(6)
+return
+}
+}
+}
+}
+
+
+function setcountdown(sometime)
+{
+SetLocalVal('timeallowed', sometime)
+for (var i=60; i<=300; i=i+60)
+{
+document.getElementById('setcd'+i).style.backgroundColor = '#FFFFEE'
+document.getElementById('setcd'+i).style.color = 'silver'
+}
+document.getElementById('setcd'+sometime).style.backgroundColor = 'limegreen'
+document.getElementById('setcd'+sometime).style.color = 'black'
+}
+
+
+</script>
+<script language="Javascript">
+
+
+function imagefor(someshade, somecolour, someletter)
+{
+var somebg='#FFFACD'
+var sometextcolour='black'
+if (someletter==='' || someletter===' ') {someletter='&nbsp;'}
+if (someshade=='dark') {sometextcolour='white'}
+
+if (GetLocalNum('zoom')==0)
+{
+return '<div style="position:relative"><img width='+Math.floor(scalef*76)+' height='+Math.floor(scalef*15)+' src="'+someshade+somecolour+'wordbg.png" style="display:block"><div style="position:absolute;top:0px;left:0px;width:100%;height:100%;display:block"><table border=0 cellspacing=0 cellpadding=0 align=center valign=middle ><tr height='+Math.floor(scalef*15)+'><td align=center valign=middle style="text-align:center;font-weight:bold;color:'+sometextcolour+'">'+someletter+'</td></tr></table></div></div>'
+}
+else
+{
+return '<div style="position:relative"><img width='+Math.floor(scalef*114)+' height='+Math.floor(scalef*17)+' src="'+someshade+somecolour+'wordbg.png" style="display:block"><div style="position:absolute;top:0px;left:0px;width:100%;height:100%;display:block"><table border=0 cellspacing=0 cellpadding=0 align=center valign=middle ><tr height='+Math.floor(scalef*17)+'><td align=center valign=middle style="font-size:'+Math.floor(scalef*13)+'px;text-align:center;font-weight:bold;color:'+sometextcolour+'">'+someletter+'</td></tr></table></div></div>'
+}
+
+
+}
+
+//  End -->
+</script>
+
+
+
+
+<script language="Javascript">
+
+
+function writethewordtable()
+{
+
+var sometext=''
+if (GetLocalNum('zoom')==0)
+{
+sometext=sometext+'<table width=100% border=0 cellspacing=0 cellpadding=0 style = "background-color:none" align=center>'
+for (var i=0; i<(numberwords/3); i++)
+{
+sometext=sometext+'<tr>'
+for (var j=0; j<3; j++)
+{
+sometext=sometext+'<td onClick="clickword('+((i*3)+j)+')" id="word'+((i*3)+j)+'" width="'+Math.floor(scalef*76)+'" align=center>'+imagefor('light', neutral, 'Linxem')+'</td>'
+if (j<2) {sometext=sometext+'<td><img src="empty.png" width='+Math.floor(scalef*1)+'  height='+Math.floor(scalef*2)+' style="display:block"></td>'}
+}
+sometext=sometext+'</tr><tr><td colspan=5><img src="empty.png" width='+Math.floor(scalef*230)+'  height='+Math.floor(scalef*2)+' style="display:block"></td></tr>'
+}
+sometext=sometext+'</table>'
+}
+else
+{
+sometext=sometext+'<table width=100% border=0 cellspacing=0 cellpadding=0 style = "background-color:none" align=center>'
+for (var i=0; i<(numberwords/2); i++)
+{
+sometext=sometext+'<tr>'
+for (var j=0; j<2; j++)
+{
+sometext=sometext+'<td onClick="clickword('+((i*2)+j)+')" id="word'+((i*2)+j)+'" width="'+Math.floor(scalef*114)+'" align=center></td>'
+if (j<1) {sometext=sometext+'<td><img src="empty.png" width='+Math.floor(scalef*2)+'  height='+Math.floor(scalef*2)+' style="display:block"></td>'}
+}
+sometext=sometext+'</tr><tr><td colspan=5><img src="empty.png" width='+Math.floor(scalef*230)+'  height='+Math.floor(scalef*1)+' style="display:block"></td></tr>'
+}
+sometext=sometext+'</table>'
+}
+changetextvalue('wordtable', sometext)
+}
+
+function writethegame()
+{
+documentwrite('<div id="theboard" style="display:none; background-color:silver">')
+documentwrite('<center>')
+documentwrite('<table width=100% border=0 cellspacing=0 cellpadding=0 style = "background-color:none" align=center>')
+
+
+documentwrite('<tr><td width=100% id="wordtable">')
+
+documentwrite('</td></tr>')
+
+documentwrite('<tr><td ><table border=1 cellpadding=0 cellspacing=0 width=100%><tr><td onClick="setzoom(0)" style="background-color:silver;color:white;width:'+Math.floor(scalef*50)+'px;text-align:center" valign=middle id="col3"><table border=0 valign=middle height=100% cellspacing=0 cellpadding=0 align=center><tr><td valign=middle><span style="display:block;font-size:'+Math.floor(scalef*5)+'px;color:white;background-color:black">&nbsp;Word&nbsp;</span></td><td><img src="empty.png" width='+Math.floor(scalef*2)+'  height='+Math.floor(scalef*4)+' style="display:block"></td><td valign=middle><span style="display:block;font-size:'+Math.floor(scalef*5)+'px;color:white;background-color:black">&nbsp;Word&nbsp;</span></td><td><img src="empty.png" width='+Math.floor(scalef*2)+'  height='+Math.floor(scalef*4)+' style="display:block"></td><td valign=middle><span style="display:block;font-size:'+Math.floor(scalef*5)+'px;color:white;background-color:black">&nbsp;Word&nbsp;</span></td></tr></table></td><td style="font-size:'+Math.floor(scalef*10)+'px;background-color:blue;color:white;text-align:center;font-weight:bold;width:30px" id="challengenum">0</td><td style="font-size:'+Math.floor(scalef*10)+'px;background-color:yellow;text-align:center;font-weight:bold" id="timerdisplay">&nbsp;</td><td style="font-size:'+Math.floor(scalef*10)+'px;background-color:blue;color:white;text-align:center;font-weight:bold;width:30px" id="numchallenges">0</td><td onClick="setzoom(1)" style="background-color:silver;color:white;width:'+Math.floor(scalef*50)+'px;text-align:center" valign=middle id="col2"><table border=0 valign=middle cellspacing=0 cellpadding=0 align=center><tr><td valign=middle><span style="display:block;font-size:'+Math.floor(scalef*8)+'px;color:white;background-color:black">&nbsp;Word&nbsp;</span></td><td><img src="empty.png" width='+Math.floor(scalef*2)+'  height='+Math.floor(scalef*4)+'  style="display:block"></td><td valign=middle><span style="display:block;font-size:'+Math.floor(scalef*8)+'px;color:white;background-color:black">&nbsp;Word&nbsp;</span></td></tr></table></td></tr></table></td></tr>')
+/*
+documentwrite('<tr><td ><table border=1 cellpadding=0 cellspacing=0 width=100%><tr><td onClick="setzoom(0)" style="background-color:silver;color:white;width:'+Math.floor(scalef*50)+'px;text-align:center" valign=middle id="col3"><table border=0 valign=middle cellspacing=0 cellpadding=0 align=center><tr><td><img valign=top src="solid.png" width='+Math.floor(scalef*14)+' height='+Math.floor(scalef*5)+' style="display:block"></td><td><img src="empty.png" width='+Math.floor(scalef*2)+'  height='+Math.floor(scalef*4)+' style="display:block"></td><td><img valign=top src="solid.png" width='+Math.floor(scalef*14)+' height='+Math.floor(scalef*5)+' style="display:block"></td><td><img src="empty.png" width='+Math.floor(scalef*2)+'  height='+Math.floor(scalef*4)+' style="display:block"></td><td><img valign=top src="solid.png" width='+Math.floor(scalef*14)+' height='+Math.floor(scalef*5)+' style="display:block"></td></tr></table></td><td style="font-size:'+Math.floor(scalef*10)+'px;background-color:yellow;text-align:center;font-weight:bold" id="timerdisplay">&nbsp;</td><td onClick="setzoom(1)" style="background-color:silver;color:white;width:'+Math.floor(scalef*50)+'px;text-align:center" valign=middle id="col2"><table border=0 valign=middle cellspacing=0 cellpadding=0 align=center><tr><td><img src="solid.png" width='+Math.floor(scalef*21)+' height='+Math.floor(scalef*8)+'  style="display:block"></td><td><img src="empty.png" width='+Math.floor(scalef*4)+'  height='+Math.floor(scalef*4)+'  style="display:block"></td><td><img src="solid.png" width='+Math.floor(scalef*21)+' height='+Math.floor(scalef*8)+'  style="display:block"></td></tr></table></td></tr></table></td></tr>')
+*/
+documentwrite('<tr><td ><img src="empty.png" width='+Math.floor(scalef*230)+'  height='+Math.floor(scalef*2)+' style="display:block"></td></tr>')
+// documentwrite('<tr><td  style="text-align:center; "><img src="empty.png" width='+Math.floor(scalef*230)+'  height='+Math.floor(scalef*3)+' style="display:block"></td></tr>')
+documentwrite('<tr><td  style="text-align:center; font-weight:bold; height:'+Math.floor(scalef*15)+'px;font-size:'+Math.floor(scalef*10)+'px"><table cellspacing=0 cellpadding=0 align=center border=0 width='+Math.floor(scalef*230)+'><tr><td width='+Math.floor(scalef*30)+' align=left><input type="text" value="" id="currentplayer" style="border-radius:'+Math.floor(scalef*5)+'px;background-color:lemonchiffon;color:black; border-color:silver; border-style:inset; border-width:3px;text-align:center;font-size:'+Math.floor(scalef*13)+'px; font-weight:bold;width:'+Math.floor(scalef*25)+'px" readonly=readonly></td><td ><img src="empty.png" width='+Math.floor(scalef*5)+'  height='+Math.floor(scalef*2)+' style="display:block"></td><td align=center><input align=center type="text" value="" id="linxemtext" placeholder="Linxem" style="color:black;border-radius:'+Math.floor(scalef*5)+'px;background-color:#FFAAAA;border-color:silver; border-style:inset; border-width:3px;text-align:center;font-size:'+Math.floor(scalef*13)+'px; font-weight:bold;width:90%" onchange="savelinxemtext()" readonly></td><td ><img src="empty.png" width='+Math.floor(scalef*5)+'  height='+Math.floor(scalef*2)+' style="display:block"></td><td width='+Math.floor(scalef*30)+' align=right><input type="text" value="" id="linkedwords" style="border-radius:'+Math.floor(scalef*5)+'px;background-color:lemonchiffon;color:black; border-color:silver; border-style:inset; border-width:3px;text-align:center;font-size:'+Math.floor(scalef*13)+'px; font-weight:bold;width:'+Math.floor(scalef*25)+'px" readonly=readonly></td></tr></table></td></tr>')
+documentwrite('<tr><td ><img src="empty.png" width='+Math.floor(scalef*230)+'  height='+Math.floor(scalef*2)+' style="display:block"></td></tr>')
+documentwrite('<tr><td  style="text-align:center; background-color:white;height:'+Math.floor(scalef*15)+'px;font-size:'+Math.floor(scalef*10)+'px"><table border=1 width=100% height=100% cellspacing=0 cellpadding=0 align=center valign=middle><tr><td id="workpad" style="font-size:'+Math.floor(scalef*10)+'px;text-align:center"></td></tr></table></td></tr>')
+
+
+documentwrite('<tr><td ><img src="empty.png" width='+Math.floor(scalef*230)+'  height='+Math.floor(scalef*2)+' style="display:block"></td></tr>')
+
+documentwrite('<tr><td style="text-align:center; " id="scoresbuttons"></td></tr>')
+
+
+documentwrite('</table>')
+documentwrite('<div style="width:100%" id="currentadtext"> </div>')
+
+// documentwrite('<div style="width:100%" id="spy">Spy</div>')
+
+documentwrite('</center>')
+documentwrite('</div>')
+
+documentwrite('<div id="output" style="display:none;width:100%">')
+
+documentwrite('</div>')
+
+
+}
+
+
+function setzoom(someval)
+{
+SetLocalVal('zoom', someval)
+continuechallenge()
+}
+
+
+
+
+// End main app code
+
+</script>
+<script language="Javascript">
+
+
+
+
+
+var resetadbreakcounter=9
+var adbreakcounter
+
+
+
+
+
+function openwebpage(someurl)
+{
+document.location.href=someurl
+}
+
+var displayadnum=0
+var displayhelptexts=
+[
+'<table width=100% border=0 bgcolor=cyan  onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="icon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*9)+'px"><b>Help</b> gives help; <b>New</b> starts a new game<br><b>Word Word Word</b> 3-columns (smaller text)<br><b>Word Word</b> 2-columns (larger text)</td></tr></table>',
+'<table width=100% border=0 bgcolor=cyan  onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="icon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*9)+'px"><b>2 pts</b> for each correct selection<br><b>4 pts</b> bonus for 3 or more all correct</td></tr></table>',
+'<table width=100% border=0 bgcolor=cyan  onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="icon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*9)+'px"><b>4 pts to opp\'n</b> for selection originally yellow<br><b>10 pts to opp\'n</b> for missing countdown<br><b>10 pts to opp\'n</b> for invalid Linxem</td></tr></table>',
+'<table width=100% border=0 bgcolor=cyan  onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="icon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*9)+'px"><b>Remember to look for:</b><br>words with more than one meaning;<br>words with more than one pronunciation.</td></tr></table>',
+'<table width=100% border=0 bgcolor=cyan  onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="icon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*9)+'px"><b>Remember to look for:</b><br>words that sound the same as other words;<br>names that are also words.</td></tr></table>',
+'<table width=100% border=0 bgcolor=cyan  onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="icon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*9)+'px"><span style="font-weight:bold">TopAccolades</span><br>Apps and web services</td></tr></table>',
+'<table width=100% border=0 bgcolor="lightblue" onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="compactfuniconlarge.png" align=center valign=middle  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b> i.compactfun.com</b><br>This app and other apps are also accessible online from many devices at i.compactfun.com</td></tr></table>'
+
+]
+
+var displayadtexts=displayhelptexts
+
+var displayupgradetexts=
+[
+]
+
+var displayapptexts=
+[
+'<table width=100% border=0 bgcolor=beige onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="pentadicon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Pentad - Try the app now</b><br>Includes Word Pentad (make words from letters) and Poker Pentad (make poker hands), both on a 5x5 board!</td></tr></table>',
+'<table width=100% border=0 bgcolor=limegreen onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="xword4x4icon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Xword<sup>4x4</sup> - Try the app now</b><br>Great Play & Pass crossword puzzle for up to 4 players. Define your own board layouts!</td></tr></table>',
+'<table width=100% border=0 bgcolor="#FF8888" onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="csisherlock144.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Who Killed Vic? -  Try the app now!</b><br>Vic has been killed.  Try to solve who killed Vic, with what, and where, in this great interactive logic puzzle.</td></tr></table>',
+'<table width=100% border=0 bgcolor=limegreen onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*40)+'"><img src="rummyicon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Rummy 7 -  Try the app now!</b><br>Play 7-card Rummy against the system or another player.  Full animation.</td></tr></table>',
+'<table width=100% border=0 bgcolor=cyan onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*40)+'"><img src="kublitzcubeicon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Kublitz Cube -  Download the app now!</b><br>Separated cubelets let you see/know all sides without turning the puzzle cube.  Guide, tools & notation to help you solve it</td></tr></table>',
+'<table width=100% border=0 bgcolor=limegreen onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*40)+'"><img src="pegsolitaireicon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Peg Solitaire -  Download the app now!</b><br>Play the full puzzle or a cut-down version.  Guide and notation to help you solve and remember the full puzzle</td></tr></table>',
+'<table width=100% border=0 bgcolor=lightsteelblue onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*40)+'"><img src="numberskullicon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Numberskull -  Try the app now!</b><br>Puzzle to solve 6 equations, results given across and down, using 9 numbers and operators. Can you do it?</td></tr></table>',
+'<table width=100% border=0 bgcolor=lightblue onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="compactfuniconlarge.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Compact Fun -  Try the app now!</b><br>31 classic/original games and puzzles in one app: words, numbers, logic, blocks, strategy...</td></tr></table>',
+'<table width=100% border=0 bgcolor=lightblue onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="compactfuniconlarge.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Compact Fun -  Try the app now!</b><br>Includes Rummy, 4-in-a-line, Pentad, Letters & Numbers Games, Turncoat and Yak</td></tr></table>',
+'<table width=100% border=0 bgcolor=lightblue onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="compactfuniconlarge.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Compact Fun -  Try the app now!</b><br>Includes Hangman, WordSearch, Pentad, Linkword Snap and Word Ladder</td></tr></table>',
+'<table width=100% border=0 bgcolor=lightblue onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="compactfuniconlarge.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Compact Fun -  Try the app now!</b><br>Includes Step Challenge, Pyramid Numbers, Sudoku and Numberskull </td></tr></table>',
+'<table width=100% border=0 bgcolor=lightblue onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="compactfuniconlarge.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Compact Fun -  Try the app now!</b><br>Includes Sudoku, Memory Pairs, Master Code, Mystery Clues and Bidinca </td></tr></table>',
+'<table width=100% border=0 bgcolor=lightblue onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="compactfuniconlarge.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Compact Fun -  Try the app now!</b><br>Includes Peg Solitaire, Towers of Hanoi, Poker Pentad, Mancala and Code 4x6 </td></tr></table>',
+'<table width=100% border=0 bgcolor=cyan onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="bbflogo.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>BrainBoxFun -  Try the app now!</b><br>10 brain-training exercises inc.: memory, verbal comprehension, pattern recognition, word power and mental arithmetic</td></tr></table>'
+
+
+]
+
+var displaywmltexts=
+[
+'<table width=100% border=0 bgcolor="#FFCCCC" onClick="openwebpage(\'http://www.with-my-love.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="wmllogo.jpg" align=center valign=middle  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b> With-my-love.com</b><br>Dedicate one of our many personal home pages to someone you love for a Birthday, Anniversary, Valentine\'s, Mother\'s Day or Father\'s Day.</td></tr></table>',
+'<table width=100% border=0 bgcolor="#FFCCCC" onClick="openwebpage(\'http://www.with-my-love.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="wmllogo.jpg" align=center valign=middle  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b> With-my-love.com</b><br>Our personal web site addresses come in two parts:<br><b><span style="color:#FF0000">Defined by you</span>.<span style="color:green">Supplied by us</span></b></td></tr></table>',
+'<table width=100% border=0 bgcolor="#FFCCCC" onClick="openwebpage(\'http://www.with-my-love.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="wmllogo.jpg" align=center valign=middle  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b> With-my-love.com</b><br>The parts we supply include:<br><b><span style="color:green">in-the.land</span><br><span style="color:green">in-the-whole.world</span></b></td></tr></table>',
+'<table width=100% border=0 bgcolor="#FFCCCC" onClick="openwebpage(\'http://www.with-my-love.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="wmllogo.jpg" align=center valign=middle  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b> With-my-love.com</b><br>With these ones you supply an OPINION or maybe a NAME plus an OPINION</td></tr></table>',
+'<table width=100% border=0 bgcolor="#FFCCCC" onClick="openwebpage(\'http://www.with-my-love.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="wmllogo.jpg" align=center valign=middle  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b> With-my-love.com</b><br>Full examples: <b><span style="color:#FF0000">best-wife</span>.<span style="color:green">in-the-whole.world</span><br><span style="color:#FF0000">sexiest-lover</span>.<span style="color:green">in-the-whole.world</span><br><span style="color:#FF0000">best-husband</span>.<span style="color:green">in-the.land</span>, <span style="color:#FF0000">greatest</span>.<span style="color:green">in-the.land</span></b></td></tr></table>',
+'<table width=100% border=0 bgcolor="#FFCCCC" onClick="openwebpage(\'http://www.with-my-love.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="wmllogo.jpg" align=center valign=middle  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b> With-my-love.com</b><br>More examples: <b><span style="color:#FF0000">best-mom</span>.<span style="color:green">in-the-whole.world</span><br><span style="color:#FF0000">best-dad</span>.<span style="color:green">in-the-whole.world</span><br><span style="color:#FF0000">best-daughter</span>.<span style="color:green">in-the.land</span>, <span style="color:#FF0000">sexiest</span>.<span style="color:green">in-the.land</span></b></td></tr></table>',
+'<table width=100% border=0 bgcolor="#FFCCCC" onClick="openwebpage(\'http://www.with-my-love.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="wmllogo.jpg" align=center valign=middle  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b> With-my-love.com</b><br>More examples: <b><span style="color:#FF0000">best-lover</span>.<span style="color:green">in-the-whole.world</span><br><span style="color:#FF0000">joe-best-husband</span>.<span style="color:green">in-the-whole.world</span><br><span style="color:#FF0000">raj-best-son</span>.<span style="color:green">in-the.land</span>, <span style="color:#FF0000">top-dad</span>.<span style="color:green">in-the.land</span></b></td></tr></table>',
+'<table width=100% border=0 bgcolor="#FFCCCC" onClick="openwebpage(\'http://www.with-my-love.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="wmllogo.jpg" align=center valign=middle  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b> With-my-love.com</b><br>Other parts we supply are:<br><b><span style="color:green">best-in-the.world</span>, <span style="color:green">the-world-to.me</span><br><span style="color:green">supremely.sexy</span>, <span style="color:green">just-so.sexy</span></b></td></tr></table>',
+'<table width=100% border=0 bgcolor="#FFCCCC" onClick="openwebpage(\'http://www.with-my-love.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="wmllogo.jpg" align=center valign=middle  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b> With-my-love.com</b><br>Full examples: <b><span style="color:#FF0000">tim-wild</span>.<span style="color:green">best-in-the.world</span><br><span style="color:#FF0000">emma</span>.<span style="color:green">supremely.sexy</span>, <span style="color:#FF0000">george</span>.<span style="color:green">just-so.sexy</span><br><span style="color:#FF0000">lola</span>.<span style="color:green">the-world-to.me</span></b></td></tr></table>',
+'<table width=100% border=0 bgcolor="#FFCCCC" onClick="openwebpage(\'http://www.with-my-love.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="wmllogo.jpg" align=center valign=middle  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b> With-my-love.com</b><br><span style="color:purple"><b>Imagine your loved one\'s thrill at seeing such a home page dedicated to them on the special day!</b></span></td></tr></table>'
+]
+
+var displayllatexts=
+[
+'<table width=100% border=0 bgcolor=lightblue onClick="openwebpage(\'http://www.letterlookalikes.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="A_1_colour.jpg" align=center valign=middle  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Letter Lookalikes</b><br>Photos resembling letters, numbers and symbols</td></tr></table>',
+'<table width=100% border=0 bgcolor=lightblue onClick="openwebpage(\'http://www.letterlookalikes.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="E_1_colour.jpg" align=center valign=middle  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px">Frames for names and wishes for birthdays, anniversaries, Valentine\'s Day, Mother\'s Day, etc.</td></tr></table>',
+'<table width=100% border=0 bgcolor=lightblue onClick="openwebpage(\'http://www.letterlookalikes.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="H_5_colour.jpg" align=center valign=middle  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px">Pictures that say 1000s of words<br><b>www.letterlookalikes.com</b></td></tr></table>'
+]
+
+
+if (adsrequired==1)
+{
+displayadtexts=
+displayhelptexts.concat(displayupgradetexts).concat(displaywmltexts).concat(displayllatexts).concat(displayapptexts)
+}
+else
+{
+displayadtexts=displayhelptexts
+}
+
+
+
+function showcountdownad()
+{
+changetextvalue('countdownadtext', currentadtext())
+
+}
+
+function showcurrentad()
+{
+if (displayadtexts.length>0)
+{
+changetextvalue('currentadtext', currentadtext())
+}
+}
+
+function increaseadnum()
+{
+displayadnum++
+if (displayadnum>=displayadtexts.length) {displayadnum=0}
+}
+
+function currentadtext()
+{
+var sometext='<div style="width:100%;height:'+Math.floor(scalef*3)+'px"></div><table width=100% border=0 align=center bgcolor=silver><tr><td align=center>'+displayadtexts[displayadnum]+'</td></tr></table>'
+increaseadnum()
+return sometext
+}
+
+
+
+
+function mydecision(somemessage, someok, somecancel)
+{
+
+document.getElementById('theboard').style.display='none'
+changetextvalue('output', '<br><table width=95% height='+Math.floor(scalef*100)+' border=0 cellpadding=0 cellspacing=0 align=center bgcolor=lemonchiffon style="'+dialogueborder+'"><tr><td align=center><table border=0 align=center><tr><td  height='+Math.floor(scalef*50)+' align=center valign=middle colspan=2><br>'+centralimage()+'</td></tr><tr><td  colspan=2 align=center height='+Math.floor(scalef*75)+' align=center valign=middle style="font-size:'+Math.floor(scalef*12)+'px;font-weight:bold">'+somemessage+'</td></tr><tr height='+Math.floor(scalef*3)+'><td colspan=2></td></tr><tr><td  onClick="'+somecancel+'" align=center>'+graphicfor('Cancel')+'</td><td onClick="'+someok+'" align=center><br>'+graphicfor('OK')+'<br></td></tr></table></td></tr></table>')
+document.getElementById('output').style.display='inline'
+
+}
+
+
+
+
+
+
+
+function ith(someitem, somearray)
+{
+for (var i=0; i<somearray.length; i++)
+{
+if (someitem===somearray[i]) {return i}
+
+}
+
+}
+
+
+
+function splitliston(someitem, somelist)
+{
+var someindex
+for (var i=0; i<somelist.length; i++)
+{
+if (somelist[i]==someitem) 
+{
+someindex=i
+break
+}
+}
+var somebeg=somelist.slice(0, someindex)
+var someend=somelist.slice(someindex+1)
+return([somebeg, someend])
+}
+
+
+var preventbuttonactions=0
+
+
+</script>
+
+<script language="Javascript">
+
+function runonload()
+{
+if (adsrequired==0)
+{
+runonloadproper()
+}
+else
+{
+document.getElementById('theboard').style.display='none'
+preventbuttonactions=1
+var somemessage='<span style="color:red;font-weight:bold">Trial Version</span><br><br>This is a free trial version of Linxem. It is fully functional, but has approximately one third of the words and names that are available for display in the full version, which has over 2000.  This means that you will normally see more repetitions of display words from one challenge to the next than you would in the full version.<br><br>You may, of course, purchase the full version at any time to obtain the full set of words and names and, hence, more varied challenges.<br>'
+somemessage=somemessage+'<br><br><table align=center border=0><tr><td onClick="continuerunonload()" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table><br>'
+
+changetextvalue('output',  '<br><table width=100% height='+Math.floor(scalef*100)+' border=1 cellpadding=0 cellspacing=0  align=center bgcolor=lemonchiffon><tr><td><table width=100% border=0><tr><td height='+Math.floor(scalef*50)+' align=center valign=middle><br>'+centralimage()+'</td></tr><table></td></tr><tr><td  height='+Math.floor(scalef*75)+' align=center valign=middle>'+somemessage+'</td></tr><tr height='+Math.floor(scalef*3)+'><td></td></tr></table>')
+
+document.getElementById('output').style.display='inline'
+
+
+}
+
+}
+
+function continuerunonload()
+{
+preventbuttonactions=0
+runonloadproper()
+}
+
+function runonloadproper()
+{
+// first deal with remoteads
+eval(GetLocalVal('remoteads'))
+if (GetLocalVal('linxemstatus')==null) // first use
+{
+SetLocalVal('linxemstatus', [0, 0, -1, -1])
+
+document.getElementById('theboard').style.display='none'
+
+var someadvicetext=''
+if (localstorageworks==0) {someadvicetext='<span style="color:red">Certain storage functionality is not available. The application will still work, but the state will not be saved when you exit, so next time you\'ll need to start again.<br></span>'}
+var somemessage='<b>Welcome to Linxem from TopAccolades</b><br>One player has to find a word that links two or more given words, and that player\'s partner must identify the words it links<br><br><b>Key buttons</b><table width=95% border=0 align=center bgcolor="#8888FF"><tr><td valign=top style="font-weight:bold;text-align:left">New</td><td valign=top>Start a new game</td></tr><tr><td valign=top style="font-weight:bold;text-align:left">Help</td><td valign=top>Get general help during play</td></tr></table><br>'+someadvicetext+'Tap <b>New</b> button above now to begin.'
+changetextvalue('output',  '<br><table width=100% height='+Math.floor(scalef*100)+' border=1 cellpadding=0 cellspacing=0  align=center bgcolor=lemonchiffon><tr><td><table width=100% border=0><tr><td height='+Math.floor(scalef*50)+' align=center valign=middle><br>'+centralimage()+'</td></tr><table></td></tr><tr><td  height='+Math.floor(scalef*75)+' align=center valign=middle>'+somemessage+'</td></tr><tr height='+Math.floor(scalef*3)+'><td></td></tr></table>')
+
+document.getElementById('output').style.display='inline'
+return
+}
+// above says always give welcome message to start a new game when first loaded
+// otherwise continue game
+if (GetLocalList('linxemstatus')[3]>-1)
+{
+restartgame()
+}
+else
+{
+selectthegame()
+}
+}
+
+
+</script>
+
+<script language="Javascript">
+
+
+var showingads=0
+var thecdimage='<table style="background-color:red" valign=middle align=center border=0 cellpadding=0 cellspacing=0><tr height='+Math.floor(scalef*10)+' valign=bottom><td valign=bottom><img width='+Math.floor(scalef*10)+'   name="cd1" src="selected.gif" valign=bottom style="display:block"></td><td align=center valign=bottom><img valign=bottom align=center width='+Math.floor(scalef*10)+'   name="cd0" src="selected.gif" style="display:block"></td><td valign=bottom><img width='+Math.floor(scalef*10)+'   name="cd7" src="selected.gif"  valign=bottom style="display:block"></td></tr><tr height='+Math.floor(scalef*10)+' valign=middle><td valign=middle><img width='+Math.floor(scalef*10)+'   name="cd2" src="selected.gif" valign=middle style="display:block"></td><td align=center><img  width='+Math.floor(scalef*36)+' src="rummyicon.png" border=0 style="display:block"></td><td valign=middle><img width='+Math.floor(scalef*10)+'   name="cd6" src="selected.gif" valign=middle style="display:block"></td></tr><tr height='+Math.floor(scalef*10)+' valign=middle><td><img width='+Math.floor(scalef*10)+'   name="cd3" src="selected.gif" valign=middle style="display:block"></td><td align=center valign=middle><img valign=middle align=center width='+Math.floor(scalef*10)+'   name="cd4" src="selected.gif" style="display:block"></td><td valign=middle><img width='+Math.floor(scalef*10)+'   name="cd5" src="selected.gif" valign=middle style="display:block"></td></tr></table>'
+
+
+
+
+
+
+
+</script>
+
+<script language="Javascript">
+var suitimages=['red_front', 'blue_front', 'green_front', 'pink_front']
+function titleimage(somename)
+{
+var sometext=''
+var someindex=0
+sometext=sometext+'<div style="position:relative;top:0px;left:0px"><table border=0 cellspacing=0 cellpadding=0 align=center valign=middle bgcolor=black>'
+/*
+for (var i=0; i<2; i++)
+{
+someindex=i
+sometext=sometext+'<tr>'
+for (var j=0; j<10; j++)
+{
+sometext=sometext+'<td><img src="'+suitimages[someindex]+'.png" style="display:block" width='+Math.floor(scalef*10)+' height='+Math.floor(scalef*10)+'></td>'
+someindex++
+if (someindex==4) {someindex=0}
+}
+sometext=sometext+'</tr>'
+
+}
+*/
+sometext=sometext+'<tr>'
+for (var i=0; i<5; i++)
+{
+sometext=sometext+'<td><img src="linxemlink.png" style="display:block" width='+Math.floor(scalef*20)+' height='+Math.floor(scalef*20)+'></td>'
+}
+sometext=sometext+'</tr>'
+
+sometext=sometext+'</table><table border=0 width=100% height='+Math.floor(scalef*20)+' style="position:absolute;top:0px;left:0px"><tr><td style="text-align:center;font-size:'+Math.floor(scalef*12)+'px;color:white;font-weight:bold;" valign=middle>'+somename+'</td></tr></table></div>' 
+return sometext
+}
+
+// this is for testing only: changes linxemwords diplayed and reloads
+function changewords()
+{
+var somewords=shufflearray(shufflearray(linxemwords)).slice(0, numberwords)
+
+SetLocalVal('setwords', convertlisttotext('text', shufflearray(somewords)))
+SetLocalVal('solvewords', convertlisttotext('text', shufflearray(somewords)))
+
+
+location.reload()
+}
+
+function centralimage()
+{
+var sometext=''
+var someindex=0
+sometext=sometext+'<table border=1 cellpadding=0 cellspacing=0><tr><td><table border=0 cellspacing=0 cellpadding=0 align=center valign=middle bgcolor=black>'
+sometext=sometext+'<tr><td><img src="icon.png" width='+Math.floor(scalef*30)+'  height='+Math.floor(scalef*30)+' style="display:block"></td></tr>'
+
+
+sometext=sometext+'</table></td></tr></table>' 
+return sometext
+}
+
+// static
+documentwrite('<div style="width:100%;height:'+Math.floor(scalef*360)+'px;background-color:#DDFFFF"><table border=0 align=center valign=top cellspacing=0 cellpadding=0 width='+Math.floor(scalef*230)+'>')
+documentwrite('<tr height='+Math.floor(scalef*3)+'><td width='+Math.floor(scalef*50)+'><img src="empty.png" width='+Math.floor(scalef*50)+'  height='+Math.floor(scalef*2)+' style="display:block"></td><td width='+Math.floor(scalef*10)+'><img src="empty.png" width='+Math.floor(scalef*10)+'  height='+Math.floor(scalef*2)+' style="display:block"></td><td colspan=3></td><td width='+Math.floor(scalef*10)+'><img src="empty.png" width='+Math.floor(scalef*10)+'  height='+Math.floor(scalef*2)+' style="display:block"></td><td width='+Math.floor(scalef*50)+'><img src="empty.png" width='+Math.floor(scalef*50)+'  height='+Math.floor(scalef*2)+' style="display:block"></td></tr>')
+documentwrite('<tr height='+Math.floor(scalef*20)+'><td width='+Math.floor(scalef*50)+' onClick="newgame()">'+graphicfor('New')+'</td><td width='+Math.floor(scalef*10)+'><img src="empty.png" width='+Math.floor(scalef*10)+'></td><td colspan=3 style="text-align:center;font-weight:bold;color:red;font-size:'+Math.floor(scalef*14)+'px">'+titleimage('Linxem')+'</td><td width='+Math.floor(scalef*10)+'><img src="empty.png" width='+Math.floor(scalef*10)+'></td><td width='+Math.floor(scalef*50)+' onClick="showhelp()">'+graphicfor('Help')+'</td></tr>')
+documentwrite('<tr ><td colspan=7 style="width:'+Math.floor(scalef*230)+'px;text-align:left;color:black;font-size:'+Math.floor(scalef*10)+'px"><div style="height:'+(pushdown+Math.floor(scalef*3))+'px;width='+Math.floor(scalef*230)+'px"></div></td></tr>')
+documentwrite('<tr ><td colspan=7 style="width:'+Math.floor(scalef*230)+'px;text-align:left;color:black;font-size:'+Math.floor(scalef*10)+'px"><div style="display:inline;width:100%" id="maingame">')
+
+
+writethegame()
+
+documentwrite('</div></td></tr>')
+documentwrite('<tr ><td colspan=7 style="height:'+Math.floor(scalef*2)+'px;width:'+Math.floor(scalef*230)+'px;text-align:left;color:black;font-size:'+Math.floor(scalef*10)+'px"><div style="height:'+Math.floor(scalef*2)+'px;width='+Math.floor(scalef*230)+'px"></div></td></tr>')
+// documentwrite('<tr ><td colspan=7 style="width:'+Math.floor(scalef*230)+'px;text-align:left;color:black;font-size:'+Math.floor(scalef*10)+'px" ><div style="display:inline;width:100%" id="output">&nbsp;</div></td></td></tr>')
+documentwrite('<tr ><td colspan=7 style="width:'+Math.floor(scalef*230)+'px;text-align:left;color:black;font-size:'+Math.floor(scalef*10)+'px" ><div style="display:none;width:100%" id="help">')
+
+</script>
+
+<script language="Javascript">
+
+
+
+</script>
+<script language="Javascript">
+
+
+var showinghelp=0
+
+
+function showhelp()
+{
+if (showinghelp==1) {hidehelp();return}
+// if (linxemstatus==0) {return}
+if (showingads==1 || preventbuttonactions==1) {return}
+showinghelp=1
+
+document.getElementById('maingame').style.display='none'
+document.getElementById('help').style.display='inline'
+}
+
+function hidehelp()
+{
+
+document.getElementById('maingame').style.display='inline'
+document.getElementById('help').style.display='none'
+showinghelp=0
+
+}
+
+
+</script>
+<div id="helpback" style="display:inline">
+<script language="Javascript">documentwrite('<table align=center border=0><tr><td onClick="hidehelp()" width='+Math.floor(scalef*50)+'>'+graphicfor('Back')+'</td></tr></table>')</script>
+</div>
+
+<div id="helpgeneral" style="display:inline">
+<br>Linxem is a word game for 2-4 players playing in Play and Pass mode, where all players use the same mobile device and hand it round to each other as required.  It can also be played in practice mode by one player.
+<br><br><span style="font-weight:bold">Overview</span>
+<br>
+<br>The game involves a series of <b><i>challenges</i></b> directly involving a pair of the players, who are, in essence, working together to win the challenge. 
+<br>
+<br>In a challenge, one player of the pair, the <b><i>setter</i></b>, is shown a set of <b><i>display words</i></b> (actually words or names) with different backgrounds. Some of these backgrounds are <script language="Javascript">documentwrite(good)</script> and, normally, some are <script language="Javascript">documentwrite(bad)</script>, although there is an option to play with only <script language="Javascript">documentwrite(good)</script> ones.  The backgrounds are important.  
+<br>
+<br>The setter must look at these display words and select 2 or more of them that are linked together in some way.  Generally, display words with a <script language="Javascript">documentwrite(good)</script> background are selected, as those with <script language="Javascript">documentwrite(bad)</script> ones lead to penalties.
+<br>
+<br>Having selected these, the setter must then input or say out loud a <b><i>Linxem</i></b>.  A Linxem is a word, name, title, occupation, number or date that links them (&gt;&gt;&nbsp;"links&nbsp;'em", &gt;&gt;&nbsp;"Linxem") in some way.
+<br>
+<br>The other player of the pair, the <b><i>solver</i></b>, is then shown the full set of display words, rearranged and with no distinctive backgrounds, and must then try to identify the display words selected by the setter from the Linxem given by the setter.
+<br>
+<br>Points are won for correct identification of the display words selected, but are lost for identifying display words whose original backgrounds were <script language="Javascript">documentwrite(bad)</script>.  Points are also lost for failing to complete the setting or solving within the specified countdown time or for providing an invalid Linxem.
+<br>
+<br>Linxem is a fairly unusual game in that it is primarily concerned with cooperation, rather than competition.  Its scoring system introduces an element of competition, but the primary enjoyment of the game comes from being part of or observing the cooperative challenges.
+<br><br><i>Hints and enhancements</i> 
+<br><br>Particularly when playing the two-player game as a pastime, where there is no real competition, it can be more interesting and enjoyable to select a risky, more obscure Linxem rather than a more obvious one. 
+<br><br>The fun of the game can be greatly increased if solvers convey their thoughts out loud.
+<br><br><span style="font-weight:bold">What is a Linxem?</span>
+<br><br>
+A Linxem connects the selected display words in some way. It might:
+<ul>
+<li>be a word that encompasses the selected display words, e.g. 'Mammals' for the words 'Cat' and 'Dog';  
+<li>be something that is associated with them, e.g. 'America' for the words 'Washington' and 'Texas';
+<li>have two different meanings and be related to the selected display words individually, e.g. 'Twist' for 'Dance' and 'Dickens';
+<li>be something that could go before or after the selected display words, e.g. 'Cream' for 'Ice' and 'Hand';
+<li>describe the word structure in some way, e.g. 'Monosyllabic' for 'Ice' and 'Hand', or 'Reversals' for 'God' and 'Dog', or even 'Rhyming' for 'White' and 'Right';
+<li>be applicable to a homophone of a selected display word, e.g. 'Fish' for the words 'Place' and 'Perch';
+<li>refer to the sounds of the words only, e.g. 'Roman numerals' for 'Ivy' and 'Sea'.
+</ul>
+Overall, as long as the Linxem is valid as defined below, it is acceptable. Of course, whether your partner in the challenge will get it is a different matter. 
+<br><br>It is acceptable to say the Linxem in a way that suggests some unusual meaning, e.g. with an upward inflection at the end to make it sound questionable, or to add a question mark if typing it.
+
+<br>
+<br><span style="font-weight:bold">Valid and invalid Linxems</span>
+<br>
+<br>A valid Linxem is a word, a hyphenated word or a compound word found in an English dictionary.  So, the following would all normally be considered valid (even though unlikely in the Linxem game):
+<ul>
+<li>Coal
+<li>Coalman
+<li>Coal-fired
+<li>Coal tar
+<li>Turn in
+<li>Turn-on
+<li>Turnover
+<li>Well-to-do
+</ul>
+Note: expressions such as 'French cheeses', 'Animals native to Australia' or 'Words containing 10 letters' would not be acceptable as they wouldn't be found in a dictionary.
+<br><br>
+A Linxem may also be an occupation, e.g. 'Tennis player', a number, e.g. '2012', an address, e.g. '221B Baker Street', or a date/time, e.g. '23 April 1616', 'July 4th' or '10:50'.
+<br><br>
+Additionally, a Linxem may be a recognized name or title (fact or fiction), e.g. of a person, animal, team, event, building, brand, place, book, play, band, song, album, series, TV programme, painting, art work, or movie.
+So, the following would also normally be considered valid Linxems:
+<ul>
+<li>Nat King Cole
+<li>Old King Cole
+<li>Charles Dickens
+<li>Miss Havisham
+<li>A Tale of Two Cities
+<li>Tennessee Williams
+<li>Verdi
+<li>Giuseppe Verdi
+<li>La Traviata
+<li>Seabiscuit
+<li>The Empire State Building
+<li>London
+<li>The Thinker
+<li>The Great Escape
+<li>Daft Punk
+<li>Get Lucky
+<li>Saudi Arabia
+<li>New Zealand
+<li>Forty-niners
+<li>The Queen of England
+<li>Princess Diana
+<li>U.S. President
+<li>Hillary Clinton
+</ul>
+Recongnized abbreviations, acronyms and initials, such as FBI, IBM, BP, BBC or ASAP are also acceptable as Linxems.
+<br><br>
+The name/title should be reasonably well-known and can be subject to checking.  Stating the name 'French cheeses' or 'Australian animals' in the hope (or maybe even knowledge) that there might be an obscure book with such a name (and there probably is), as a way of giving an otherwise invalid Linxem, is not allowed.
+<br><br>
+There are, of course, words or names that can't be used with certain selected words.  The principle is simple: for a given selected display word and Linxem, one may not include the other, either in spelling or in sound, and may not be directly derived from or be an inflection of the same root word.
+<br><br>
+So, if one of the words were 'Go', the other could not be:
+<ul>
+<li>Goes
+<li>Gone
+<li>Went
+<li>Forgo
+<li>Forwent
+<li>Golly (includes the spelling of Go)
+<li>Gauche (includes the sound of Go)
+</ul>
+
+Likewise, if one of the words were 'Grass', the other could not be 'Graze' or 'Grazing'.
+<br><br>
+If either of the two contains more than one word, this applies to the individual words also, so, if the selected display word were 'New York', the following would not be valid Linxems:
+<ul>
+<li>New Yorker
+<li>New England
+<li>New
+<li>York
+<li>Yorkshire
+<li>Yorker
+</ul>
+<i>Spoken vs typed Linxems</i>
+<br><br>
+The setter can choose whether to say the Linxem out loud or type it into the input field.  It is, of course, generally easier just to say it, but remember that a spoken Linxem will not be remembered by the system if you exit the game and come back later. There are times, however, when one form of Linxem will be preferred by the setter over the other.  For example, if linking the words 'Hurricane' and 'Clock', a typed-in Linxem 'Wind' would provide such a link, whereas saying either of the two pronunciations would not.  In contrast, when trying to link 'Fish' and 'London', the spoken Linxem 'Plaice' or 'Place' would be better than either of these words typed. 
+<br><br>
+<span style="font-weight:bold">Points won and lost</span>
+<br>
+<br>
+All points won go to the pair involved in the challenge, while points lost in the challenge go to the opposition.
+
+<br>
+<br>The pair gain <script language="Javascript">documentwrite(correctscore)</script> points for each display word identified by the solver that the setter had selected;
+<br>
+<br>The pair gain a bonus of <script language="Javascript">documentwrite(bonusscore)</script> points if the setter has selected 3 or more display words and the solver gets them all correct;
+<br>
+<br>The pair lose <script language="Javascript">documentwrite(badscore)</script> points for each display word selected by the solver that originally had a <script language="Javascript">documentwrite(bad)</script> background;
+<br>
+<br>The pair lose <script language="Javascript">documentwrite(failcompleteset)</script> points if the setter fails to select at least two display words before the countdown ends;
+
+<br>
+<br>The pair lose <script language="Javascript">documentwrite(cluerejection)</script> points if the Linxem is successfully challenged and rejected as being invalid;
+
+<br>
+<br>The pair lose <script language="Javascript">documentwrite(failcompletesolve)</script> points if the solver fails to select the exact number of display words selected by the setter before the countdown ends.
+
+<br><br>
+Clearly, given this scoring system, the setter would normally select display words with a <script language="Javascript">documentwrite(good)</script> background, since these do not incur a penalty, and would be wary of selecting any with a <script language="Javascript">documentwrite(bad)</script> background.  However, the setter may sometimes choose to select display words with a <script language="Javascript">documentwrite(bad)</script> background.  Consider the following scenarios:
+<ul>
+<li> the setter cannot see a link between even two of the display words with a <script language="Javascript">documentwrite(good)</script> background.  Failure to select two would result in the loss of <script language="Javascript">documentwrite(failcompleteset)</script> points.  However, selecting one display word with a <script language="Javascript">documentwrite(bad)</script> background as well as one with a <script language="Javascript">documentwrite(good)</script> background could result in a gain of <script language="Javascript">documentwrite(2*correctscore)</script> points if the solver gets them both correct, balanced by a loss of <script language="Javascript">documentwrite(badscore)</script> points because one had a <script language="Javascript">documentwrite(bad)</script> background.
+<li> the setter can see a link between two display words with a <script language="Javascript">documentwrite(good)</script> background and one with a <script language="Javascript">documentwrite(bad)</script> background.  Although there would be a loss of <script language="Javascript">documentwrite(badscore)</script> points because one had a <script language="Javascript">documentwrite(bad)</script> background, assuming the solver identified them correctly, this would be more than compensated for by the <script language="Javascript">documentwrite(3*correctscore)</script> points for the three correct selections plus the bonus of <script language="Javascript">documentwrite(bonusscore)</script> points for getting all three correct.
+</ul>
+
+At the end of the game, i.e. when the last challenge in the series has been completed, the winner is the individual or team (see next) with the highest score.
+<br>
+<br>
+<span style="font-weight:bold">2, 3 or 4 players or practice mode</span>
+<br>
+<br>
+The standard game is for four players playing as two teams of two players.  In this game, players in a given team alternate in being the setter and solver, and any points won during the challenge go to their team, while the other team receives the points lost.
+
+<br>
+<br>The game may also be played by just two players, as a pastime, in a similar way, where points lost go to a non-existent team called Anon.  The objective is to gain more points than you lose to the opposition or, of course, just to have fun setting and solving the challenges regardless of the scores. 
+<br>
+<br>The game may also by played by 3 or 4 players trying to win as individuals.  In these games, players come together to play as pairs in a challenge.  Any points won in the challenge are shared equally by the two players in the pair, while the opposition takes the points lost during the challenge; in the case of 4 players, the points lost are shared equally by the two other players.  All players act as setter and solver in challenges with every other player.  The winner is the individual with the highest total at the end of the game. 
+<br>
+<br>The game may also by played by one player in practice mode, as a pastime.  The setter tries to select linkable display words and mentally choose a Linxem, but there is no solving phase: selections made by the setter are assumed to be successfully selected by the non-existent solver.  Points lost through selecting display words with a yellow background or through failing to select at least two display words before the countdown ends go to a non-existent team called Anon., but the real objective is, of course, to practise setting challenges, so the scores shown are simply indicative of how well you might have done in a real game with a good solver. 
+<br>
+<br>
+<span style="font-weight:bold">Green-only variant</span>
+<br>
+<br>The game may also be played using backgrounds that are only green for the setter, i.e. with no yellow backgrounds.  This means that points cannot be lost by the solver for choosing words that originally had a yellow background. Clearly, this is a simpler game. It may be appropriate when playing with those new to the game, or when playing as a pastime rather than playing competitively.
+
+<br><br><span style="font-weight:bold">Playing the game</span>
+<br>
+<br>
+A game is started by tapping the <i>New</i> button. You then have to choose the game you wish to play and tap the <i>Play</i> button to the right of the choice.
+<br>
+<br>
+The next screen shown explains the mode of play, including, importantly for a game for two pairs, who is to play with whom as partners.  N.B. players 1 and 3 play together against 2 and 4 in a game for two pairs, as it is best for partners in a team to sit opposite each other around a table so that the opposition players can both see the device easily.  Initials are used to refer to the players (initially set to PA, PB, PC and PD). You may choose to change the initials used by tapping the <i>Change</i> button.  Note: in the unlikely event that there are duplicates in the initials, the only option on this screen is to change the initials.
+
+<br>
+<br>
+Underneath the <i>Change</i> button, you can select or deselect the option to play the variant with green backgrounds only.  Tap on the small empty box to select the option, which turns the box black.  Tapping again deselects the option, and turns it to empty again.
+<br>
+<br>
+
+
+The screen also lets you define the length of the countdown used. Simply tap the countdown time you wish to select, which then takes on a green background.  The countdown is used both in the setting and solving phases.  The default countdown time is 3 minutes - probably a good countdown time to start with.
+<br>
+<br>
+Once the initials and countdown time are set appropriately, you generally, except in the game for 4 individual players, have a choice of game length, specified by the number of challenges involved.  In all these choices, except 1-player practice, every player has the same number of turns at being setter and solver.
+
+<br><br><span style="font-weight:bold">Playing a challenge</span>
+<br>
+<br>
+The system chooses who is to be the setter (and the solver in 3- or 4-player individual games), and advises that the device should be passed to the setter. The setter should take the device and tap <i>OK</i> to reveal the main screen.
+<br>
+<br>
+The main screen displays <script language="Javascript">documentwrite(numberwords)</script> display words: <script language="Javascript">documentwrite(numbergood)</script> <script language="Javascript">documentwrite(good)</script> ones, and <script language="Javascript">documentwrite(numberbad)</script> <script language="Javascript">documentwrite(bad)</script> ones.  The countdown starts and the setter must select, by tapping, 2 or more of them that can be linked.  Clearly, the main focus should be on the <script language="Javascript">documentwrite(good)</script> ones, as encouraging the solver to select <script language="Javascript">documentwrite(bad)</script> ones will lead to penalties.
+<br><br>
+The initials of the setter are shown under the <i>Word Word Word</i> button. The number of display words selected by the setter is shown on the right (below the <i>Word Word</i> button).
+<br><br>
+Points to note about selecting display words in this phase and in the solving phase are:
+<ul>
+<li> the background becomes a deeper shade and the text becomes white to show that it has been selected;
+<li> tapping the word again deselects it, if you wish to change your selection.
+</ul>
+
+Once this is complete, the setter may tap an <i>OK</i> button.  An error message is displayed if fewer than 2 display words have been selected, and the game continues.
+<br><br>
+Note that the background of the countdown display changes to orange when it is within 15 seconds of stopping. If the countdown stops before the <i>OK</i> button is tapped, play continues as if it had been tapped, unless fewer than two display words have been selected, in which case the challenge ends and the pair involved in the challenge lose <script language="Javascript">documentwrite(failcompleteset)</script> points to the opposition. 
+<br><br>
+Advice is then given that the setter should input (through the device keyboard) or say the Linxem out loud (one or the other, not both).  The Linxem is input through the field with the light red background (it was silver earlier) with the word Linxem displayed lightly as a prompt.  In all games apart from the two-player version, other players (apart from the solver) should then be consulted about the choice of Linxem.  If valid objections are raised about a Linxem that has been typed in, the setter should be given an opportunity to modify it.  If valid objections are raised about a Linxem that has been said out loud, the <i>Reject</i> button should be tapped.  This ends the challenge and the opposition receive <script language="Javascript">documentwrite(cluerejection)</script> points.  If the Linxem is acceptable (and all players should be generous in this regard), the <i>OK</i> button should be tapped, which then brings up a screen advising that the device should be handed to the solver.
+<br><br>
+Note that all players except the solver may see the device during the setting phase, and all players may see it during the solving phase.  This keeps everyone involved and able to see how cunning the choice of Linxem is and how the solver seems to be doing.
+<br><br>
+The device should then be handed to the solver, who is informed by the system how many display words need to be selected and should click <i>OK</i> to see the main screen.  The <script language="Javascript">documentwrite(numberwords)</script> display words are redisplayed, but re-ordered from the setting phase and all with a <script language="Javascript">documentwrite(neutral)</script> background.  The countdown starts and the solver must tap on the exact number of display words that appear to best match the stated Linxem.  Note: during the countdown the solver may select more than the number of display words selected by the setter to help decision-making, but the number must be exactly equal to the number selected by the setter when the countdown ends or when the <i>OK</i> button is tapped to end the countdown early.    If the numbers do not match when the <i>OK</i> button is tapped, an error message is displayed and the game continues.  If the numbers do not match when the countdown reaches zero, the pair involved in the challenge lose <script language="Javascript">documentwrite(failcompletesolve)</script> points to the opposition.  This loss is displayed, together with the running totals, and an <i>OK</i> button is displayed which should then be tapped to enable the solver to see the selections made by the setter. 
+<br><br>
+During this phase and for the rest of the challenge, the solver's initials are displayed on the left under the <i>Word Word Word</i> button, and the number of display words to be selected is displayed on the right.<br><br>Throughout the challenge, the challenge number is shown with a blue background to the left of the countdown, while the total number of challenges in the game is shown to the right of the countdown, also with a blue background.
+
+<br>
+<br>
+<span style="font-weight:bold">Reviewing and Scoring</span>
+<br>
+<br>
+Once the solving phase is over, and the correct number of selections has been made, the display words selected by the solver are shown with the background and text colour that they had at the end of the setting phase.  The solver can easily see which ones are correct (those with a deep background and white text) and which are incorrect (those with a light background and black text).<br><br>The setter should tap a <i>Score</i> button when ready.  The points gained by the pair in the challenge and lost to the opposition are displayed, together with the new running totals for the game.  Tapping <i>OK</i> takes you on to the next challenge, assuming there are still some to go, or, if the selections made did not all correspond to those made by the setter, the selections made by the setter are first displayed to the solver, with the backgrounds and text colour that they had at the end of the setting phase.
+<br>
+<br>
+<span style="font-weight:bold">Starting a new game</span>
+<br>
+<br>
+The <i>New</i> button may be tapped at any time to start a new game.  If a game is already underway and not over, you will be asked to confirm that you wish to start a new game.
+<br>
+<br>
+<span style="font-weight:bold">Continuing a game</span>
+<br>
+<br>
+If you exit the app once a game is underway, the game state is stored.  The game continues when you open the app again.
+<br>
+<br>
+<span style="font-weight:bold">Layout of display words</span>
+<br>
+<br>
+The standard layout of the <script language="Javascript">documentwrite(numberwords)</script> display words is in 3 columns.  If you are using a small device, you may wish to see them with a larger text size.  You are able to do so by tapping the <i>Word Word</i> button to the right of the countdown field, which lays them out in 2 columns with larger text size.  You may change back to 3 columns by tapping the <i>Word Word Word</i> button to the left of the countdown field.  The layout button for the current layout option is displayed with a white background, the other with a silver background.<br><br>These buttons also change the text size of the Linxem field and the fields on either side of this, so that they match the text size of the display words.
+
+
+<p><span style="font-weight: bold">About Linxem</span>
+
+<p>Linxem has been designed and developed by Dr David Wolstenholme.
+<p><span style="font-weight: bold">Terms of use</span><p>This software may be used for personal purposes only.  It may not be used for commercial purposes.</p> 
+<p>The software, code and script of this application may not be copied or be distributed to others.</p> 
+<p>The software, code and script may not be altered in any way.</p> 
+<p >Copyright of the software, code and script, and its help documentation, is owned by TopAccolades Limited. No part of the software, code, script or documentation may be copied or used in another application or document.</p> 
+<p >Although every effort has been made to ensure that this software functions as intended, TopAccolades Limited provides no warranty of merchantability, or fitness for a particular purpose, in relation to this application or its support.</p> 
+<p >TopAccolades Limited shall not be liable for any damages whatsoever arising out of the use of or inability to use this application or the provision of or failure to provide support.</p> 
+<p style="font-style: italic;">Copyright TopAccolades Limited<br>www.topaccolades.com</p>
+<p><br>Version <script language="Javascript">documentwrite(appversion)</script><br>
+Scale <script language="Javascript">documentwrite(scalef)</script>
+
+
+
+
+
+
+</div>
+
+<script language="Javascript">
+
+documentwrite('</div></td></tr></table></div>')
+
+var remoteads=[]
+
+if (GetLocalVal('remoteads')==null)
+{
+// default remoteads
+SetLocalVal('remoteads', 'remoteads=[]')
+}
+
+if (GetLocalVal('lastremoteadstime')==null) {SetLocalVal('lastremoteadstime', 0)}
+
+// if (Date.now()-(1*GetLocalVal('lastremoteadstime'))>0)
+// If it's more than 5 days since last remote ad update, then we download it.
+// However, if there's no internet access, then this loading can hang the app up.  So, we set the last time of download to be 4 days ago
+// then try to reload.  If it fails and hangs up, we're showing a Reload button, which will reload the page, this time without needing to upload the remote ad (now < 4 days ago)
+// However, if we have no local storage, this won't work, as it would just end up at the reload button again.  In this case, we essentially do nothing, inc. no remote ad upload (safer), and go to auto runonload
+
+</script>
+<script language="Javascript">
+/*
+// Now decided not to use remote ads.
+if (Date.now()-(1*GetLocalVal('lastremoteadstime'))>(5*24*60*60*1000)) // if more than 5 days
+{
+if (localstorageworks==1)
+{
+document.getElementById('theboard').style.display='none'
+changetextvalue('output',  '<br><br><table width=80% height='+Math.floor(scalef*100)+' border=1 cellpadding=0 cellspacing=0  align=center bgcolor=white><tr><td><table width=100% border=0><tr><td  bgcolor=lemonchiffon height='+Math.floor(scalef*75)+' align=center valign=middle>Internet access is required for certain updates, which is currently not available.  Please tap the Reload button and a further attempt will be made after 24 hours.</td></tr><tr height='+Math.floor(scalef*3)+'><td></td></tr><tr><td><table border=0 align=center><tr><td onClick="location.reload()">'+graphicfor('Reload')+'</td></tr></table></td></tr></table></td></tr></table>')
+
+SetLocalVal('lastremoteadstime', Date.now()-(4*24*60*60*1000)) // in case of problems loading, ensures that it will work for next day, as lasttime now set to 4 days ago, so can reload and it should work fine
+documentwrite('<sc'+'ript src="http://www.compactfun.com/remoteads/largeadsuntimed.js?time='+Date.now()+'"></sc'+'ript>')
+// ?time=current time above helps to ensure that the javascript is reloaded and that a cached version is not used
+}
+}
+*/
+</script>
+<script language="javascript">
+// showcurrentad()
+
+</script>
+
+<script language="javascript">
+
+var linxemwords=
+[
+"Start",
+// Enter list from spreadsheet here
+
+"Abbott",
+"Abraham",
+"Accent",
+"Accrue",
+"Ace",
+"Achilles",
+"Actor",
+"Acts",
+"Acute",
+"Ad",
+"Adam",
+"Adams",
+"Adder",
+"Admiral",
+"Admit",
+"Aerial",
+"Afghan",
+"Africa",
+"Age",
+"Ahmed",
+"Aid",
+"Air",
+"Ajax",
+"Alberta",
+"Ale",
+"Alexander",
+"Ali",
+"Allay",
+"Allen",
+"Aloud",
+"Alpha",
+"Altar",
+"Amazon",
+"Amber",
+"America",
+"Anchor",
+"Anderson",
+"Andrews",
+"Angle",
+"Ankle",
+"Anne",
+"Annual",
+"Ant",
+"Ape",
+"Apollo",
+"Appeal",
+"Apple",
+"Aquarius",
+"Arab",
+"Arch",
+"Archer",
+"Architect",
+"Aries",
+"Arm",
+"Armstrong",
+"Army",
+"Arrest",
+"Arrow",
+"Arsenal",
+"Arthur",
+"Article",
+"Artist",
+"Ashes",
+"Asia",
+"Ass",
+"Athens",
+"Atkinson",
+"Atlantic",
+"Atlas",
+"Atom",
+"Attack",
+"Aunt",
+"Austen",
+"Australia",
+"Averse",
+"Avocado",
+"Avon",
+"Axes",
+"Axis",
+"Baby",
+"Bach",
+"Back",
+"Bad",
+"Badger",
+"Bags",
+"Bailey",
+"Baker",
+"Balance",
+"Ball",
+"Balloon",
+"Banana",
+"Band",
+"Bank",
+"Bar",
+"Bare",
+"Barge",
+"Bark",
+"Barker",
+"Barnes",
+"Barrett",
+"Base",
+"Baseball",
+"Basil",
+"Bass",
+"Bat",
+"Bath",
+"Batman",
+"Batter",
+"Battery",
+"Bay",
+"Bead",
+"Beam",
+"Bean",
+"Bear",
+"Beat",
+"Beaver",
+"Bed",
+"Bee",
+"Beech",
+"Beef",
+"Beer",
+"Beetle",
+"Beijing",
+"Belfast",
+"Bell",
+"Belt",
+"Ben",
+"Bench",
+"Bend",
+"Bennett",
+"Berlin",
+"Berry",
+"Best",
+"Better",
+"Big",
+"Bill",
+"Bind",
+"Birch",
+"Bird",
+"Birmingham",
+"Biscuit",
+"Bishop",
+"Bit",
+"Bitter",
+"Black",
+"Blair",
+"Blanket",
+"Blind",
+"Block",
+"Blood",
+"Bloom",
+"Blossom",
+"Blow",
+"Blubber",
+"Blue",
+"Bluff",
+"Blunt",
+"Blur",
+"Boa",
+"Board",
+"Boat",
+"Bob",
+"Body",
+"Boil",
+"Bold",
+"Bolster",
+"Bolt",
+"Bomb",
+"Bond",
+"Bone",
+"Bonnet",
+"Boob",
+"Book",
+"Boom",
+"Boot",
+"Booth",
+"Bore",
+"Boss",
+"Bottom",
+"Bound",
+"Bourne",
+"Bow",
+"Bowie",
+"Bowl",
+"Bowler",
+"Box",
+"Boxer",
+"Boy",
+"Bradley",
+"Brake",
+"Branch",
+"Brass",
+"Bravo",
+"Brazil",
+"Bread",
+"Break",
+"Brick",
+"Bridge",
+"Bright",
+"Britain",
+"Broad",
+"Broke",
+"Bronze",
+"Brook",
+"Brooks",
+"Brother",
+"Brow",
+"Brown",
+"Brownie",
+"Brunel",
+"Brush",
+"Brussels",
+"Bubble",
+"Bubbly",
+"Buck",
+"Bud",
+"Bug",
+"Bulb",
+"Bull",
+"Bum",
+"Bunny",
+"Buns",
+"Burger",
+"Burns",
+"Burton",
+"Bury",
+"Bus",
+"Bush",
+"Bust",
+"Butcher",
+"Butler",
+"Butter",
+"Button",
+"Cabinet",
+"Cable",
+"Caddy",
+"Caesar",
+"Cage",
+"Cairo",
+"Cake",
+"Calf",
+"California",
+"Call",
+"Cambridge",
+"Cameron",
+"Camp",
+"Campbell",
+"Can",
+"Canada",
+"Canal",
+"Cancer",
+"Cane",
+"Canteen",
+"Canton",
+"Cap",
+"Cape",
+"Capital",
+"Cappuccino",
+"Capricorn",
+"Captain",
+"Capture",
+"Car",
+"Card",
+"Cardigan",
+"Cards",
+"Carol",
+"Carolina",
+"Carp",
+"Carr",
+"Carter",
+"Case",
+"Casino",
+"Cast",
+"Castle",
+"Cat",
+"Catch",
+"Catherine",
+"Cell",
+"Cent",
+"Central",
+"Chain",
+"Chair",
+"Challenger",
+"Champagne",
+"Champion",
+"Chance",
+"Chancellor",
+"Chandler",
+"Change",
+"Channel",
+"Chapman",
+"Character",
+"Charge",
+"Charles",
+"Charlie",
+"Charlotte",
+"Charm",
+"Check",
+"Checkers",
+"Cheek",
+"Cheese",
+"Chelsea",
+"Cherry",
+"Cheshire",
+"Chess",
+"Chest",
+"Chew",
+"Chicago",
+"Chicken",
+"Chil(l)i",
+"Chile",
+"Chin",
+"China",
+"Chink",
+"Chips",
+"Chocolate",
+"Chop",
+"Chopin",
+"Chopper",
+"Chord",
+"Christie",
+"Chuck",
+"Church",
+"Churchill",
+"Cider",
+"Cinch",
+"Circle",
+"Circuit",
+"City",
+"Claret",
+"Clark",
+"Clarke",
+"Clasp",
+"Class",
+"Clay",
+"Clean",
+"Clear",
+"Climb",
+"Clink",
+"Clinton",
+"Clip",
+"Clog",
+"Close",
+"Cloud",
+"Club",
+"Coach",
+"Coal",
+"Coast",
+"Coat",
+"Cobra",
+"Cock",
+"Code",
+"Coffee",
+"Cognac",
+"Coin",
+"Coke",
+"Cold",
+"Cole",
+"Collar",
+"Collins",
+"Colon",
+"Columbus",
+"Comb",
+"Combine",
+"Compact",
+"Company",
+"Compound",
+"Con",
+"Conductor",
+"Cone",
+"Console",
+"Constable",
+"Constance",
+"Contract",
+"Convert",
+"Cook",
+"Cookie",
+"Cool",
+"Coop",
+"Cooper",
+"Copper",
+"Copy",
+"Cord",
+"Core",
+"Cork",
+"Corn",
+"Corporal",
+"Couch",
+"Cougar",
+"Council",
+"Count",
+"Counter",
+"Country",
+"Course",
+"Court",
+"Cousin",
+"Cow",
+"Cox",
+"Crab",
+"Craft",
+"Craig",
+"Crane",
+"Crank",
+"Creeper",
+"Crest",
+"Cricket",
+"Crock",
+"Cromwell",
+"Crook",
+"Cross",
+"Crow",
+"Crown",
+"Crush",
+"Crust",
+"Cruz",
+"Cry",
+"Cue",
+"Cuff",
+"Culture",
+"Cup",
+"Cupid",
+"Curb",
+"Cure",
+"Current",
+"Curry",
+"Curse",
+"Curtain",
+"Cycle",
+"Dad",
+"Daisy",
+"Dallas",
+"Dalmation",
+"Dam",
+"Dance",
+"Daniel",
+"Dark",
+"Dart",
+"Darwin",
+"Dash",
+"Date",
+"David",
+"Davies",
+"Davis",
+"Dawn",
+"Dawson",
+"Day",
+"Deaf",
+"Deal",
+"Dear",
+"Deck",
+"Decoration",
+"Dee",
+"Deeds",
+"Deep",
+"Deer",
+"Defect",
+"Degree",
+"Delta",
+"Demo",
+"Demon",
+"Dennis",
+"Denomination",
+"Dentist",
+"Department",
+"Deposit",
+"Depression",
+"Derby",
+"Derrick",
+"Descent",
+"Desert",
+"Designer",
+"Detective",
+"Deuce",
+"Devil",
+"Diamond",
+"Diana",
+"Dice",
+"Dick",
+"Dickens",
+"Die",
+"Diet",
+"Difference",
+"Digest",
+"Digit",
+"Dip",
+"Dirt",
+"Disc",
+"Discipline",
+"Ditch",
+"Dive",
+"Division",
+"Divorce",
+"Dixon",
+"Do",
+"Doc",
+"Dock",
+"Doctor",
+"Does",
+"Dog",
+"Doings",
+"Doll",
+"Dollar",
+"Dolly",
+"Dolphin",
+"Donkey",
+"Door",
+"Dot",
+"Dough",
+"Douglas",
+"Dove",
+"Down",
+"Doyle",
+"Dozer",
+"Dracula",
+"Draft",
+"Drag",
+"Dragon",
+"Drake",
+"Draughts",
+"Draw",
+"Drawers",
+"Dream",
+"Dress",
+"Drill",
+"Drip",
+"Drive",
+"Driver",
+"Drop",
+"Drug",
+"Drum",
+"Dry",
+"Dublin",
+"Duck",
+"Duke",
+"Dumb",
+"Dummy",
+"Dump",
+"Dunn",
+"Eagle",
+"Ear",
+"Earth",
+"East",
+"Echo",
+"Edge",
+"Edinburgh",
+"Edison",
+"Edward",
+"Edwards",
+"Egg",
+"Egypt",
+"Eight",
+"Einstein",
+"Eisenhower",
+"Elephant",
+"Elf",
+"Elizabeth",
+"Elliott",
+"Ellis",
+"Empire",
+"Engagement",
+"Engineer",
+"English",
+"Entrance",
+"Eros",
+"Euro",
+"Europe",
+"Evans",
+"Eve",
+"Even",
+"Evening",
+"Everest",
+"Ewe",
+"Exam",
+"Excel",
+"Execution",
+"Exercise",
+"Exhaust",
+"Exit",
+"Exodus",
+"Expectant",
+"Express",
+"Extract",
+"Eye",
+"Face",
+"Fag",
+"Faint",
+"Fair",
+"Fairy",
+"Faith",
+"Fall",
+"Falls",
+"False",
+"Fan",
+"Fancy",
+"Fanny",
+"Fare",
+"Farmer",
+"Fashion",
+"Fast",
+"Fat",
+"Father",
+"Fault",
+"Fawn",
+"Felt",
+"Fence",
+"Fencing",
+"Fender",
+"Fern",
+"Fiddle",
+"Field",
+"Figure",
+"File",
+"Filling",
+"Film",
+"Finch",
+"Fine",
+"Finger",
+"Finn",
+"Fir",
+"Fire",
+"Firm",
+"Fish",
+"Fisher",
+"Fit",
+"Fix",
+"Flag",
+"Flap",
+"Flash",
+"Flat",
+"Fleece",
+"Fleet",
+"Fletcher",
+"Flies",
+"Flight",
+"Fling",
+"Float",
+"Florida",
+"Flounder",
+"Flower",
+"Flu",
+"Flush",
+"Flute",
+"Flutter",
+"Fly",
+"Foil",
+"Fold",
+"Fool",
+"Foot",
+"Football",
+"Force",
+"Ford",
+"Fore",
+"Forge",
+"Fork",
+"Form",
+"Fortune",
+"Foster",
+"Foul",
+"Four",
+"Fox",
+"Foxtrot",
+"Frame",
+"Francis",
+"Frank",
+"Frankenstein",
+"Frankfurter",
+"Fraser",
+"Fray",
+"Free",
+"French",
+"Fresh",
+"Fringe",
+"Frisk",
+"Fritter",
+"Frog",
+"Front",
+"Fruit",
+"Fry",
+"Function",
+"Funeral",
+"Fungus",
+"Fury",
+"Fuse",
+"Gag",
+"Galaxy",
+"Galileo",
+"Gallery",
+"Game",
+"Gandhi",
+"Garage",
+"Garcia",
+"Gardener",
+"Garlic",
+"Gas",
+"Gather",
+"Gay",
+"Gear",
+"General",
+"Genesis",
+"George",
+"Georgia",
+"Germ",
+"Germany",
+"Gibson",
+"Gift",
+"Gill",
+"Gin",
+"Ginger",
+"Girl",
+"Glare",
+"Glass",
+"Glasses",
+"Globe",
+"Go",
+"Goal",
+"Goat",
+"God",
+"Gold",
+"Golf",
+"Gong",
+"Gonzalez",
+"Good",
+"Goose",
+"Gorge",
+"Gorgon",
+"Governor",
+"Grace",
+"Grade",
+"Graft",
+"Graham",
+"Grain",
+"Gram",
+"Grant",
+"Grape",
+"Grass",
+"Grate",
+"Grave",
+"Gray",
+"Greece",
+"Green",
+"Gregory",
+"Greyhound",
+"Griffiths",
+"Grill",
+"Grind",
+"Grip",
+"Gross",
+"Ground",
+"Grown",
+"Growth",
+"Grub",
+"Guernsey",
+"Guide",
+"Guinea",
+"Guinness",
+"Guitar",
+"Gulf",
+"Gum",
+"Gun",
+"Gush",
+"Guy",
+"Habit",
+"Hack",
+"Hail",
+"Hair",
+"Half",
+"Halifax",
+"Hall",
+"Ham",
+"Hamburger",
+"Hamilton",
+"Hamlet",
+"Hammer",
+"Hamper",
+"Hand",
+"Hang",
+"Happy",
+"Harbo(u)r",
+"Hard",
+"Hardy",
+"Hare",
+"Harp",
+"Harris",
+"Harrison",
+"Harrow",
+"Harry",
+"Hart",
+"Harvey",
+"Hash",
+"Hastings",
+"Hatch",
+"Haul",
+"Haunt",
+"Hawk",
+"Hayes",
+"Hazel",
+"Head",
+"Hear",
+"Hearing",
+"Heart",
+"Heat",
+"Heath",
+"Heather",
+"Heaven",
+"Hector",
+"Hedge",
+"Heel",
+"Helium",
+"Hem",
+"Hen",
+"Henry",
+"Herb",
+"Hercules",
+"Hermes",
+"Hide",
+"High",
+"Hill",
+"Hip",
+"Hitler",
+"Hives",
+"Hockey",
+"Hog",
+"Hold",
+"Hole",
+"Holly",
+"Hollywood",
+"Holmes",
+"Holy",
+"Home",
+"Homer",
+"Honey",
+"Hood",
+"Hoof",
+"Hook",
+"Hooker",
+"Hoop",
+"Hoover",
+"Hop",
+"Hope",
+"Horn",
+"Hornet",
+"Horse",
+"Hose",
+"Hospital",
+"Host",
+"Hot",
+"Hotel",
+"Hound",
+"House",
+"Houston",
+"Howard",
+"Hudson",
+"Hue",
+"Hughes",
+"Hull",
+"Humbug",
+"Hume",
+"Humo(u)r",
+"Hunt",
+"Hunter",
+"Hurricane",
+"Hurt",
+"Husband",
+"Husky",
+"Hussain",
+"Ice",
+"Illusion",
+"Image",
+"Impact",
+"Implant",
+"Import",
+"Incense",
+"Inch",
+"Incline",
+"Increase",
+"India",
+"Indiana",
+"Indigo",
+"Insert",
+"Insult",
+"Interest",
+"Intimate",
+"Invalid",
+"Invite",
+"Iris",
+"Irish",
+"Iron",
+"Issue",
+"Italian",
+"Ivy",
+"Jack",
+"Jacket",
+"Jackson",
+"Jacob",
+"Jaguar",
+"Jail",
+"Jam",
+"James",
+"Jane",
+"Japan",
+"Jar",
+"Jason",
+"Jasper",
+"Java",
+"Jay",
+"Jeep",
+"Jelly",
+"Jenkins",
+"Jerk",
+"Jersey",
+"Jet",
+"Jig",
+"Jimmy",
+"Jingle",
+"Job",
+"Joe",
+"John",
+"Johnson",
+"Joint",
+"Joker",
+"Jones",
+"Jordan",
+"Joseph",
+"Joy",
+"Judges",
+"Juliet",
+"July",
+"Jumbo",
+"Jump",
+"Jumper",
+"June",
+"Junk",
+"Jupiter",
+"Just",
+"Justice",
+"Kale",
+"Kangaroo",
+"Kate",
+"Keating",
+"Keel",
+"Kelly",
+"Kennedy",
+"Kent",
+"Key",
+"Khan",
+"Kick",
+"Kid",
+"Killer",
+"Kilo",
+"Kind",
+"Kindle",
+"King",
+"Kingdom",
+"Kingston",
+"Kink",
+"Kirk",
+"Kite",
+"Kitty",
+"Kiwi",
+"Knee",
+"Knife",
+"Knight",
+"Knockers",
+"Knot",
+"Knows",
+"Lab",
+"Labo(u)r",
+"Labrador",
+"Lace",
+"Lager",
+"Lamb",
+"Lamp",
+"Lancaster",
+"Land",
+"Lane",
+"Lap",
+"Large",
+"Laser",
+"Lash",
+"Last",
+"Laurel",
+"Law",
+"Lawrence",
+"Lead",
+"Leader",
+"Leaf",
+"League",
+"Lean",
+"Leaves",
+"Lee",
+"Left",
+"Leg",
+"Lemon",
+"Lenin",
+"Lennon",
+"Leo",
+"Leopard",
+"Leprechaun",
+"Let",
+"Letters",
+"Lewis",
+"Lick",
+"Lie",
+"Life",
+"Lift",
+"Light",
+"Lighter",
+"Lightning",
+"Like",
+"Lilac",
+"Lily",
+"Lima",
+"Lime",
+"Limerick",
+"Limp",
+"Limpet",
+"Lincoln",
+"Line",
+"Links",
+"Lion",
+"Lip",
+"List",
+"Litter",
+"Little",
+"Live",
+"Liver",
+"Lizard",
+"Lloyd",
+"Loaf",
+"Lobby",
+"Lock",
+"Lodge",
+"Log",
+"London",
+"Long",
+"Lopez",
+"Lord",
+"Los Angeles",
+"Loss",
+"Lot",
+"Lotus",
+"Louis",
+"Lounge",
+"Love",
+"Low",
+"Lowe",
+"Luke",
+"Lung",
+"Lyon",
+"Mac",
+"Macaroni",
+"Macbeth",
+"Mace",
+"Mad",
+"Madonna",
+"Madrid",
+"Magazine",
+"Maid",
+"Maiden",
+"Mail",
+"Main",
+"Major",
+"Man",
+"Manchester",
+"Mandarin",
+"Mandela",
+"Manners",
+"Mao",
+"Marble",
+"March",
+"Mare",
+"Margin",
+"Mark",
+"Market",
+"Marley",
+"Marlowe",
+"Maroon",
+"Marple",
+"Marry",
+"Mars",
+"Marsh",
+"Marshall",
+"Martin",
+"Martinez",
+"Marx",
+"Mary",
+"Mason",
+"Mass",
+"Match",
+"Mate",
+"Matt",
+"Matter",
+"Matthew",
+"Matthews",
+"May",
+"Mayo",
+"McDonald",
+"McKinley",
+"Meal",
+"Mean",
+"Medal",
+"Medley",
+"Mercury",
+"Merlin",
+"Mesh",
+"Mess",
+"Meter",
+"Mews",
+"Mexican",
+"Miami",
+"Mickey",
+"Might",
+"Mike",
+"Mile",
+"Military",
+"Milk",
+"Milky Way",
+"Mill",
+"Miller",
+"Mills",
+"Mind",
+"Mine",
+"Miner",
+"Minister",
+"Mink",
+"Minor",
+"Mint",
+"Minute",
+"Mirror",
+"Miss",
+"Mississippi",
+"Mist",
+"Mitchell",
+"Mo(u)ld",
+"Mobile",
+"Mocking",
+"Mode",
+"Model",
+"Mole",
+"Mom/Mum",
+"Moment",
+"Money",
+"Monkey",
+"Mono",
+"Montgomery",
+"Moon",
+"Moor",
+"Moore",
+"Moped",
+"Morgan",
+"Morocco",
+"Morris",
+"Morse",
+"Mortar",
+"Moscow",
+"Moses",
+"Moth",
+"Mother",
+"Motion",
+"Motor",
+"Mount",
+"Mouse",
+"Move",
+"Movie",
+"Mozart",
+"Mug",
+"Muhammad",
+"Mule",
+"Mummy",
+"Murphy",
+"Murray",
+"Music",
+"Mustang",
+"Nag",
+"Nail",
+"Nanny",
+"Nap",
+"Napoleon",
+"Narrow",
+"Native",
+"Nature",
+"Navy",
+"Neck",
+"Needles",
+"Neigh",
+"Nelson",
+"Neon",
+"Neptune",
+"Nerve",
+"Net",
+"Neutral",
+"New",
+"New York",
+"Newman",
+"News",
+"Newton",
+"Nice",
+"Nicholas",
+"Nick",
+"Nickel",
+"Night",
+"Nike",
+"Nile",
+"Nine",
+"Nip",
+"Nixon",
+"Noah",
+"Noise",
+"Norfolk",
+"North",
+"Nose",
+"Note",
+"Novel",
+"Numbers",
+"Nun",
+"Nurse",
+"Nut",
+"Oaks",
+"Oasis",
+"Oats",
+"Object",
+"Odd",
+"Ode",
+"Oil",
+"Olive",
+"Oliver",
+"Omnibus",
+"One",
+"Onion",
+"Open",
+"Operation",
+"Orange",
+"Order",
+"Organ",
+"Orwell",
+"Oscar",
+"Othello",
+"Otter",
+"Ounce",
+"Outfit",
+"Oval",
+"Owen",
+"Owl",
+"Own",
+"Ox",
+"Oxford",
+"Pace",
+"Pacific",
+"Pack",
+"Package",
+"Pad",
+"Page",
+"Pain",
+"Paint",
+"Painting",
+"Pair",
+"Pale",
+"Palette",
+"Palm",
+"Palmer",
+"Pan",
+"Panama",
+"Panel",
+"Pansy",
+"Pants",
+"Papa",
+"Paper",
+"Paris",
+"Park",
+"Parker",
+"Parrot",
+"Parsons",
+"Part",
+"Partner",
+"Party",
+"Pass",
+"Passage",
+"Pasta",
+"Paste",
+"Pat",
+"Patel",
+"Patience",
+"Patient",
+"Pattern",
+"Paul",
+"Pawn",
+"Payne",
+"Pea",
+"Peace",
+"Peak",
+"Pearce",
+"Pearson",
+"Peck",
+"Peep",
+"Peer",
+"Pelican",
+"Pelt",
+"Pen",
+"Penalty",
+"Penguin",
+"Penny",
+"Pentagon",
+"Pepper",
+"Perch",
+"Perfect",
+"Period",
+"Perk",
+"Permit",
+"Perry",
+"Persian",
+"Perth",
+"Pest",
+"Pet",
+"Peter",
+"Phillips",
+"Phoenix",
+"Phone",
+"Piano",
+"Pick",
+"Picket",
+"Picture",
+"Pie",
+"Pig",
+"Pigeon",
+"Pike",
+"Pile",
+"Pill",
+"Pilot",
+"Pin",
+"Pinch",
+"Pine",
+"Pipe",
+"Piping",
+"Pisces",
+"Pistol",
+"Pit",
+"Pitch",
+"Pitcher",
+"Pizza",
+"Place",
+"Plain",
+"Plan",
+"Plane",
+"Plant",
+"Plaster",
+"Plastic",
+"Plate",
+"Play",
+"Player",
+"Plot",
+"Plug",
+"Plum",
+"Plumber",
+"Poach",
+"Pocket",
+"Pod",
+"Point",
+"Poirot",
+"Poker",
+"Pole",
+"Police",
+"Polish",
+"Polka",
+"Pollock",
+"Polo",
+"Pontoon",
+"Poodle",
+"Pooh",
+"Pool",
+"Pop",
+"Pope",
+"Popeye",
+"Poppy",
+"Pore",
+"Pork",
+"Port",
+"Portal",
+"Position",
+"Post",
+"Pot",
+"Potato",
+"Potter",
+"Pound",
+"Powell",
+"Pregnant",
+"Present",
+"President",
+"Press",
+"Price",
+"Priest",
+"Prime",
+"Prince",
+"Princess",
+"Principal",
+"Print",
+"Printer",
+"Prison",
+"Private",
+"Prize",
+"Pro",
+"Proceeds",
+"Product",
+"Program",
+"Progress",
+"Project",
+"Proof",
+"Prop",
+"Propose",
+"Protest",
+"Prudence",
+"Prune",
+"Puck",
+"Pull",
+"Pulse",
+"Puma",
+"Pump",
+"Pumps",
+"Punch",
+"Pupil",
+"Puppy",
+"Pussy",
+"Quack",
+"Quail",
+"Quarry",
+"Quarter",
+"Quebec",
+"Queen",
+"Queue",
+"Quiet",
+"Quiver",
+"Rabbit",
+"Race",
+"Rack",
+"Racket",
+"Radio",
+"Rag",
+"Rain",
+"Rake",
+"Ram",
+"Range",
+"Rank",
+"Rap",
+"Rare",
+"Rash",
+"Rat",
+"Rate",
+"Rattle",
+"Ratty",
+"Ray",
+"Reading",
+"Real",
+"Rear",
+"Rebel",
+"Recess",
+"Record",
+"Red",
+"Reed",
+"Reel",
+"Rees",
+"Referee",
+"Reflect",
+"Reformation",
+"Refuse",
+"Rein",
+"Reject",
+"Relief",
+"Relish",
+"Remote",
+"Rent",
+"Rep",
+"Report",
+"Reservation",
+"Reserve",
+"Resort",
+"Rest",
+"Retract",
+"Retreat",
+"Return",
+"Reverse",
+"Review",
+"Revolution",
+"Reynolds",
+"Rhine",
+"Rib",
+"Rice",
+"Rich",
+"Richard",
+"Richards",
+"Richardson",
+"Richmond",
+"Rick",
+"Rifle",
+"Right",
+"Riley",
+"Rim",
+"Ring",
+"Rio",
+"Road",
+"Rob",
+"Roberts",
+"Robin",
+"Robinson",
+"Rock",
+"Rocket",
+"Rod",
+"Rodriguez",
+"Roe",
+"Rogers",
+"Roll",
+"Roller",
+"Roman",
+"Romance",
+"Romeo",
+"Rook",
+"Room",
+"Roosevelt",
+"Rooster",
+"Root",
+"Rose",
+"Rosemary",
+"Ross",
+"Rough",
+"Round",
+"Roundabout",
+"Row",
+"Rowan",
+"Rowling",
+"Roy",
+"Rubber",
+"Rubbish",
+"Ruby",
+"Rude",
+"Rug",
+"Rule",
+"Ruler",
+"Run",
+"Rung",
+"Runner",
+"Russell",
+"Russian",
+"Ryan",
+"Rye",
+"Sack",
+"Safe",
+"Sage",
+"Sagittarius",
+"Sail",
+"Sake",
+"Sale",
+"Sally",
+"Salsa",
+"Salt",
+"Samuel",
+"Sanchez",
+"Sand",
+"Sandals",
+"Sandwich",
+"Santa",
+"Sap",
+"Sat",
+"Saturn",
+"Saunders",
+"Saw",
+"Sax",
+"Scales",
+"Scene",
+"Scent",
+"School",
+"Scoop",
+"Score",
+"Scorpio",
+"Scotland",
+"Scott",
+"Scout",
+"Scrap",
+"Scratch",
+"Screen",
+"Screw",
+"Screwdriver",
+"Scrubs",
+"Scum",
+"Sea",
+"Seal",
+"Season",
+"Seat",
+"Second",
+"Secretary",
+"See",
+"Seine",
+"Semi",
+"Sense",
+"Sent",
+"Sentence",
+"Service",
+"Set",
+"Seven",
+"Sewer",
+"Sex",
+"Shade",
+"Shag",
+"Shah",
+"Shakespeare",
+"Shame",
+"Shape",
+"Share",
+"Sharp",
+"Shaw",
+"Shed",
+"Sheep",
+"Sheet",
+"Shell",
+"Sherlock",
+"Shift",
+"Ship",
+"Shiraz",
+"Shirt",
+"Shock",
+"Shoe",
+"Shoot",
+"Shop",
+"Short",
+"Shorts",
+"Shot",
+"Shovel",
+"Shower",
+"Shuttle",
+"Siamese",
+"Side",
+"Sierra",
+"Sign",
+"Sikhs",
+"Silver",
+"Simpson",
+"Sin",
+"Sinatra",
+"Singer",
+"Singh",
+"Sink",
+"Sister",
+"Six",
+"Skate",
+"Sketch",
+"Skied",
+"Skin",
+"Skip",
+"Skirt",
+"Skull",
+"Skunk",
+"Sky",
+"Slate",
+"Sleep",
+"Slide",
+"Sling",
+"Slip",
+"Slippers",
+"Sloth",
+"Slough",
+"Slug",
+"Smack",
+"Small",
+"Smart",
+"Smith",
+"Smoke",
+"Smooth",
+"Snail",
+"Snake",
+"Snap",
+"Snow",
+"Snowdon",
+"Snuff",
+"Soap",
+"Sock",
+"Sod",
+"Soda",
+"Sofa",
+"Soil",
+"Soldier",
+"Sole",
+"Solomon",
+"Solution",
+"Sore",
+"Sort",
+"Sound",
+"South",
+"South Africa",
+"Sovereign",
+"Sow",
+"Space",
+"Spade",
+"Spam",
+"Span",
+"Spanish",
+"Spanner",
+"Spare",
+"Sparkler",
+"Sparrow",
+"Speaker",
+"Spears",
+"Spectacles",
+"Speech",
+"Speed",
+"Spell",
+"Spelt",
+"Spencer",
+"Spider",
+"Spiderman",
+"Spirit",
+"Spit",
+"Split",
+"Spoke",
+"Spoon",
+"Sport",
+"Spot",
+"Spray",
+"Spread",
+"Spring",
+"Spud",
+"Spurs",
+"Spy",
+"Square",
+"Squash",
+"Stable",
+"Staff",
+"Stag",
+"Stage",
+"Stake",
+"Stalin",
+"Stalk",
+"Stall",
+"Stamp",
+"Stand",
+"Standard",
+"Staple",
+"Star",
+"Starling",
+"State",
+"Station",
+"Steal",
+"Steep",
+"Steer",
+"Stem",
+"Step",
+"Stern",
+"Stevens",
+"Stew",
+"Stewart",
+"Stick",
+"Still",
+"Sting",
+"Stir",
+"Stirling",
+"Stitch",
+"Stock",
+"Stole",
+"Stone",
+"Stool",
+"Stoop",
+"Stop",
+"Store",
+"Story",
+"Stove",
+"Strain",
+"Strand",
+"Straw",
+"Stray",
+"Stream",
+"Stress",
+"Stretcher",
+"Strike",
+"String",
+"Strip",
+"Stripe",
+"Stroke",
+"Strut",
+"Stuart",
+"Stud",
+"Stump",
+"Stupid",
+"Sub",
+"Subject",
+"Sue",
+"Sugar",
+"Suit",
+"Sullivan",
+"Summer",
+"Sun",
+"Super",
+"Superman",
+"Sushi",
+"Suspect",
+"Swallow",
+"Swamp",
+"Swear",
+"Sweater",
+"Swede",
+"Sweet",
+"Swell",
+"Swift",
+"Swim",
+"Swing",
+"Switch",
+"Switzerland",
+"Sydney",
+"Tab",
+"Table",
+"Tablet",
+"Tack",
+"Tackle",
+"Tag",
+"Tail",
+"Tale",
+"Tall",
+"Tango",
+"Tank",
+"Tanner",
+"Tap",
+"Tape",
+"Tart",
+"Tarzan",
+"Taste",
+"Tat",
+"Tattoo",
+"Taurus",
+"Tax",
+"Taxi",
+"Taylor",
+"Tea",
+"Tear",
+"Teddy",
+"Tee",
+"Telegraph",
+"Television",
+"Teller",
+"Temple",
+"Tend",
+"Tender",
+"Tennis",
+"Term",
+"Terminal",
+"Terms",
+"Test",
+"Texas",
+"Thatcher",
+"Thomas",
+"Thompson",
+"Thread",
+"Three",
+"Throw",
+"Thunder",
+"Tick",
+"Tide",
+"Tie",
+"Tiger",
+"Tights",
+"Tile",
+"Till",
+"Time",
+"Tin",
+"Tip",
+"Tire",
+"Tit",
+"Titanic",
+"Toad",
+"Toast",
+"Toe",
+"Toilet",
+"Token",
+"Tokyo",
+"Toll",
+"Tom",
+"Tomato",
+"Tongue",
+"Tonic",
+"Tool",
+"Tooth",
+"Top",
+"Topic",
+"Tornado",
+"Toronto",
+"Tot",
+"Total",
+"Touch",
+"Tower",
+"Toy",
+"Trace",
+"Track",
+"Trade",
+"Trafalgar",
+"Trail",
+"Train",
+"Tramp",
+"Transfer",
+"Transform",
+"Transport",
+"Trash",
+"Treat",
+"Trial",
+"Triangle",
+"Trick",
+"Trim",
+"Trip",
+"Troop",
+"Trotter",
+"Truck",
+"Trudeau",
+"Truffle",
+"Truman",
+"Trump",
+"Trumpet",
+"Trunk",
+"Trust",
+"Try",
+"Tube",
+"Tug",
+"Turkey",
+"Turn",
+"Turner",
+"Tutu",
+"Twain",
+"Tweed",
+"Twins",
+"Twist",
+"Twister",
+"Twitter",
+"Two",
+"Tyler",
+"Type",
+"Uncle",
+"Uniform",
+"Unit",
+"Universe",
+"Upset",
+"Uranus",
+"Urchin",
+"Vacuum",
+"Vain",
+"Van",
+"Vat",
+"Vault",
+"Veil",
+"Vein",
+"Velvet",
+"Venetian",
+"Vent",
+"Venus",
+"Vessel",
+"Vest",
+"Vice",
+"Victor",
+"Victoria",
+"Vietnam",
+"View",
+"Violet",
+"Virginia",
+"Virgo",
+"Virtue",
+"Virus",
+"Vision",
+"Volga",
+"Volume",
+"Vulture",
+"Wage",
+"Wagner",
+"Wake",
+"Wales",
+"Walk",
+"Walker",
+"Wall",
+"Walsh",
+"War",
+"Ward",
+"Warren",
+"Wash",
+"Washington",
+"Wasp",
+"Waste",
+"Watch",
+"Water",
+"Watson",
+"Watt",
+"Watts",
+"Wave",
+"Wax",
+"Way",
+"Wear",
+"Web",
+"Webb",
+"Webster",
+"Wed",
+"Weed",
+"Well",
+"Wellington",
+"Wells",
+"West",
+"Westminster",
+"Wet",
+"Whale",
+"Wheel",
+"Whip",
+"Whiskey",
+"White",
+"Wick",
+"Wicket",
+"Wide",
+"Wife",
+"Wild",
+"Wilkinson",
+"Will",
+"William",
+"Williams",
+"Willow",
+"Willy",
+"Wilson",
+"Win",
+"Wind",
+"Windsor",
+"Wine",
+"Wing",
+"Winter",
+"Wire",
+"Wise",
+"Witch",
+"Wizard",
+"Wolf",
+"Woman",
+"Wonder",
+"Wood",
+"Woods",
+"Word",
+"Work",
+"World",
+"Worm",
+"Wound",
+"Wren",
+"Wright",
+"Writer",
+"X-ray",
+"Yahoo",
+"Yale",
+"Yank",
+"Yankee",
+"Yard",
+"Yarn",
+"Yellow",
+"Yen",
+"York",
+"Young",
+"Zebra",
+"Zero",
+"Zest",
+"Zeus",
+"Zip",
+"Zulu",
+
+
+
+
+
+
+
+
+
+
+
+// End
+"Finish"
+]
+
+// reduce linxemwords for trial
+var reducedlinxemwords
+var linxemindex
+if (adsrequired==1)
+{
+reducedlinxemwords=[]
+linxemindex=0
+for (var i=0; i<linxemwords.length; i++)
+{
+if (linxemindex==0) {reducedlinxemwords=reducedlinxemwords.concat([linxemwords[i]])}
+linxemindex++
+if (linxemindex==3) {linxemindex=0}
+}
+linxemwords=reducedlinxemwords
+}
+/*
+var linxemstats=[]
+for (var i=0; i<linxemwords.length; i++)
+{
+linxemstats[i]=0
+}
+var linxemshuffle
+var somei
+for (var k=0; k<1000; k++)
+{
+linxemshuffle=shufflearray(linxemwords).slice(0, 32)
+for (var i=0; i<linxemshuffle.length; i++)
+{
+somei=ith(linxemshuffle[i], linxemwords)
+linxemstats[somei]++
+
+}
+}
+
+for (var i=0; i<linxemstats.length; i++)
+{
+linxemstats[i]=[linxemwords[i], linxemstats[i], '\n']
+}
+documentwrite('<textarea id="checks" style="width:300px;height:100px">')
+changetextvalue('checks', linxemstats)
+*/
+
+</script>
+
 </body></html>
