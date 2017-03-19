@@ -7,7 +7,7 @@ var appversion='1.1 (20170305)'
 // localStorage.clear()
 var restartconfirmationrequired=1
 var adsrequired=1
-
+/*
 var thedate = new Date();
 var thenow = thedate.getTime();
  
@@ -18,11 +18,13 @@ while (thedate.getTime()<thelater)
 thedate=new Date()
 }
 
-
+*/
 function documentwrite(someitem)
 {
 document.write(someitem)
 }
+
+
 
 // var thewindowsizes=[window.innerWidth, window.innerHeight,document.documentElement.clientWidth, document.documentElement.clientHeight]
 
@@ -2269,7 +2271,7 @@ sometext=sometext+'<td><img src="linxemlink.png" style="display:block" width='+M
 }
 sometext=sometext+'</tr>'
 
-sometext=sometext+'</table><table border=0 width=100% height='+Math.floor(scalef*20)+' style="position:absolute;top:0px;left:0px"><tr><td style="text-align:center;font-size:'+Math.floor(scalef*12)+'px;color:white;font-weight:bold;" valign=middle>'+somename+'</td></tr></table></div>' 
+sometext=sometext+'</table><table border=0 width=100% height='+Math.floor(scalef*20)+' style="position:absolute;top:0px;left:0px"><tr><td style="text-align:center;font-size:'+Math.floor(scalef*12)+'px;color:white;font-weight:bold;" valign=middle onClick="location.reload()">'+somename+'</td></tr></table></div>' 
 return sometext
 }
 
@@ -2595,7 +2597,7 @@ The standard layout of the <script language="Javascript">documentwrite(numberwor
 <p >TopAccolades Limited shall not be liable for any damages whatsoever arising out of the use of or inability to use this application or the provision of or failure to provide support.</p> 
 <p style="font-style: italic;">Copyright TopAccolades Limited<br>www.topaccolades.com</p>
 <p><br>Version <script language="Javascript">documentwrite(appversion)</script><br>
-Scale <script language="Javascript">documentwrite(scalef)</script>
+Scale <script language="Javascript">documentwrite(scalef); documentwrite('<br>W='+screenwidth+', H='+screenheight)</script>
 
 
 
