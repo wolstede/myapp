@@ -3,11 +3,11 @@
 
 <script language="Javascript">
 var appname='linxem'
-var appversion='1.1 (20170305)'
+var appversion='1.2 (20170319)'
 // localStorage.clear()
 var restartconfirmationrequired=1
 var adsrequired=1
-/*
+
 var thedate = new Date();
 var thenow = thedate.getTime();
  
@@ -18,7 +18,7 @@ while (thedate.getTime()<thelater)
 thedate=new Date()
 }
 
-*/
+
 function documentwrite(someitem)
 {
 document.write(someitem)
@@ -26,7 +26,7 @@ document.write(someitem)
 
 
 
-// var thewindowsizes=[window.innerWidth, window.innerHeight,document.documentElement.clientWidth, document.documentElement.clientHeight]
+var thewindowsizes=[window.innerWidth, window.innerHeight,document.documentElement.clientWidth, document.documentElement.clientHeight]
 
 var scalef
 var screenwidth=document.documentElement.clientWidth
@@ -2271,7 +2271,7 @@ sometext=sometext+'<td><img src="linxemlink.png" style="display:block" width='+M
 }
 sometext=sometext+'</tr>'
 
-sometext=sometext+'</table><table border=0 width=100% height='+Math.floor(scalef*20)+' style="position:absolute;top:0px;left:0px"><tr><td style="text-align:center;font-size:'+Math.floor(scalef*12)+'px;color:white;font-weight:bold;" valign=middle onClick="location.reload()">'+somename+'</td></tr></table></div>' 
+sometext=sometext+'</table><table border=0 width=100% height='+Math.floor(scalef*20)+' style="position:absolute;top:0px;left:0px"><tr><td style="text-align:center;font-size:'+Math.floor(scalef*12)+'px;color:white;font-weight:bold;" valign=middle>'+somename+'</td></tr></table></div>' 
 return sometext
 }
 
