@@ -1,0 +1,508 @@
+﻿<!DOCTYPE HTML><html style="height:100%;width:100%"><head><title>Diary of a Nobody</title>
+
+<meta name = "viewport" content = "user-scalable=no,width=device-width" />
+
+<script language="Javascript" src="bookdetails.htm"></script>
+
+
+
+<script language="Javascript">
+
+function changetextvalue(someitem, someval)
+{
+document.getElementById(someitem).innerHTML = someval
+}
+
+function documentwrite(someitem)
+{
+document.write(someitem)
+}
+
+
+
+
+// Local storage
+// SetLocalVal and GetLocalVal - use cookies of available, if not local storage
+// Reason: for testing, local storage doesn't seem to work.  On devices, local storage works but not always cookies.  Should cover everything.
+
+var daystoExpire = 2000;
+var expirydate = new Date(); 
+expirydate.setTime(expirydate.getTime() + (daystoExpire*24*60*60*1000));
+
+
+function GetCookie(name) 
+{  
+var thecookie=document.cookie
+var namestring = name+'='  
+var cookieval = null
+var cookievalbeg=-1
+var cookievalend=thecookie.length
+for (var beg=0; beg<thecookie.length; beg++)
+{
+var end=beg+namestring.length
+if (thecookie.substring(beg, end) == namestring)
+{
+cookievalbeg=end
+}
+}
+if (cookievalbeg > -1)
+{
+cookievalend=thecookie.indexOf(';', cookievalbeg) // look for next ; after beginning of value
+if (cookievalend == -1) (cookievalend = thecookie.length)
+cookieval = unescape(thecookie.substring(cookievalbeg, cookievalend))
+} 
+
+return cookieval
+}
+
+
+function SetCookie(name, val) 
+{  
+var cookiestring = name+'='+escape(val)+'; expires='+ expirydate.toGMTString()
+document.cookie=cookiestring
+}
+
+var usecookies=1
+SetCookie('dummy', 'answer')
+if (GetCookie('dummy')==null) {usecookies=0}
+
+function SetLocalVal(somename, someval)
+{
+if (usecookies==1) 
+{
+SetCookie(somename, someval)
+}
+else
+{
+localStorage.setItem(somename, someval)
+}
+}
+
+function GetLocalVal(somename)
+{
+if (usecookies==1) 
+{
+return GetCookie(somename)
+}
+else
+{
+return localStorage.getItem(somename)
+}
+}
+
+// end Local Storage
+
+
+var screenwidth=window.innerWidth
+var screenheight=window.innerHeight
+
+var overallwidthscale=screenwidth/190
+var overallheightscale=screenheight/270
+if (overallwidthscale<overallheightscale) {scalef=Math.floor(10*overallwidthscale)/10} else {scalef=Math.floor(10*overallheightscale)/10}
+if (scalef<1.0) {scalef=1.0}
+
+var thefullwidth=screenwidth
+var thefullheight=screenheight
+
+var prevfullwidth=GetLocalVal('thefullwidth')
+if (prevfullwidth==null) {prevfullwidth=thefullwidth} else {prevfullwidth=prevfullwidth*1}
+
+SetLocalVal('thefullwidth', thefullwidth)
+
+var basetextsize=10
+var prevtextsize=GetLocalVal('basetextsize')
+if (prevtextsize==null) 
+	{prevtextsize=basetextsize}
+	else
+	{
+	prevtextsize=prevtextsize*1
+	if (prevfullwidth==thefullwidth)
+		{
+		basetextsize=prevtextsize
+		}
+
+	}
+SetLocalVal('basetextsize', basetextsize)
+
+var thebgcolor='white'
+var prevcolor=GetLocalVal('thebgcolor')
+if (prevcolor==null) 
+	{prevcolor='white'}
+thebgcolor=prevcolor
+SetLocalVal('thebgcolor', thebgcolor)
+
+documentwrite('<style type="text/css">      \nbody {color: black; background-color: white; font-family: sans-serif; font-size: '+(scalef*basetextsize)+'px; font-weight: normal; font-style: normal; text-align: left}      \nh1 {font-family: sans-serif; font-size: '+(scalef*basetextsize*1.4)+'px; font-weight: bold; font-style: normal; text-align: center} \nh2 {font-family: sans-serif; font-size: '+(scalef*basetextsize*1.2)+'px; font-weight: bold; font-style: italic; text-align: center} \nh3 {font-family: sans-serif; font-size: '+(scalef*basetextsize)+'px; font-weight: bold; font-style: normal; text-align: left} \np {font-family: sans-serif; font-size: '+(scalef*basetextsize)+'px; font-weight: normal; font-style: normal; text-align: left} \nli {font-family: sans-serif; font-size: '+(scalef*basetextsize)+'px; font-weight: normal; font-style: normal; text-align: left} \ntable {font-family: sans-serif; font-size: '+(scalef*basetextsize)+'px; font-weight: normal; font-style: normal; text-align: left} \ntd {font-family: sans-serif; font-size: '+(scalef*basetextsize)+'px; font-weight: normal; font-style: normal; } \n span.MsoFootnoteReference {color:gray; font-size: '+(scalef*basetextsize*0.8)+'px} \np.date {font-weight:bold;color:green;text-align:center} \np.figure {font-style:italic;color:gray;text-align:center;background-color:white} \np.chaptersummary {color:red;text-align:center} \np.ShortQuote {color:green} \np.Summary {color:blue}  \np.heading4 {font-style:italic} \ntextarea {font-family: sans-serif; font-size: '+(scalef*basetextsize)+'px; font-weight: normal; font-style: normal; overflow:hidden;} \ninput {font-family: sans-serif; font-size: '+(scalef*basetextsize)+'px; font-weight: normal; font-style: normal; } \n * {-webkit-tap-highlight-color: rgba(0, 0, 0, 0);}\n</style> \n')
+
+
+</script>
+
+</head>
+
+<script language="Javascript">documentwrite('<body onLoad="runonload()" TOPMARGIN=0 LEFTMARGIN=0 MARGINHEIGHT=0 MARGINWIDTH=0 style="background-color:'+thebgcolor+'; width:100%; height:100%" >')</script>
+<table border=0 cellspacing=0 cellpadding=0 style="width:100%;height:100%" align=center><tr><td valign=top style="vertical-align:top" id="output">
+<SCRIPT LANGUAGE="JavaScript">
+
+
+
+
+
+
+function changetextvalue(someitem, someval)
+{
+document.getElementById(someitem).innerHTML = someval
+}
+
+function genintegers(somenum)
+{
+var someresult=[]
+for (var i=1; i<=somenum; i++)
+{
+someresult[i-1]=i
+}
+return someresult
+}
+
+function member(someitem, somelist)
+{
+for (var i=0; i<somelist.length; i++)
+{
+if (someitem==somelist[i]) {return true}
+}
+return false
+}
+
+function randomnumber(num) {
+// returns a random number from 1 to num
+var ran=Math.round(Math.random()*num)
+if (ran == 0) {ran = num}  // ran initially 0 to num - but 0 and num have half the probability of the other numbers
+return ran
+}
+
+function shufflearray(somearray)
+{
+
+var temparray=somearray
+var shuffled=new Array()
+var packsize=somearray.length
+var ran
+
+for (var i=0; i<packsize; i++)
+{
+ran = randomnumber(temparray.length)
+shuffled[i] = temparray[ran-1]
+temparray = removeElement(ran-1, temparray)
+}
+return shuffled
+}
+
+function removeElement(index, somearray)
+{
+var beg=somearray.slice(0, index)
+var end=[]
+if (index+1 < somearray.length) {end = somearray.slice(index+1)}
+return beg.concat(end)
+}
+
+function removeitem(someitem, somearray)
+{
+var somebeg=[]
+var someend=[]
+for (var i=0; i<somearray.length; i++)
+{
+if (somearray[i]==someitem) {return somearray.slice(0, i).concat(somearray.slice(i+1))}
+}
+return somearray
+}
+
+function copylist(somelist)
+{
+var somereturn=[]
+for (var i=0; i<somelist.length; i++)
+{
+somereturn[i]=somelist[i]
+}
+return somereturn
+}
+
+
+var theforepages=['contents']
+var theminpage=1-theforepages.length
+
+
+var thepage=GetLocalVal('thepage')
+
+if (thepage==null) {thepage=theminpage; SetLocalVal('thepage', thepage)} else {thepage=thepage*1}
+
+</script>
+<script language="Javascript">
+
+
+
+
+
+
+var thecontentsbegs=['<tr><td colspan=5></td>', '<tr><td width='+Math.floor(scalef*10)+'></td><td colspan=4>', '<tr><td width='+Math.floor(scalef*10)+'></td><td width='+Math.floor(scalef*10)+'></td><td colspan=3>', '<tr><td width='+Math.floor(scalef*10)+'></td><td width='+Math.floor(scalef*10)+'></td><td width='+Math.floor(scalef*10)+'></td><td colspan=2>', '<tr><td width='+Math.floor(scalef*10)+'></td><td width='+Math.floor(scalef*10)+'></td><td width='+Math.floor(scalef*10)+'></td><td width='+Math.floor(scalef*10)+'></td><td>'] 
+
+function thebuttons(sometype)
+{
+var sometext
+if (sometype[0]=='page')
+{
+sometext=sometype[1]+' of '+thecontents.length
+
+}
+else
+{
+sometext=sometype[0]
+}
+
+return '<a name="Top"></a><table border=0 cellspacing=0 cellpadding=0 width=100% height='+Math.floor(scalef*thefullheight)+'><tr bgcolor="silver"><td height='+Math.floor(scalef*12)+'><table border=0 width=100%><tr><td width=20% align=center onClick="gotopage('+theminpage+')"><img width='+Math.floor(scalef*10)+' src="homeicon.png"></td><td width=15% align=center onClick="backpage()" style="font-size:'+Math.floor(scalef*10)+'px"><b>&lt;</b></td><td align=center style="font-size:'+Math.floor(scalef*10)+'px"><b>'+sometext+'</b></td><td width=15% align=center onClick="nextpage()"  style="font-size:'+Math.floor(scalef*10)+'px"><b>&gt;</b></td><td width=20% onClick="showhelp()" style="font-size:'+Math.floor(scalef*10)+'px;text-align:center"><b><span style="font-size:'+Math.floor(scalef*8)+'px">A</span>A+?</b></td></tr></table></td></tr>'
+
+}
+
+var thefontsizes=[8,10,12,14,16]
+var thecolors=['white', 'lemonchiffon', '#F5ED9B']
+
+function showhelp()
+{
+var sometext=graphicfor('Back')+'<br>'
+// Text size
+sometext=sometext+'<b>Set text size</b><br><table border=3 cellspacing=0 cellpadding=0 align=center><tr>'
+var somebgcolor
+for (var i=0; i<thefontsizes.length; i++)
+{
+if (basetextsize==thefontsizes[i])
+{somebgcolor='background-color:green;'} else {somebgcolor='background-color:white;'}
+
+sometext=sometext+'<td align=center id="fontsel'+i+'" width='+Math.floor(scalef*35)+' onClick="changefontsize('+i+')" style="font-size:'+Math.floor(scalef*thefontsizes[i])+'px;'+somebgcolor+'">Aa'+(i+1)+'</td>'
+
+}
+sometext=sometext+'</tr></table>'
+
+// Colour
+
+sometext=sometext+'<br><b>Set background colour</b><br><table border=3 cellspacing=0 cellpadding=0 align=center><tr>'
+for (var i=0; i<thecolors.length; i++)
+{
+
+sometext=sometext+'<td width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' onClick="changebgcolor('+i+')" style="font-size:'+Math.floor(scalef*thefontsizes[i])+'px;background-color:'+thecolors[i]+'">&nbsp;</td>'
+
+}
+sometext=sometext+'</tr><tr>'
+for (var i=0; i<thecolors.length; i++)
+{
+if (thebgcolor==thecolors[i])
+{somebgcolor='background-color:black;'} else {somebgcolor='background-color:white;'}
+
+sometext=sometext+'<td id="colorsel'+i+'" width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*4)+' onClick="changebgcolor('+i+')" style="font-size:'+Math.floor(scalef*thefontsizes[i])+'px;'+somebgcolor+'"></td>'
+
+}
+sometext=sometext+'</tr></table><br>Note: Settings are applied only when the Back button above is pressed.<br><br>'
+
+// Help
+var someomittedtext1=''
+var someomittedtext2=''
+if (omitpages.length>0) {someomittedtext1=', pages not displayed as part of this extract'; someomittedtext2='; no links are provided to pages that are not displayed in this extract'}
+sometext=sometext+'<b>Help</b><br><br>The book is divided into pages.  You may need to scroll down to see all the contents of a page.<br><br>Press on a page (except Contents'+someomittedtext1+' and this page) to move to next page.<br><br>Additionally, you can use the forward and backward arrows at the top of pages to move one page forwards or backwards.<br><br>Press the Home icon to return to the Contents page, where you can press on links to the relevant pages'+someomittedtext2+'.'
+
+
+changetextvalue('output', '<table width=100% valign=top><tr><td valign=top>'+sometext+'</td></tr></table>')
+
+}
+
+function changebgcolor(somenum)
+{
+SetLocalVal('thebgcolor', thecolors[somenum])
+for (var i=0; i<thecolors.length; i++)
+{
+document.getElementById('colorsel'+i).style.backgroundColor='white'
+
+}
+document.getElementById('colorsel'+somenum).style.backgroundColor='black'
+
+}
+
+
+
+function changefontsize(somenum)
+{
+SetLocalVal('basetextsize', thefontsizes[somenum])
+for (var i=0; i<thefontsizes.length; i++)
+{
+document.getElementById('fontsel'+i).style.backgroundColor='white'
+
+}
+document.getElementById('fontsel'+somenum).style.backgroundColor='green'
+
+}
+
+
+
+function showpage()
+{
+
+if (thepage>0 && member(thepage, omitpages)==false)
+{
+var somepagedetails=thecontents[thepage-1]
+var somestart=somepagedetails[1]
+var someend=somepagedetails[2]
+var somereferences=somepagedetails[3]
+var sometitles=somepagedetails[4]
+var somereferencetext=''
+if (somereferences.length>0)
+{
+somereferencetext='-----------<br>'
+for (var i=0; i<somereferences.length; i++)
+{
+somereferencetext=somereferencetext+thereferences[somereferences[i]-1][0]+': '+thereferences[somereferences[i]-1][1]+'<br>'
+}
+}
+var someadtext=''
+if (sometitles.length>0) {if (sometitles[0][0]>1) {someadtext='<br><br>'+selectad()}}
+changetextvalue('output', thebuttons(['page', thecontents[thepage-1][0]])+'<tr ><td colspan=5 style="position:relative"  onClick="nextpage()" valign=top><table cellpadding=2 border=0><tr><td>'+thebooktext.slice(somestart, someend)+somereferencetext+someadtext+'<br></td></tr></table></td></tr></table></td></tr></table>')
+// document.location.href="#Top"
+}
+
+if (thepage>0 && member(thepage, omitpages)==true)
+{
+
+var somelastpage
+var somenextpage
+for (var i=1; i<=thecontents.length; i++)
+{
+
+if (i<thepage)
+{
+if (member(i, omitpages)==false) {somelastpage=i}
+}
+if (i>thepage)
+{
+if (member(i, omitpages)==false) {somenextpage=i; break}
+}
+
+}
+var sometext='<br><br>In this extract of The Diary of a Nobody, the text of this page is not displayed.<br><br>You can go jump to the next displayed page by pressing the Next button below, or to the previous one by pressing the Last button.<br><br><table border=0 width=100%><tr><td><table border=0 cellspacing=0 cellpadding=0  onClick="gotopage('+somelastpage+')" align=center><tr><td><div style="position:relative"><img width='+Math.floor(scalef*50)+' height='+Math.floor(scalef*25)+' src="greybluebutton.png" border=0><div style="position:absolute;top:0px;left:0px;width:100%;height:100%"><table border=0 cellspacing=0 cellpadding=0 align=center valign=middle><tr height='+Math.floor(scalef*25)+'><td align=center valign=middle style="text-align:center;font-weight:bold;color:white">Last</td></tr></table></div></div></td></tr></table></td><td><table border=0 cellspacing=0 cellpadding=0  onClick="gotopage('+somenextpage+')" align=center><tr><td><div style="position:relative"><img width='+Math.floor(scalef*50)+' height='+Math.floor(scalef*25)+' src="greybluebutton.png" border=0><div style="position:absolute;top:0px;left:0px;width:100%;height:100%"><table border=0 cellspacing=0 cellpadding=0 align=center valign=middle><tr height='+Math.floor(scalef*25)+'><td align=center valign=middle style="text-align:center;font-weight:bold;color:white">Next</td></tr></table></div></div></td></tr></table></td></tr></table>'
+
+
+changetextvalue('output', thebuttons(['page', thecontents[thepage-1][0]])+'<tr ><td colspan=5 style="position:relative"  valign=top><table width=100% valign=top><tr><td  valign=top>'+sometext+'<br></td></tr></table></td></tr></table>')
+}
+
+
+if (thepage<=0)
+{
+var somepagenum=1-theminpage
+somepagenum=theforepages.length-somepagenum
+var somepagename=theforepages[somepagenum]
+var somelinktext
+// contents
+if (somepagename=='contents')
+{
+var sometext='<p style="text-align:center">Press <span style="font-size:'+Math.floor(scalef*8)+'px">A</span>A+? above for Settings and Help.<br><span style="color:red">On main pages, tap page to move to next page.</span><h1>The Diary of a Nobody</h1><p style="text-align:center"><a href="javascript:gotopage(1)">Start reading book</a><h2>Contents</h2><table border=0>'
+for (var i=0; i<thecontents.length; i++)
+{
+for (var j=0; j<thecontents[i][4].length; j++)
+{
+if (member(thecontents[i][0], omitpages)==false)
+{
+somelinktext='<a href="javascript:gotopage('+thecontents[i][0]+')">'+thecontents[i][4][j][1]+'</a>'
+if (thecontents[i][5].length>0)
+	{somelinktext=somelinktext+'<br><i>'+thecontents[i][5][0]+'</i>'}
+}
+else
+{
+somelinktext=thecontents[i][4][j][1]
+}
+sometext=sometext+thecontentsbegs[thecontents[i][4][j][0]]+somelinktext+'</td></tr>'
+}
+}
+sometext=sometext+'</table>'
+changetextvalue('output', thebuttons(['Contents'])+'<tr><td colspan=5 valign=top><table border=0 width=100% valign=top><tr><td valign=top>'+sometext+'<br><br><br></td></tr></table></td></tr></table>')
+}
+// copyright
+
+
+}
+
+}
+
+
+function reloadapp()
+{
+scroll(0,0)
+document.location.href='default.htm'
+}
+
+
+function gotopage(somenum)
+{
+thepage=somenum
+SetLocalVal('thepage', thepage)
+reloadapp()
+
+}
+
+
+function nextpage()
+{
+if (thepage<thecontents.length)
+{
+thepage=thepage+1
+}
+SetLocalVal('thepage', thepage)
+
+reloadapp()
+
+}
+
+function backpage()
+{
+if (thepage>theminpage)
+{
+thepage=thepage-1
+}
+SetLocalVal('thepage', thepage)
+
+reloadapp()
+
+}
+
+
+function runonload()
+{
+showpage()
+}
+
+function graphicfor(somename)
+{
+
+if (somename=='Back') {return '<table border=0 cellspacing=0 cellpadding=0  onClick="reloadapp()"><tr><td><div style="position:relative"><img width='+Math.floor(scalef*50)+' height='+Math.floor(scalef*25)+' src="greybluebutton.png" border=0><div style="position:absolute;top:0px;left:0px;width:100%;height:100%"><table border=0 cellspacing=0 cellpadding=0 align=center valign=middle><tr height='+Math.floor(scalef*25)+'><td align=center valign=middle style="text-align:center;font-weight:bold;color:white">'+somename+'</td></tr></table></div></div></td></tr></table>'}
+return somename
+}
+
+var adsrequired=0
+var omitpages=[]
+if (adsrequired==1) {omitpages=omitpagesforexcerpt}
+
+
+var theads=['<table border=1 width=80% align=center bgcolor=beige><tr><td align=center><br>Please help TopAccolades Limited to continue producing free ebook apps by purchasing our other great apps.<br><br><b>Compact Games</b><br><br>17 games in one app, including classics such as <br><br>4-in-a-line<br>Rummy<br>Hangman<br>Letters Game<br>Numbers Game<br>Bidinca (Liar\'s Dice)<br>Mancala<br>Yak (Yacht)<br><br>and also original games including<br><br>Pentad - a great word/letter game<br>Linkword Snap - make word connections<br>Volcano<br><br></td></tr></table>', '<table border=1 width=80% align=center bgcolor=beige><tr><td align=center><br>Please help TopAccolades Limited to continue producing free ebook apps by purchasing our other great apps.<br><br><b>Compact Puzzles</b><br><br>15 puzzles in one app, including classics such as <br><br>Peg Solitaire<br>WordSearch+<br>SudokuAssistant<br>Memory Pairs<br>Hangman<br>Code 4x6 (solve the colour code)<br>Memory Pairs<br>Step Challenge - 30-second mathematical challenge<br>Towers of Hanoi<br>15 Puzzle<br><br>and also original puzzles including<br><br>Numberskull - mathematical puzzle<br>Tricolor - a collapsing block puzzle<br><br></td></tr></table>', '<table border=1 width=80% align=center bgcolor=lime><tr><td align=center><br>Please help TopAccolades Limited to continue producing free ebook apps by purchasing our other great apps.<br><br><b>BrainBoxFun</b><br><br>10 sets of brain-training exercises, with up to 5 exercises per set. Choose from 5 levels for each exercise. The system recommends changes to levels or times at the end.<br><br>Exercises test various skills: <br><br>Memory<br>Verbal comprehension<br>Pattern recognition<br>Word power<br>Mental arithmetic<br>Planning<br>Mental rotation<br><br></td></tr></table>', '<table border=1 width=80% align=center bgcolor=beige><tr><td align=center><br>Please help TopAccolades Limited to continue producing free ebook apps by purchasing our other great apps.<br><br><b>Compact Words</b><br><br>7 word-based games and puzzles in one app, including classics such as <br><br>Hangman<br>WordSearch+<br>Letters Game<br><br>and also original ones including<br><br>Pentad<br>Linkword Snap<br><br></td></tr></table>', '<table border=1 width=80% align=center bgcolor=beige><tr><td align=center><br>Please help TopAccolades Limited to continue producing free ebook apps by purchasing our other great apps.<br><br><b>Compact Numbers</b><br><br>7 number-based games and puzzles in one app, including ones involving calculation<br><br>Numbers Game<br>Step Challenge (30-second challenge)<br>Numberskull - a great original puzzle<br><br>and also ones involving logic and dice<br>SudokuAssistant<br>Yak (Yacht)<br>Bidinca (Liar\'s Dice)<br><br></td></tr></table>', '<table border=1 width=80% align=center bgcolor=silver><tr><td align=center><br>Please help TopAccolades Limited to continue producing free ebook apps by purchasing our other great apps.<br><br><b>CSI Sherlock</b><br><br>The victim, Vic, has been killed.  Try to work out who killed Vic, with what, and where.  <br><br>Ask for a clue associated with the victim, a suspect, a weapon or a location and build up your knowledge until you think you can give the solution.<br><br>You can even get an explanation of the correct answer.<br><br></td></tr></table>', '<table border=1 width=80% align=center bgcolor=beige><tr><td align=center><br>Please help TopAccolades Limited to continue producing free ebook apps by using our online services.<br><br>Surprise a loved one with a message on one of our top-named sites:<br><br><b>Best-Wife.com<br>Best-Husband.com<br>Best-Lover.com<br>Best-Dad.com<br>Best-Mum.com<br>The-Best-Ever.com<br><br></b>For birthdays, anniversaries, Mother\'s Day, Father\'s Day and Valentine\'s Day<br><br></td></tr></table>', '<table border=1 width=80% align=center bgcolor=beige><tr><td align=center><br>Please help TopAccolades Limited to continue producing free ebook apps by using our online services.<br><br><b>With-My-Love.com</b><br><br>Thrill a loved one by devoting one of our great top-accolade sites to them for a month, covering a birthday, anniversary, Mother\'s Day, Father\'s Day, Valentine\'s Day or just to say I love you.<br><br>Over 300 .com sites such as:<br><br>best-wife.in-the-land<br>sexiest-lover.on-the-planet<br>best-husband.in-the-country<br>best-mom.in-the-universe<br>best-wife.in-the-land<br>best-mum.in-britain<br>hottest-lover.in-the-world-ever<br>best-wife.in-the-land<br>dearest-son.in-the-country<br>best-girl.in-the-universe<br><br>']
+
+function randomnumber(num) {
+// returns a random number from 1 to num
+var ran=Math.round(Math.random()*num)
+if (ran == 0) {ran = num}  // ran initially 0 to num - but 0 and num have half the probability of the other numbers
+return ran
+}
+
+
+
+function selectad()
+{
+var someadslength=theads.length
+var somead=theads[randomnumber(someadslength)-1]
+return somead
+}
+
+</script>
+
+</td></tr></table>
+</body></html>
