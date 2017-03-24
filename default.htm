@@ -65,7 +65,9 @@ document.cookie=cookiestring
 var usecookies=1
 SetCookie('dummy', 'answer')
 if (GetCookie('dummy')==null) {usecookies=0}
+usecookies=0
 
+var appname='diaryofanobody'
 function SetLocalVal(somename, someval)
 {
 if (usecookies==1) 
@@ -74,7 +76,7 @@ SetCookie(somename, someval)
 }
 else
 {
-localStorage.setItem(somename, someval)
+localStorage.setItem(appname+somename, someval)
 }
 }
 
@@ -86,15 +88,17 @@ return GetCookie(somename)
 }
 else
 {
-return localStorage.getItem(somename)
+return localStorage.getItem(appname+somename)
 }
 }
 
 // end Local Storage
 
+var thewindowsizes=[window.innerWidth, window.innerHeight,document.documentElement.clientWidth, document.documentElement.clientHeight]
 
-var screenwidth=window.innerWidth
-var screenheight=window.innerHeight
+var scalef
+var screenwidth=document.documentElement.clientWidth
+var screenheight=document.documentElement.clientHeight
 
 var overallwidthscale=screenwidth/190
 var overallheightscale=screenheight/270
@@ -484,7 +488,7 @@ var omitpages=[]
 if (adsrequired==1) {omitpages=omitpagesforexcerpt}
 
 
-var theads=['<table border=1 width=80% align=center bgcolor=beige><tr><td align=center><br>Please help TopAccolades Limited to continue producing free ebook apps by purchasing our other great apps.<br><br><b>Compact Games</b><br><br>17 games in one app, including classics such as <br><br>4-in-a-line<br>Rummy<br>Hangman<br>Letters Game<br>Numbers Game<br>Bidinca (Liar\'s Dice)<br>Mancala<br>Yak (Yacht)<br><br>and also original games including<br><br>Pentad - a great word/letter game<br>Linkword Snap - make word connections<br>Volcano<br><br></td></tr></table>', '<table border=1 width=80% align=center bgcolor=beige><tr><td align=center><br>Please help TopAccolades Limited to continue producing free ebook apps by purchasing our other great apps.<br><br><b>Compact Puzzles</b><br><br>15 puzzles in one app, including classics such as <br><br>Peg Solitaire<br>WordSearch+<br>SudokuAssistant<br>Memory Pairs<br>Hangman<br>Code 4x6 (solve the colour code)<br>Memory Pairs<br>Step Challenge - 30-second mathematical challenge<br>Towers of Hanoi<br>15 Puzzle<br><br>and also original puzzles including<br><br>Numberskull - mathematical puzzle<br>Tricolor - a collapsing block puzzle<br><br></td></tr></table>', '<table border=1 width=80% align=center bgcolor=lime><tr><td align=center><br>Please help TopAccolades Limited to continue producing free ebook apps by purchasing our other great apps.<br><br><b>BrainBoxFun</b><br><br>10 sets of brain-training exercises, with up to 5 exercises per set. Choose from 5 levels for each exercise. The system recommends changes to levels or times at the end.<br><br>Exercises test various skills: <br><br>Memory<br>Verbal comprehension<br>Pattern recognition<br>Word power<br>Mental arithmetic<br>Planning<br>Mental rotation<br><br></td></tr></table>', '<table border=1 width=80% align=center bgcolor=beige><tr><td align=center><br>Please help TopAccolades Limited to continue producing free ebook apps by purchasing our other great apps.<br><br><b>Compact Words</b><br><br>7 word-based games and puzzles in one app, including classics such as <br><br>Hangman<br>WordSearch+<br>Letters Game<br><br>and also original ones including<br><br>Pentad<br>Linkword Snap<br><br></td></tr></table>', '<table border=1 width=80% align=center bgcolor=beige><tr><td align=center><br>Please help TopAccolades Limited to continue producing free ebook apps by purchasing our other great apps.<br><br><b>Compact Numbers</b><br><br>7 number-based games and puzzles in one app, including ones involving calculation<br><br>Numbers Game<br>Step Challenge (30-second challenge)<br>Numberskull - a great original puzzle<br><br>and also ones involving logic and dice<br>SudokuAssistant<br>Yak (Yacht)<br>Bidinca (Liar\'s Dice)<br><br></td></tr></table>', '<table border=1 width=80% align=center bgcolor=silver><tr><td align=center><br>Please help TopAccolades Limited to continue producing free ebook apps by purchasing our other great apps.<br><br><b>CSI Sherlock</b><br><br>The victim, Vic, has been killed.  Try to work out who killed Vic, with what, and where.  <br><br>Ask for a clue associated with the victim, a suspect, a weapon or a location and build up your knowledge until you think you can give the solution.<br><br>You can even get an explanation of the correct answer.<br><br></td></tr></table>', '<table border=1 width=80% align=center bgcolor=beige><tr><td align=center><br>Please help TopAccolades Limited to continue producing free ebook apps by using our online services.<br><br>Surprise a loved one with a message on one of our top-named sites:<br><br><b>Best-Wife.com<br>Best-Husband.com<br>Best-Lover.com<br>Best-Dad.com<br>Best-Mum.com<br>The-Best-Ever.com<br><br></b>For birthdays, anniversaries, Mother\'s Day, Father\'s Day and Valentine\'s Day<br><br></td></tr></table>', '<table border=1 width=80% align=center bgcolor=beige><tr><td align=center><br>Please help TopAccolades Limited to continue producing free ebook apps by using our online services.<br><br><b>With-My-Love.com</b><br><br>Thrill a loved one by devoting one of our great top-accolade sites to them for a month, covering a birthday, anniversary, Mother\'s Day, Father\'s Day, Valentine\'s Day or just to say I love you.<br><br>Over 300 .com sites such as:<br><br>best-wife.in-the-land<br>sexiest-lover.on-the-planet<br>best-husband.in-the-country<br>best-mom.in-the-universe<br>best-wife.in-the-land<br>best-mum.in-britain<br>hottest-lover.in-the-world-ever<br>best-wife.in-the-land<br>dearest-son.in-the-country<br>best-girl.in-the-universe<br><br>']
+var theads=['<table border=1 width=80% align=center bgcolor=beige><tr><td align=center><br>You can find many of the apps from TopAccolades at http://i.compactfun.com, where you can try them online on your browser (Windows, Mac, Android, iPad/iOS) or download the Android app file, e.g. for Amazon Fire.<br><br></td></tr></table>', '<table border=1 width=80% align=center bgcolor=beige><tr><td align=center><br>Try other apps from TopAccolades.<br><br><b>Compact Fun</b><br><br>31 games and puzzles in one app: word, number, logic, block-falling, strategy.<br><br>Fun and challenge to last you a lifetime.<br><br></td></tr></table>', '<table border=1 width=80% align=center bgcolor=beige><tr><td align=center><br>Try other apps from TopAccolades.<br><br><b>Linxem</b><br><br>Linxem is a great new word game for 2-4 players playing in Play and Pass mode. A setter is presented with a number of words or names, and must select two or more than can be linked in some way by a different word or name (the Linxem). The setter states or types the Linxem to the solver, who must then try to identify the words selected by the setter.<br><br></td></tr></table>', '<table border=1 width=80% align=center bgcolor=beige><tr><td align=center><br>Try other apps from TopAccolades.<br><br><b>Volcano</b><br><br>This is an original block-falling game, in which you must catch the falling blocks with a craft and try to build a plug for the crater to prevent an eruption.<br><br></td></tr></table>', '<table border=1 width=80% align=center bgcolor=lime><tr><td align=center><br>Try other apps from TopAccolades.<br><br><b>BrainBoxFun</b><br><br>10 sets of brain-training exercises, with up to 5 exercises per set. Choose from 5 levels for each exercise. The system recommends changes to levels or times at the end.<br><br>Exercises test various skills: <br><br>Memory<br>Verbal comprehension<br>Pattern recognition<br>Word power<br>Mental arithmetic<br>Planning<br>Mental rotation<br><br></td></tr></table>', '<table border=1 width=80% align=center bgcolor=beige><tr><td align=center><br>Try other apps from TopAccolades.<br><br><b>Word Ladder</b><br><br>Given a word at the top of the ladder and another at the bottom, you must fill in another four valid words that differ from the one above and below by only one letter.<br><br></td></tr></table>', '<table border=1 width=80% align=center bgcolor=beige><tr><td align=center><br>Try other apps from TopAccolades.<br><br><b>Flagalot</b><br><br>Cards containing 4-9 flags (depending on level) are presented to you one at a time.  You simply have to tap on the flag that was also shown on the last card displayed. As well as this memory game, there is also a flag quiz.<br><br></td></tr></table>', '<table border=1 width=80% align=center bgcolor=silver><tr><td align=center><br>Try other apps from TopAccolades.<br><br><b>Who Killed Vic?</b><br><br>The victim, Vic, has been killed.  Try to work out who killed Vic, with what, and where.  <br><br>Ask for a clue associated with the victim, a suspect, a weapon or a location and build up your knowledge until you think you can give the solution.<br><br>You can even get an explanation of the correct answer.<br><br></td></tr></table>', '<table border=1 width=80% align=center bgcolor=beige><tr><td align=center><br>Please help TopAccolades Limited to continue producing free ebook apps by using our online services.<br><br><b>With-My-Love.com</b><br><br>Thrill a loved one by devoting one of our great top-accolade sites to them for a birthday, anniversary, Mother\'s Day, Father\'s Day, Valentine\'s Day or just to say I love you.<br><br>Sites such as:<br><br>best-wife.in-the.land<br>sexiest-lover.in-the-whole.world<br>harry-jackson.supremely.sexy<br>best-mom.in-the.land<br>laura-brown.the-world-to.me<br><br>We supply the last two parts of the site name, such as \'in-the.world\' and you supply the first part.<br><br>']
 
 function randomnumber(num) {
 // returns a random number from 1 to num

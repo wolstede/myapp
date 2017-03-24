@@ -3,9 +3,9 @@
 <!-- config.xml reference: https://build.phonegap.com/docs/config-xml -->
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
-        id        = "com.topaccolades.diaryofanobody"
-        versionCode = "11"
-        version   = "1.1">
+        id        = "com.topaccolades.diaryofanobody2"
+        versionCode = "22"
+        version   = "2.2">
 
     <name>Diary of a Nobody</name>
 
