@@ -1,4 +1,4 @@
-function changetextvalue(someitem, someval)
+﻿function changetextvalue(someitem, someval)
 {
 document.getElementById(someitem).innerHTML = someval
 }

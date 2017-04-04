@@ -1,4 +1,4 @@
-// All code copyright of TopAccolades Limited
+﻿// All code copyright of TopAccolades Limited
 // Original brain-training exercises by Dr. David Wolstenholme
 
 
@@ -663,7 +663,7 @@ return charlist(somenum+'')
 
 
 var originalimagenames=['blackadd', 'blacksubtract', 'blackmultiply', 'blackdivide', 'blackequals', /* 'icon0', 'icon1', 'icon2', 'icon3', 'icon4', 'icon5', 'icon6', 'icon7', 'icon8', 'icon9', */ 'blackhub', 'correctblackhub', 'wrongblackhub', 'lightbluetilespace', 'greyhub']
-var newimagenames=['black+', 'black-', 'blackx', 'black�', 'black=', /* 'redsquare', 'bluesquare', 'orangesquare', 'violetsquare', 'reddot', 'orangedot', 'bluedot', 'violetdot', 'greendot', 'greensquare', */ 'black', 'blackcorrect', 'blackwrong', 'lightbluetile ', 'gray']
+var newimagenames=['black+', 'black-', 'blackx', 'black÷', 'black=', /* 'redsquare', 'bluesquare', 'orangesquare', 'violetsquare', 'reddot', 'orangedot', 'bluedot', 'violetdot', 'greendot', 'greensquare', */ 'black', 'blackcorrect', 'blackwrong', 'lightbluetile ', 'gray']
 
 function setthepiece(row, col, someimage)
 {
