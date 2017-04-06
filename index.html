@@ -110,7 +110,7 @@ SetCookie(somename, someval)
 }
 else
 {
-localStorage.setItem(cfpackage+somename, someval)
+localStorage.setItem(somename, someval)
 }
 }
 
@@ -122,7 +122,7 @@ return GetCookie(somename)
 }
 else
 {
-return localStorage.getItem(cfpackage+somename)
+return localStorage.getItem(somename)
 }
 }
 
