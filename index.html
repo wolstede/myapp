@@ -12,9 +12,12 @@ var thedate = new Date();
 var thenow = thedate.getTime();
  
 var thelater=thenow+2000
+var thewindowsizes=[window.innerWidth, window.innerHeight,document.documentElement.clientWidth, document.documentElement.clientHeight]
 
-while (thedate.getTime()<thelater && (document.documentElement.clientWidth== 0 || document.documentElement.clientHeight== 0))
+while (thedate.getTime()<thelater || (document.documentElement.clientWidth== 0 || document.documentElement.clientHeight== 0))
 {
+thewindowsizes=[window.innerWidth, window.innerHeight,document.documentElement.clientWidth, document.documentElement.clientHeight]
+
 thedate=new Date()
 }
 
@@ -26,7 +29,7 @@ document.write(someitem)
 
 
 
-var thewindowsizes=[window.innerWidth, window.innerHeight,document.documentElement.clientWidth, document.documentElement.clientHeight]
+thewindowsizes=[window.innerWidth, window.innerHeight,document.documentElement.clientWidth, document.documentElement.clientHeight]
 
 var scalef
 var screenwidth=document.documentElement.clientWidth
