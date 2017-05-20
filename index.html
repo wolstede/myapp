@@ -13,7 +13,7 @@ var thenow = thedate.getTime();
  
 var thelater=thenow+2000
 
-while (thedate.getTime()<thelater && document.documentElement.clientWidth!= 0 && document.documentElement.clientHeight!= 0)
+while (thedate.getTime()<thelater && (document.documentElement.clientWidth== 0 !! document.documentElement.clientHeight== 0))
 {
 thedate=new Date()
 }
