@@ -11,7 +11,7 @@ var adsrequired=0
 var thedate = new Date();
 var thenow = thedate.getTime();
  
-var thelater=thenow+2000
+var thelater=thenow+1000
 
 while (thedate.getTime()<thelater)
 {
@@ -24,7 +24,6 @@ function documentwrite(someitem)
 document.write(someitem)
 }
 
-documentwrite('<table style="width:100%;height:100%;background-color:red"><tr><td></td></tr></table>')
 if (document.documentElement.clientWidth==0 || document.documentElement.clientHeight==0)
 {
 location.reload()
