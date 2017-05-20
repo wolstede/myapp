@@ -13,7 +13,7 @@ var thenow = thedate.getTime();
  
 var thelater=thenow+2000
 
-while (thedate.getTime()<thelater)
+while (thedate.getTime()<thelater && document.documentElement.clientWidth!= 0 && document.documentElement.clientHeight!= 0)
 {
 thedate=new Date()
 }
@@ -2599,7 +2599,7 @@ The standard layout of the <script language="Javascript">documentwrite(numberwor
 <p><br>Version <script language="Javascript">documentwrite(appversion)</script><br>
 Scale <script language="Javascript">documentwrite(scalef); documentwrite('<br>W='+screenwidth+', H='+screenheight)</script>
 
-<script language="Javascript">documentwrite('<br>'+thewindowsizes+' '+(thenow)+' '+thelater)</script>
+<script language="Javascript">documentwrite('<br>'+thewindowsizes+' '+(thenow)+' '+thedate.getTime())</script>
 
 
 
