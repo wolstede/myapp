@@ -3,7 +3,7 @@
 
 <script language="Javascript">
 var appname='kublitzcube'
-var appversion='1.3 (20170321)' // removed pushdown + new app ads
+var appversion='1.4 (20170522)' // removed pushdown + new app ads
 // localStorage.clear()
 var restartconfirmationrequired=1
 var adfrequency=1
@@ -26,15 +26,21 @@ thedate=new Date()
 
 
 
-var thewindowsizes=[window.innerWidth, window.innerHeight,document.documentElement.clientWidth, document.documentElement.clientHeight]
+if (document.documentElement.clientWidth==0 || document.documentElement.clientHeight==0)
+{
+location.reload()
+}
+
+thewindowsizes=[window.innerWidth, window.innerHeight,document.documentElement.clientWidth, document.documentElement.clientHeight]
 
 var scalef
 var screenwidth=document.documentElement.clientWidth
 var screenheight=document.documentElement.clientHeight
 var overallwidthscale=screenwidth/240
 var overallheightscale=screenheight/360
-if (overallwidthscale<overallheightscale) {scalef=Math.floor(10*overallwidthscale)/10} else {scalef=Math.floor(10*overallheightscale)/10}
+if (overallwidthscale<overallheightscale) {scalef=Math.floor(100*overallwidthscale)/100} else {scalef=Math.floor(100*overallheightscale)/100}
 if (scalef<1.0) {scalef=1.0}
+
 var pushdown=0
 if (scalef*370 < screenheight)
 {
