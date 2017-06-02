@@ -3,7 +3,7 @@
 
 <script language="Javascript">
 var appname='rummy7'
-var appversion='1.2 (20170322)' // Removed initialization page, remote ads, and added new ads
+var appversion='1.3 (20170522)' // Removed initialization page, remote ads, and added new ads
 // localStorage.clear()
 var restartconfirmationrequired=1
 var adfrequency=1
@@ -93,15 +93,19 @@ thedate=new Date()
 }
 
 
+if (document.documentElement.clientWidth==0 || document.documentElement.clientHeight==0)
+{
+location.reload()
+}
 
-var thewindowsizes=[window.innerWidth, window.innerHeight,document.documentElement.clientWidth, document.documentElement.clientHeight]
+thewindowsizes=[window.innerWidth, window.innerHeight,document.documentElement.clientWidth, document.documentElement.clientHeight]
 
 var scalef
 var screenwidth=document.documentElement.clientWidth
 var screenheight=document.documentElement.clientHeight
 var overallwidthscale=screenwidth/240
 var overallheightscale=screenheight/360
-if (overallwidthscale<overallheightscale) {scalef=Math.floor(10*overallwidthscale)/10} else {scalef=Math.floor(10*overallheightscale)/10}
+if (overallwidthscale<overallheightscale) {scalef=Math.floor(100*overallwidthscale)/100} else {scalef=Math.floor(100*overallheightscale)/100}
 if (scalef<1.0) {scalef=1.0}
 var pushdown=0
 if (scalef*370 < screenheight)
