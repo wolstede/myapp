@@ -3,7 +3,7 @@
 
 <script language="Javascript">
 var appname='numbersgame'
-var appversion='2.1 (20170321)'
+var appversion='2.2 (20170522)'
 // localStorage.clear()
 var restartconfirmationrequired=1
 var adfrequency=1
@@ -39,15 +39,21 @@ thedate=new Date()
 
 
 
-var thewindowsizes=[window.innerWidth, window.innerHeight,document.documentElement.clientWidth, document.documentElement.clientHeight]
+if (document.documentElement.clientWidth==0 || document.documentElement.clientHeight==0)
+{
+location.reload()
+}
+
+thewindowsizes=[window.innerWidth, window.innerHeight,document.documentElement.clientWidth, document.documentElement.clientHeight]
 
 var scalef
 var screenwidth=document.documentElement.clientWidth
 var screenheight=document.documentElement.clientHeight
 var overallwidthscale=screenwidth/240
 var overallheightscale=screenheight/360
-if (overallwidthscale<overallheightscale) {scalef=Math.floor(10*overallwidthscale)/10} else {scalef=Math.floor(10*overallheightscale)/10}
+if (overallwidthscale<overallheightscale) {scalef=Math.floor(100*overallwidthscale)/100} else {scalef=Math.floor(100*overallheightscale)/100}
 if (scalef<1.0) {scalef=1.0}
+
 var pushdown=0
 if (scalef*370 < screenheight)
 {
@@ -1853,12 +1859,12 @@ Once all six numbers have been selected, a target number needs to be generated. 
 
 <br><br>As soon as the target is displayed, the countdown starts.  The players then have to try to find a way of making the target number, or to get as close to this number as possible, from the numbers provided, and write this solution down.  No number can be used twice, unless, of course, it appears twice.
 <br>
-<br>When the time is up, emphasized by STOP displayed on a red background, the players reveal to each other what number they’ve managed to derive, and how they did it.  These can be checked for correctness.   
+<br>When the time is up, emphasized by STOP displayed on a red background, the players reveal to each other what number they've managed to derive, and how they did it.  These can be checked for correctness.   
 <br>
 <br>The players who get closest to the target number each receive 5 points.  In addition, all players receive bonuses as follows: 
 <ul>
 <li>10 points if they derive the exact target number; 
-<li>5 points if they don’t get the exact target number but get a number that is 5 or less away from the target number. 
+<li>5 points if they don't get the exact target number but get a number that is 5 or less away from the target number. 
 </ul>
 So, if the target number is 729 and there are 5 players (A-E), who achieved the following: 
 <br>
