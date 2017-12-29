@@ -3,7 +3,7 @@
 
 <script language="Javascript">
 var appname='linxem'
-var appversion='2.0 (20171224)'
+var appversion='2.0 (20171229)'
 // localStorage.clear()
 var restartconfirmationrequired=1
 var adsrequired=0
@@ -2191,7 +2191,7 @@ else
 {
 document.getElementById('theboard').style.display='none'
 preventbuttonactions=1
-var somemessage='<span style="color:red;font-weight:bold">Trial Version</span><br><br>This is a free trial version of Linxem. It is fully functional, but has approximately one third of the words and names that are available for display in the full version, which has over 2000.  This means that you will normally see more repetitions of display words from one challenge to the next than you would in the full version.<br><br>You may, of course, purchase the full version at any time to obtain the full set of words and names and, hence, more varied challenges.<br>'
+var somemessage='<span style="color:red;font-weight:bold">Trial Version</span><br><br>This is a free trial version of Linxem. It is fully functional, but has approximately one third of the words and names that are available for display in the full version, which has over 2100.  This means that you will normally see more repetitions of display words from one challenge to the next than you would in the full version.<br><br>You may, of course, purchase the full version at any time to obtain the full set of words and names and, hence, more varied challenges.<br>'
 somemessage=somemessage+'<br><br><table align=center border=0><tr><td onClick="continuerunonload()" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table><br>'
 
 changetextvalue('output',  '<br><table width=100% height='+Math.floor(scalef*100)+' border=1 cellpadding=0 cellspacing=0  align=center bgcolor=lemonchiffon><tr><td><table width=100% border=0><tr><td height='+Math.floor(scalef*50)+' align=center valign=middle><br>'+centralimage()+'</td></tr><table></td></tr><tr><td  height='+Math.floor(scalef*75)+' align=center valign=middle>'+somemessage+'</td></tr><tr height='+Math.floor(scalef*3)+'><td></td></tr></table>')
@@ -2463,9 +2463,7 @@ So, if one of the words were 'Go', the other could not be:
 <li>Golly (includes the spelling of Go)
 <li>Gauche (includes the sound of Go)
 </ul>
-
-
-If either of the two contains more than one word, this applies to the individual words also. So, if the selected display word were 'New York', the following would not be valid Linxems:
+If either of the two contains more than one word, the above restrictions apply to the individual words also. So, if the selected display word were 'New York', the following would not be valid Linxems:
 <ul>
 <li>New Yorker
 <li>New England
@@ -2478,16 +2476,18 @@ There are some other Linxems that are not allowed:
 <dl>
 <dh>Words intended to link by length of word.
 </dh><dd>A Linxem such as 'Six', if it is intended to link all 6-letter words, is not allowed. In contrast, the word 'Six' could be used as a Linxem to link the display words 'Bowl' and 'Bat' (all three are cricketing terms).
-<br>&nbsp;</dd><dh>Words intended to link by number of words in each of the display words.
+<br>&nbsp;</dd><dh>Words intended to link by number of words in each of the selected words.
 </dh><dd>A Linxem such as 'Two', if it is intended to link all names that are actually 2 words, e.g. 'New York', is not allowed.
-<br>&nbsp;</dd><dh>Words intended to specify something about the spelling.
-</dh><dd>A Linxem such as 'Bee', if it is intended to specify all words beginning (say) with or containing the letter B, is not allowed.
+<br>&nbsp;</dd><dh>Words intended to specify that a particular letter may be found in the selected words.
+</dh><dd>A Linxem such as 'Bee' or 'Bravo', if it is intended to specify all words beginning (say) with or containing the letter B, is not allowed.
 <br>&nbsp;</dd><dh>Words intended to specify something about the number of syllables of the display words.
 </dh><dd>A Linxem such as 'Monosyllabic', if it is intended to link all words with one syllable, is not allowed.
 <br>&nbsp;</dd><dh>Words intended to specify something about the location on the display board.
 </dh><dd>A Linxem such as 'Top', if it is intended to mean that all the words can be found at the top of the board, would not be allowed. Now, with this electronic version, such information would not be helpful anyway, as the display words are jumbled up before they are shown to the solver. 
 </dd></dl>
 The rejection of these types of Linxem is intended to prevent easy selection of large numbers of display words. More interesting Linxems based on structure or sound are allowed. So, the Linxem 'Rhyming' to link 'Bite' and 'Sight' would be allowed, as would the Linxem 'Reverse' to link 'Dog' and 'God'.
+<br><br>
+The acceptability of a Linxem is based on the selected display words; other display words are irrelevant. This means that the Linxem 'America' would normally be acceptable if 'America' appeared as a display word but had not been selected. This, of course, is a clear indication that 'America' is <i>not</i> one of the selected display words.
 <br><br>
 <i>Spoken vs typed Linxems</i>
 <br><br>
@@ -2568,7 +2568,7 @@ Points to note about selecting display words in this phase and in the solving ph
 
 Once this is complete, the setter may tap an <i>OK</i> button.  An error message is displayed if 2 to <script language="Javascript">documentwrite(maximumsetselections)</script> have not been selected, and the game continues.
 <br><br>
-Note that the background of the countdown display changes to orange when it is within 15 seconds of stopping. If the countdown stops before the <i>OK</i> button is tapped, play continues as if it had been tapped, unless 2 to <script language="Javascript">documentwrite(maximumsetselections)</script> have not been selected, in which case the challenge ends and the pair involved in the challenge lose <script language="Javascript">documentwrite(failcompleteset)</script> points to the opposition. 
+Note that the background of the countdown display changes to orange when it is within 15 seconds of stopping. If the countdown stops before the <i>OK</i> button is tapped, play continues as if it had been tapped, unless 2 to <script language="Javascript">documentwrite(maximumsetselections)</script> have not been selected, in which case the challenge ends and the players involved in the challenge lose <script language="Javascript">documentwrite(failcompleteset)</script> points to the opposition. 
 <br><br>
 Advice is then given that the setter should input (through the device keyboard) or say the Linxem out loud (one or the other, not both).  The Linxem is input through the field with the light red background (it was silver earlier) with the word Linxem displayed lightly as a prompt.  In all games apart from the two-player version, other players (apart from the solver) should then be consulted about the choice of Linxem.  If valid objections are raised about a Linxem that has been typed in, the setter should be given an opportunity to modify it.  If valid objections are raised about a Linxem that has been said out loud, the <i>Reject</i> button should be tapped.  This ends the challenge and the opposition receive <script language="Javascript">documentwrite(cluerejection)</script> points.  If the Linxem is acceptable (and all players should be generous in this regard), the <i>OK</i> button should be tapped, which then brings up a screen advising that the device should be handed to the solver.
 <br><br>
@@ -2701,6 +2701,7 @@ var linxemwords=
 "Ale",
 "Alexander",
 "Ali",
+"Alien",
 "Allay",
 "Allen",
 "Aloud",
@@ -2806,8 +2807,10 @@ var linxemwords=
 "Bennett",
 "Berlin",
 "Berry",
+"Beryl",
 "Best",
 "Better",
+"Bible",
 "Big",
 "Bill",
 "Bind",
@@ -2836,6 +2839,7 @@ var linxemwords=
 "Board",
 "Boat",
 "Bob",
+"Bobby",
 "Body",
 "Boil",
 "Bold",
@@ -2890,6 +2894,7 @@ var linxemwords=
 "Bubbly",
 "Buck",
 "Bud",
+"Buddha",
 "Bug",
 "Bulb",
 "Bull",
@@ -2962,6 +2967,7 @@ var linxemwords=
 "Chance",
 "Chancellor",
 "Chandler",
+"Chang",
 "Change",
 "Channel",
 "Chapman",
@@ -2971,6 +2977,7 @@ var linxemwords=
 "Charlie",
 "Charlotte",
 "Charm",
+"Chat",
 "Check",
 "Checkers",
 "Cheek",
@@ -3038,6 +3045,7 @@ var linxemwords=
 "Columbus",
 "Comb",
 "Combine",
+"Comic",
 "Compact",
 "Company",
 "Compound",
@@ -3061,6 +3069,7 @@ var linxemwords=
 "Cork",
 "Corn",
 "Corporal",
+"Cotton",
 "Couch",
 "Cougar",
 "Council",
@@ -3162,6 +3171,7 @@ var linxemwords=
 "Dirt",
 "Disc",
 "Discipline",
+"Disease",
 "Ditch",
 "Dive",
 "Division",
@@ -3178,6 +3188,7 @@ var linxemwords=
 "Dollar",
 "Dolly",
 "Dolphin",
+"Don",
 "Donkey",
 "Door",
 "Dot",
@@ -3234,6 +3245,7 @@ var linxemwords=
 "Ellis",
 "Empire",
 "Engagement",
+"Engine",
 "Engineer",
 "English",
 "Entrance",
@@ -3284,6 +3296,7 @@ var linxemwords=
 "Fern",
 "Fiddle",
 "Field",
+"Fighter",
 "Figure",
 "File",
 "Filling",
@@ -3310,6 +3323,7 @@ var linxemwords=
 "Flight",
 "Fling",
 "Float",
+"Flora",
 "Florida",
 "Flounder",
 "Flower",
@@ -3377,8 +3391,10 @@ var linxemwords=
 "Georgia",
 "Germ",
 "Germany",
+"Giant",
 "Gibson",
 "Gift",
+"Gig",
 "Gill",
 "Gin",
 "Ginger",
@@ -3396,6 +3412,7 @@ var linxemwords=
 "Gong",
 "Gonzalez",
 "Good",
+"Google",
 "Goose",
 "Gorge",
 "Gorgon",
@@ -3450,6 +3467,7 @@ var linxemwords=
 "Hamper",
 "Hand",
 "Hang",
+"Hank",
 "Happy",
 "Harbo(u)r",
 "Hard",
@@ -3579,13 +3597,16 @@ var linxemwords=
 "Jasper",
 "Java",
 "Jay",
+"Jean",
 "Jeep",
 "Jelly",
 "Jenkins",
 "Jerk",
 "Jersey",
+"Jesus",
 "Jet",
 "Jig",
+"Jill",
 "Jimmy",
 "Jingle",
 "Job",
@@ -3597,6 +3618,7 @@ var linxemwords=
 "Jones",
 "Jordan",
 "Joseph",
+"Josh",
 "Joy",
 "Judges",
 "Juliet",
@@ -3615,6 +3637,7 @@ var linxemwords=
 "Keating",
 "Keel",
 "Kelly",
+"Ken",
 "Kennedy",
 "Kent",
 "Key",
@@ -3623,6 +3646,7 @@ var linxemwords=
 "Kid",
 "Killer",
 "Kilo",
+"Kim",
 "Kind",
 "Kindle",
 "King",
@@ -3720,6 +3744,7 @@ var linxemwords=
 "Love",
 "Low",
 "Lowe",
+"Luck",
 "Luke",
 "Lung",
 "Lyon",
@@ -3742,6 +3767,7 @@ var linxemwords=
 "Mandela",
 "Manners",
 "Mao",
+"Maple",
 "Marble",
 "March",
 "Mare",
@@ -3764,6 +3790,7 @@ var linxemwords=
 "Mass",
 "Match",
 "Mate",
+"Mathematics",
 "Matt",
 "Matter",
 "Matthew",
@@ -3883,6 +3910,7 @@ var linxemwords=
 "Noah",
 "Noise",
 "Norfolk",
+"Norman",
 "North",
 "Nose",
 "Note",
@@ -3958,6 +3986,7 @@ var linxemwords=
 "Patience",
 "Patient",
 "Pattern",
+"Patty",
 "Paul",
 "Pawn",
 "Payne",
@@ -3969,6 +3998,7 @@ var linxemwords=
 "Peck",
 "Peep",
 "Peer",
+"Peg",
 "Pelican",
 "Pelt",
 "Pen",
@@ -4095,6 +4125,7 @@ var linxemwords=
 "Pupil",
 "Puppy",
 "Pussy",
+"Pyramid",
 "Quack",
 "Quail",
 "Quarry",
@@ -4176,6 +4207,7 @@ var linxemwords=
 "Roberts",
 "Robin",
 "Robinson",
+"Robot",
 "Rock",
 "Rocket",
 "Rod",
@@ -4226,6 +4258,7 @@ var linxemwords=
 "Sally",
 "Salsa",
 "Salt",
+"Sam",
 "Samuel",
 "Sanchez",
 "Sand",
@@ -4242,6 +4275,7 @@ var linxemwords=
 "Scene",
 "Scent",
 "School",
+"Science",
 "Scoop",
 "Score",
 "Scorpio",
@@ -4267,6 +4301,7 @@ var linxemwords=
 "Sense",
 "Sent",
 "Sentence",
+"Server",
 "Service",
 "Set",
 "Seven",
@@ -4277,6 +4312,7 @@ var linxemwords=
 "Shah",
 "Shakespeare",
 "Shame",
+"Shamrock",
 "Shape",
 "Share",
 "Sharp",
@@ -4356,6 +4392,7 @@ var linxemwords=
 "Solution",
 "Sore",
 "Sort",
+"Soul",
 "Sound",
 "South",
 "South Africa",
@@ -4373,13 +4410,16 @@ var linxemwords=
 "Speaker",
 "Spears",
 "Spectacles",
+"Spectator",
 "Speech",
 "Speed",
 "Spell",
 "Spelt",
 "Spencer",
+"Spice",
 "Spider",
-"Spiderman",
+"Spider-Man",
+"Spine",
 "Spirit",
 "Spit",
 "Split",
@@ -4508,6 +4548,7 @@ var linxemwords=
 "Television",
 "Teller",
 "Temple",
+"Ten",
 "Tend",
 "Tender",
 "Tennis",
@@ -4517,8 +4558,10 @@ var linxemwords=
 "Test",
 "Texas",
 "Thatcher",
+"Thief",
 "Thomas",
 "Thompson",
+"Thor",
 "Thread",
 "Three",
 "Throw",
@@ -4547,6 +4590,7 @@ var linxemwords=
 "Tomato",
 "Tongue",
 "Tonic",
+"Tony",
 "Tool",
 "Tooth",
 "Top",
@@ -4602,6 +4646,7 @@ var linxemwords=
 "Tyler",
 "Type",
 "Uncle",
+"Unicorn",
 "Uniform",
 "Unit",
 "Universe",
@@ -4621,6 +4666,7 @@ var linxemwords=
 "Venus",
 "Vessel",
 "Vest",
+"Vet",
 "Vice",
 "Victor",
 "Victoria",
@@ -4702,6 +4748,7 @@ var linxemwords=
 "Wonder",
 "Wood",
 "Woods",
+"Wool",
 "Word",
 "Work",
 "World",
@@ -4727,24 +4774,8 @@ var linxemwords=
 "Zeus",
 "Zip",
 "Zulu",
-"Beryl",
-"Bobby",
-"Chat",
-"Flora",
-"Grace",
-"Hank",
-"Chang",
-"Don",
-"Jean",
-"Jill",
-"Josh",
-"Ken",
-"Norman",
-"Patty",
-"Peg",
-"Kim",
-"Sam",
-"Tony",
+
+
 
 
 
