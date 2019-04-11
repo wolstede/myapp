@@ -1,0 +1,2005 @@
+﻿<!DOCTYPE HTML><html><head><title>Daily Counter</title>
+<meta name = "viewport" content = "user-scalable=no,width=device-width" />
+
+<script language="Javascript">
+
+
+function changetextvalue(someitem, someval)
+{
+document.getElementById(someitem).innerHTML = someval
+}
+
+function documentwrite(someitem)
+{
+document.write(someitem)
+}
+
+function changepage(somepage)
+{
+location.href='../'+somepage+'/default.htm'
+}
+
+
+
+var combinationattributes=[1,1]
+
+var cfpackage='dailycounter'
+
+
+var thiscfpage='dailycounter'
+
+var interruptsrequired='0'
+
+var thedate = new Date();
+var thenow = thedate.getTime();
+ 
+var thelater=thenow+2000
+
+while (thedate.getTime()<thelater)
+{
+thedate=new Date()
+}
+
+if (document.documentElement.clientWidth==0 || document.documentElement.clientHeight==0)
+{
+location.reload()
+}
+
+var thewindowsizes=[window.innerWidth, window.innerHeight,document.documentElement.clientWidth, document.documentElement.clientHeight]
+
+var scalef
+var screenwidth=document.documentElement.clientWidth
+var screenheight=document.documentElement.clientHeight
+
+var overallwidthscale=screenwidth/190
+var overallheightscale=screenheight/270
+if (overallwidthscale<overallheightscale) {scalef=Math.floor(10*overallwidthscale)/10} else {scalef=Math.floor(10*overallheightscale)/10}
+if (scalef<1.0) {scalef=1.0}
+
+var heightspacer=(Math.floor(screenheight-Math.floor(scalef*270))/2)-2
+if (heightspacer<0) {heightspacer=0}
+
+
+documentwrite('<style type="text/css">      \nbody {color: green; background-color: white; font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; text-align: left}      \nh1 {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: bold; font-style: normal; text-align: left} \nh2 {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: italic; text-align: left} \np {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; text-align: left} \nli {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; text-align: left} \ntable {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; text-align: left} \ntd {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; } \ntextarea {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; overflow:hidden;} \ninput {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; }  \n * {-webkit-tap-highlight-color: rgba(0, 0, 0, 0);}\n</style> \n')
+
+// Local storage
+// SetLocalVal and GetLocalVal - use cookies of available, if not local storage
+// Reason: for testing, local storage doesn't seem to work.  On devices, local storage works but not always cookies.  Should cover everything.
+
+var daystoExpire = 2000;
+var expirydate = new Date(); 
+expirydate.setTime(expirydate.getTime() + (daystoExpire*24*60*60*1000));
+
+
+function GetCookie(name) 
+{  
+var thecookie=document.cookie
+var namestring = name+'='  
+var cookieval = null
+var cookievalbeg=-1
+var cookievalend=thecookie.length
+for (var beg=0; beg<thecookie.length; beg++)
+{
+var end=beg+namestring.length
+if (thecookie.substring(beg, end) == namestring)
+{
+cookievalbeg=end
+}
+}
+if (cookievalbeg > -1)
+{
+cookievalend=thecookie.indexOf(';', cookievalbeg) // look for next ; after beginning of value
+if (cookievalend == -1) (cookievalend = thecookie.length)
+cookieval = unescape(thecookie.substring(cookievalbeg, cookievalend))
+} 
+
+return cookieval
+}
+
+
+function SetCookie(name, val) 
+{  
+var cookiestring = name+'='+escape(val)+'; expires='+ expirydate.toGMTString()
+document.cookie=cookiestring
+}
+
+var usecookies=1
+SetCookie('dummy', 'answer')
+if (GetCookie('dummy')==null) {usecookies=0}
+usecookies=0 // change to local storage
+function SetLocalVal(somename, someval)
+{
+if (usecookies==1) 
+{
+SetCookie(somename, someval)
+}
+else
+{
+localStorage.setItem(somename, someval)
+}
+}
+
+function GetLocalVal(somename)
+{
+if (usecookies==1) 
+{
+return GetCookie(somename)
+}
+else
+{
+return localStorage.getItem(somename)
+}
+}
+
+// end Local Storage
+
+
+</script>
+
+</head>
+<body onLoad="showstartad()" TOPMARGIN=0 LEFTMARGIN=0 MARGINHEIGHT=0 MARGINWIDTH=0 style="background-color:black; width:100%; height:100%"><script language="Javascript">
+
+
+function showpicturesfordownloading()
+{
+
+if (document.getElementById('theimages').style.display == 'none')
+{document.getElementById('theimages').style.display = 'inline'}
+else
+{document.getElementById('theimages').style.display = 'none'}
+
+
+
+}
+
+
+var runcheckvalue='ok'
+function runcheck()
+{
+return true
+}
+
+var helpdisplayed=0
+function togglehelp()
+{
+if (document.getElementById('addivtotal').style.display=='none' && document.getElementById('therestart').style.display=='none')
+{
+helpdisplayed=1-helpdisplayed
+if (helpdisplayed==1) {document.getElementById('help').style.display = 'inline'; document.getElementById('thegame').style.display = 'none'}
+if (helpdisplayed==0) {document.getElementById('help').style.display = 'none'; document.getElementById('thegame').style.display = 'inline'}
+handleclickproblem()
+}
+}
+</script><div style="width:100%; height:100%">
+<script language="Javascript">documentwrite('<table border=0 width=100% cellspacing=0 cellpadding=0 style="text-align: left" align=center><tr><td valign=bottom style="text-align: left; font-weight: bold; font-size: '+Math.floor(scalef*12)+'px; color: white; vertical-align: bottom; background-image:url(buttonbg.jpg)"><a name="Top"></a><table border=0 cellpadding=2 width=100% height='+Math.floor(scalef*14)+' cellspacing=0 valign=middle ><tr><td style="text-align: left; font-weight: bold; font-size: '+Math.floor(scalef*12)+'px; color: white">Daily Counter</td><td valign=middle align=center width='+Math.floor(scalef*20)+'></td><td style="width:'+Math.floor(scalef*30)+'px;font-size:'+Math.floor(scalef*12)+'px;text-align:center;font-weight:bold;color:black"  onClick="togglehelp()">?</td></tr></table>')</script></td></tr><tr><td style="text-align: left; font-weight: normal; color: black; vertical-align: top;background-color:white"><div id="therestart" style="width:100%;display:none">
+<script language="Javascript">documentwrite('<table cellspacing=0 cellpadding=0 border=0 style="width:'+Math.floor(scalef*190)+'px;height:'+Math.floor(scalef*240)+'px" align=center>')</script>
+<tr><td valign=middle style="vertical-align:top">
+<div style="position:relative;left:0px;top:0px;height:100%;width:100%">
+<div style="position:absolute;left:0px;top:0px;height:100%;width:100%">
+
+<script language="Javascript">
+var restartconfirmationrequired=0
+var adfrequency=1
+
+function displayrestartconfirmation()
+{
+document.getElementById('thegame').style.display = 'none'; 
+document.getElementById('therestart').style.display = 'inline'; 
+handleclickproblem()
+}
+
+function cancelrestartconfirmation()
+{
+document.getElementById('therestart').style.display = 'none'; 
+document.getElementById('thegame').style.display = 'inline';  
+handleclickproblem()
+}
+
+function continuerestartconfirmation()
+{
+document.getElementById('therestart').style.display = 'none'; 
+document.getElementById('thegame').style.display = 'inline';  
+handleclickproblem()
+showad2() 
+}
+
+</script>
+
+<span style="text-align:center"><br><br>
+<script language="Javascript">documentwrite('<table border=1 width='+Math.floor(scalef*150)+' style="background-color:silver;vertical-align:middle" valign=middle><tr><td align=center><br><br><img width='+Math.floor(scalef*36)+' src="cflogo.png"><br><br>Please confirm that you wish to restart.<br><br><br><table border=0 align=center><tr><td><table border=1 cellpadding=0 cellspacing=0 style="align:left" align=left><tr><td style="width:'+Math.floor(scalef*60)+'px;background-image:url(redgradient.jpg);text-align:center" onClick="cancelrestartconfirmation()">Cancel</td></tr></table></td><td width='+Math.floor(scalef*20)+'></td><td><table border=1 cellpadding=0 cellspacing=0 style="align:left" align=left><tr><td style="width:'+Math.floor(scalef*60)+'px;background-image:url(greengradient.jpg);text-align:center" onClick="continuerestartconfirmation()">Confirm</td></tr></table></td></tr></table><br><br></td></tr></table></span>')</script>
+
+
+
+</div></div></td></tr></table></div><div id="thegame" style="width:100%;display:none">
+<script language="Javascript">documentwrite('<div style="height:'+heightspacer+'px;width:100%"></div><table border=0 cellpadding=0 cellspacing=0 style="width:'+Math.floor(scalef*190)+'px;height:'+Math.floor(scalef*240)+'px" align=center>')</script>
+<tr><td valign=top style="vertical-align:top">
+<div style="position:relative;left:0px;top:0px;height:100%;width:100%">
+<div style="position:absolute;left:0px;top:0px;height:100%;width:100%">
+
+<SCRIPT LANGUAGE="JavaScript">
+/*
+Fields required:
+Overall:
+currentset 1 char
+
+Each set:
+setshortname 8 chars
+startdate 8 chars
+setdescription 24 chars
+setunits 8 chars
+target 10 chars
+settype (maximize, minimize) 3 chars
+setcarryover (permitted, notpermitted) 1 char
+[min, max] min and max of 'closed' dates
+currenttotal 10 chars
+last4changes (number/desc/time/date pairs) 4*(10+25+12)=200
+last7dayrecords  (day/total pairs) 7 * 8 + 10 = 126
+
+about 400 chars/set + commas, brackets  - well below 4k
+
+cookie=[currentset, [[setshortname, startdate, setdescription, setunits, target, settype, setcarryover, 
+        currentdelta, currenttotal, [[num, desc, datetime], rest of last4changes], 
+        [[date, total], rest of last7dayrecords]], 
+        remaining 3 sets values]]
+
+Notes: Input allows only letters, numbers and .
+*/
+
+
+// All code copyright of TopAccolades Limited
+// Original game by Dave Wolstenholme
+
+restartconfirmationrequired=1
+gameturnslimited=1
+
+function runonload()
+{
+loadcounters()
+}
+
+function continueafterad()
+{
+loadcounters()
+}
+
+
+
+
+var thecounters=[0, 
+[
+['Count A', '', '', '', '', 0, 0, ['',''], 0, [['', '', ''],['', '', ''],['', '', ''],['', '', '']], [['', 0],['', 0],['', 0],['', 0],['', 0],['', 0],['', 0]]],
+['Count B', '', '', '', '', 0, 0, ['',''], 0, [['', '', ''],['', '', ''],['', '', ''],['', '', '']], [['', 0],['', 0],['', 0],['', 0],['', 0],['', 0],['', 0]]],
+['Count C', '', '', '', '', 0, 0, ['',''], 0, [['', '', ''],['', '', ''],['', '', ''],['', '', '']], [['', 0],['', 0],['', 0],['', 0],['', 0],['', 0],['', 0]]],
+['Count D', '', '', '', '', 0, 0, ['',''], 0, [['', '', ''],['', '', ''],['', '', ''],['', '', '']], [['', 0],['', 0],['', 0],['', 0],['', 0],['', 0],['', 0]]]
+]
+]
+
+var currentcounter=0
+
+
+function wrapup(somecounters)
+{
+var sometext='['+somecounters[0]+',['
+for (var i=0; i<somecounters[1].length; i++)
+{
+sometext=sometext+'["'+somecounters[1][i][0]+'","'+somecounters[1][i][1]+'","'+somecounters[1][i][2]+'","'+somecounters[1][i][3]+'","'+somecounters[1][i][4]+'",'+somecounters[1][i][5]+','+somecounters[1][i][6]+','
+sometext=sometext+'["'+somecounters[1][i][7][0]+'","'+somecounters[1][i][7][1]+'"],'+somecounters[1][i][8]+',['
+for (var j=0; j<somecounters[1][i][9].length; j++)
+{
+sometext=sometext+'["'+somecounters[1][i][9][j][0]+'","'+somecounters[1][i][9][j][1]+'","'+somecounters[1][i][9][j][2]+'"]'
+if (j<somecounters[1][i][9].length-1) {sometext=sometext+','}
+}
+sometext=sometext+'],['
+
+for (var j=0; j<somecounters[1][i][10].length; j++)
+{
+sometext=sometext+'["'+somecounters[1][i][10][j][0]+'",'+somecounters[1][i][10][j][1]+']'
+if (j<somecounters[1][i][10].length-1) {sometext=sometext+','}
+}
+sometext=sometext+']]'
+if (i<somecounters[1].length-1) {sometext=sometext+','}
+
+}
+sometext=sometext+']]'
+return sometext
+}
+
+var lastdisplaydate
+
+function loadcounters()
+{
+// following line must be deleted - only for testing
+// SetCookie('counters', wrapup(thecounters))
+
+
+var somecounters=GetLocalVal('counters')
+
+if (somecounters==null)
+{
+SetLocalVal('counters', wrapup(thecounters))
+}
+else
+{
+thecounters=eval(somecounters)
+}
+for (var i=0; i<thecounters[1].length; i++)
+{
+changetextvalue('heading'+i, thecounters[1][i][0])
+
+}
+displaycounter(thecounters[0])
+
+
+lastdisplaydate=now()[0]
+if (refreshtimer != null) {clearTimeout(refreshtimer)}
+refreshtimer= setTimeout('refreshpage()', 60000)
+
+
+}
+
+
+
+</SCRIPT>
+<SCRIPT LANGUAGE="JavaScript">
+
+
+
+
+function gettextvalue(someitem)
+{
+return document.getElementById(someitem).innerHTML
+}
+
+function copysimplevalues(somearray)
+{
+var temparray=[]
+for (var i=0; i<somearray.length; i++)
+{
+temparray[i]=somearray[i]
+}
+return temparray
+}
+
+
+
+
+
+function randomnumber(num) {
+// returns a random number from 1 to num
+var ran=Math.round(Math.random()*num)
+if (ran == 0) {ran = num}  // ran initially 0 to num - but 0 and num have half the probability of the other numbers
+return ran
+}
+
+function shufflearray(somearray)
+{
+
+var temparray=somearray
+var shuffled=new Array()
+packsize=somearray.length
+var ran
+var i
+for (i=0; i<packsize; i++)
+{
+ran = randomnumber(temparray.length)
+shuffled[i] = temparray[ran-1]
+temparray = removeElement(ran-1, temparray)
+}
+return shuffled
+}
+
+function removeElement(index, somearray)
+{
+var beg=somearray.slice(0, index)
+var end=[]
+if (index+1 < somearray.length) {end = somearray.slice(index+1)}
+return beg.concat(end)
+}
+
+function reset()
+{
+
+}
+
+
+
+
+var refreshtimer=null
+function refreshpage()
+{
+if (lastdisplaydate!=now()[0]) 
+{
+// find values of fields, set them to '' to allow displaycounter to work, displaycounter to show new date, then reset the fields to their original values
+var somevalue=gettextvalue('currentvalue')
+var somecomment=gettextvalue('currentcomment')
+changetextvalue('currentvalue', '')
+changetextvalue('currentcomment', '')
+displaycounter(currentcounter)
+changetextvalue('currentvalue', somevalue)
+changetextvalue('currentcomment', somecomment)
+
+}
+if (refreshtimer != null) {clearTimeout(refreshtimer)}
+refreshtimer= setTimeout('refreshpage()', 60000)
+}
+
+
+
+
+
+var fullcolors=['#FF0000', '#FFFF00', '#00FF00', '#00B4FF']
+var lightcolors=['#FAAFBE', '#FFF888', '#B1FB17', '#A0B4FF']
+function hideall()
+{
+for (var player=0; player<4; player++)
+{
+document.getElementById('counterselect'+player).style.backgroundColor=lightcolors[player]
+document.getElementById('counterselect'+player).style.color='#999999'
+}
+
+
+}
+
+function displaycounter(player)
+{
+if (gettextvalue('currentvalue')==='') {} else {changetextvalue('currentfeedback', 'Unsubmitted value: submit or clear'); return}
+
+currentcounter=player
+thecounters[0]=player
+SetLocalVal('counters', wrapup(thecounters))
+hideall()
+var somedetails=thecounters[1][player]
+if (somedetails[1]=='') 
+{
+
+changetextvalue('countershortname', somedetails[0])
+changetextvalue('counterdescription', somedetails[2])
+changetextvalue('counterunits', somedetails[3])
+changetextvalue('countertarget', somedetails[4])
+setaim(somedetails[5])
+setcarry(somedetails[6])
+displaydiv(0)
+
+}
+else
+{
+
+showcurrent()
+
+}
+document.getElementById('counterselect'+player).style.backgroundColor=fullcolors[player]
+document.getElementById('counterselect'+player).style.color='black'
+
+handleclickproblem()
+}
+
+
+
+var thediv
+var thetexteditfield
+var thetexteditfielddetails=
+[
+['countershortname', 0, 8, 'Enter the heading for this counter<br>(max. 8 characters)', 0],
+['counterdescription', 0, 25, 'Enter the description for this counter<br>(max. 25 characters)', 2],
+['currentcomment', 1, 25, 'Enter a comment for this count value<br>(max. 25 characters)', -1],
+['counterunits', 0, 10, 'Enter the units of measurement<br>e.g. calories, steps, dollars, minutes<br>(max. 10 characters)', 3]
+]
+
+function gettexteditdetails(somefield)
+{
+for (var i=0; i<thetexteditfielddetails.length; i++)
+{
+if (thetexteditfielddetails[i][0]==somefield) {return thetexteditfielddetails[i]}
+
+}
+}
+
+function edittext(somefield)
+{
+textshifted=0
+thetexteditfield=somefield
+var somedetails=gettexteditdetails(somefield)
+if (somefield=='') {shifttext()}
+if (gettextvalue(somefield)=='') {shifttext()}
+changetextvalue('texteditvalue', gettextvalue(somefield))
+changetextvalue('texteditheading', somedetails[3])
+changetextvalue('texteditfeedback', '&nbsp;')
+
+displaydiv(2)
+}
+
+function submittextedit()
+{
+textshifted=0
+changetextvalue(thetexteditfield, gettextvalue('texteditvalue'))
+if (thetexteditfield=='countershortname') {changetextvalue('heading'+currentcounter, gettextvalue('texteditvalue')) }
+var somedetails=gettexteditdetails(thetexteditfield)
+if (somedetails[4]>=0) {thecounters[1][currentcounter][somedetails[4]]=gettextvalue('texteditvalue'); SetLocalVal('counters', wrapup(thecounters))}
+resetfeedbacks()
+displaydiv(somedetails[1]) 
+}
+
+function canceltextedit()
+{
+changetextvalue('texteditvalue', '')
+resetfeedbacks()
+var somedetails=gettexteditdetails(thetexteditfield)
+displaydiv(somedetails[1]) 
+}
+
+function setaim(level)
+{
+thecounters[1][currentcounter][5]=level
+SetLocalVal('counters', wrapup(thecounters))
+document.images["aim0"].src="unselected.gif"
+document.images["aim1"].src="unselected.gif"
+document.images["aim"+level].src="selected.gif"
+
+}
+
+function setcarry(level)
+{
+thecounters[1][currentcounter][6]=level
+SetLocalVal('counters', wrapup(thecounters))
+document.images["carry0"].src="unselected.gif"
+document.images["carry1"].src="unselected.gif"
+document.images["carry"+level].src="selected.gif"
+
+}
+
+var thedivs=['define', 'current', 'textedit', 'numberedit', 'more']
+function displaydiv(somediv)
+{
+for (var i=0; i<thedivs.length; i++)
+{
+document.getElementById(thedivs[i]).style.display = 'none'
+
+
+}
+document.getElementById(thedivs[somediv]).style.display = 'inline'
+handleclickproblem()
+
+}
+
+var theletters=['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '<', ' ', 'clear']
+var thesymbols=['1', '2', '3', '4', '5', '6', '7', '8', '9', '#', '£', '$', '€',  '+', '-', '*', '/', '0', '?', '@', '(', ')', ',', '.', ':', "'"] 
+
+
+
+function imagename(someletter)
+{
+if (someletter=='<') {return 'delete'} else {return someletter}
+}
+
+function imageforkey(someletter)
+{
+var somebg='white'
+if (someletter=='shift')
+{
+somebg='yellow'
+if (textshifted==1) {somebg='blue'}
+if (textshifted==2) {somebg='green'}
+return '<table cellpadding=0 cellspacing=0 style="width:100%;height:100%;border:1px solid black" height="'+Math.floor(scalef*20)+'"><tr><td valign=middle align=center style="background-color:'+somebg+';text-align:center">a-A-1</td></tr></table>'
+}
+if (someletter=='space')
+{
+return '<table cellpadding=0 cellspacing=0 style="width:100%;height:100%;border:1px solid black" height="'+Math.floor(scalef*20)+'"><tr><td valign=middle align=center style="background-color:'+somebg+';text-align:center">Space</td></tr></table>'
+}
+if (someletter=='clear')
+{
+somebg='red'
+return '<table cellpadding=0 cellspacing=0 style="width:100%;height:100%;border:1px solid black" height="'+Math.floor(scalef*20)+'"><tr><td valign=middle align=center style="background-color:'+somebg+';text-align:center">Clear</td></tr></table>'
+}if (someletter=='<')
+{
+somebg='red'
+}
+else
+{
+if (textshifted==0) {var somecode=someletter.charCodeAt(0);someletter=String.fromCharCode((somecode+32))}
+if (textshifted==2) {var somecode=someletter.charCodeAt(0) - 65; someletter=thesymbols[somecode]}
+}
+return '<table cellpadding=0 cellspacing=0 style="width:100%;height:100%;border:1px solid black"><tr><td valign=middle align=center style="background-color:'+somebg+';text-align:center;font-size:'+Math.floor(scalef*14)+'px;font-weight:bold">'+someletter+'</td></tr></table>'
+}
+
+textshifted=0
+function letterpress(someindex)
+{
+changetextvalue('texteditfeedback', '&nbsp;')
+var someletter=theletters[someindex]
+
+var sometext=document.getElementById('texteditvalue').innerHTML 
+if (someletter=='<')
+{
+if (sometext.length>0) {changetextvalue('texteditvalue', sometext.slice(0, sometext.length-1));  return} else {return}
+}
+if (someletter=='clear') {changetextvalue('texteditvalue', ''); unshifttext(); return}
+if (someletter==' ') {} else
+{
+// a letter
+if (textshifted==0) {var somecode=someletter.charCodeAt(0);someletter=String.fromCharCode((somecode+32))}
+if (textshifted==2) {someletter=thesymbols[someindex]}
+}
+
+changetextvalue('texteditvalue', sometext+someletter)
+if (textshifted==1 && (sometext+someletter).length==1) {unshifttext()}
+checktextlength()
+
+}
+
+function checktextlength()
+{
+var somedetails=gettexteditdetails(thetexteditfield)
+var sometext=gettextvalue('texteditvalue')
+if (sometext.length>somedetails[2])
+{
+sometext=sometext.slice(0, sometext.length-1)
+changetextvalue('texteditvalue', sometext)
+changetextvalue('texteditfeedback', 'Too many characters: max. '+somedetails[2])
+
+}
+
+
+}
+
+
+function shifttext()
+{
+changetextvalue('texteditfeedback', '&nbsp;')
+textshifted++
+if (textshifted==3) {unshifttext(); return}
+
+for (var i=0; i<26; i++)
+{
+someletter=theletters[i]
+changetextvalue('key'+someletter, imageforkey(someletter))
+}
+
+changetextvalue('shift', imageforkey('shift'))
+
+
+}
+
+
+function unshifttext()
+{
+changetextvalue('texteditfeedback', '&nbsp;')
+
+textshifted=0
+
+for (var i=0; i<26; i++)
+{
+someletter=theletters[i]
+changetextvalue('key'+someletter, imageforkey(someletter))
+}
+
+changetextvalue('shift', imageforkey('shift'))
+
+}
+
+var thenumbers=['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '<', 'clear']
+
+
+var thenumbereditfield
+var thenumbereditfielddetails=
+[
+['countertarget', 0, 6, 'Enter the target/average for this counter<br>(max. 6 characters)', 4],
+['currentvalue', 1, 6, 'Enter a count value (negative allowed) for this counter<br>(max. 6 characters)', -1]
+]
+
+function getnumbereditdetails(somefield)
+{
+for (var i=0; i<thenumbereditfielddetails.length; i++)
+{
+if (thenumbereditfielddetails[i][0]==somefield) {return thenumbereditfielddetails[i]}
+
+}
+}
+
+function editnumber(somefield)
+{
+
+
+thenumbereditfield=somefield
+var somedetails=getnumbereditdetails(somefield)
+changetextvalue('numbereditheading', somedetails[3])
+changetextvalue('numbereditvalue', gettextvalue(somefield))
+changetextvalue('numbereditunits', '&nbsp;'+thecounters[1][currentcounter][3])
+
+changetextvalue('numbereditfeedback', '&nbsp;')
+
+displaydiv(3)
+}
+
+function begins0(sometext)
+{
+if (sometext.length>1)
+{
+if (sometext.slice(0,2)=='0.') 
+{
+return false
+}
+if (sometext.slice(0,1)==0)
+{
+return true
+}
+}
+return false
+}
+
+function decimalcount(sometext)
+{
+var somecount=0
+for (var i=0; i<sometext.length; i++)
+{
+if (sometext.slice(i, i+1)=='.') {somecount++}
+}
+return somecount
+}
+
+function submitnumberedit()
+{
+var sometext=gettextvalue('numbereditvalue')
+var someprefix=''
+if (sometext=='-') {changetextvalue('numbereditfeedback', 'Error (only -)'); return}
+if (sometext.length>0)
+{
+if (sometext.slice(0,1)=='-') {sometext=sometext.slice(1); someprefix='-'}
+if (sometext.slice(0,1)=='.') {changetextvalue('numbereditfeedback', 'Error (initial .)'); return}
+if (decimalcount(sometext)>1) {changetextvalue('numbereditfeedback', 'Error (more than one .)'); return}
+if (begins0(sometext)==true) {changetextvalue('numbereditfeedback', 'Error (initial 0 before numeral)'); return}
+if (sometext.slice(sometext.length-1)=='.') {changetextvalue('numbereditfeedback', 'Error (final .)'); return}
+}
+sometext=someprefix+sometext
+changetextvalue(thenumbereditfield, sometext)
+resetfeedbacks()
+
+var somedetails=getnumbereditdetails(thenumbereditfield)
+if (somedetails[4]>=0) {thecounters[1][currentcounter][somedetails[4]]=sometext; SetLocalVal('counters', wrapup(thecounters))}
+
+displaydiv(somedetails[1]) 
+}
+
+function cancelnumberedit()
+{
+changetextvalue('numbereditvalue', '')
+resetfeedbacks()
+var somedetails=getnumbereditdetails(thenumbereditfield)
+displaydiv(somedetails[1]) 
+}
+
+function resetfeedbacks()
+{
+changetextvalue('currentfeedback', '&nbsp;')
+changetextvalue('definefeedback', '&nbsp;')
+changetextvalue('numbereditfeedback', '&nbsp;')
+changetextvalue('texteditfeedback', '&nbsp;')
+
+
+}
+
+
+function imagefornumberkey(someletter)
+{
+var somebg='white'
+
+if (someletter=='clear')
+{
+somebg='red'
+return '<table cellpadding=0 cellspacing=0 style="width:100%;height:100%;border:1px solid black" height="'+Math.floor(scalef*20)+'"><tr><td valign=middle align=center style="background-color:'+somebg+';text-align:center">Clear</td></tr></table>'
+}
+if (someletter=='sign')
+{
+somebg='yellow'
+return '<table cellpadding=0 cellspacing=0 style="width:100%;height:100%;border:1px solid black" height="'+Math.floor(scalef*20)+'"><tr><td valign=middle align=center style="background-color:'+somebg+';text-align:center">+/-</td></tr></table>'
+}
+if (someletter=='<')
+{
+somebg='red'
+}
+
+return '<table cellpadding=0 cellspacing=0 style="width:100%;height:100%;border:1px solid black"><tr><td valign=middle align=center style="background-color:'+somebg+';text-align:center;font-size:'+Math.floor(scalef*14)+'px;font-weight:bold">'+someletter+'</td></tr></table>'
+}
+
+function numberpress(someindex)
+{
+changetextvalue('numbereditfeedback', '&nbsp;')
+var someletter=thenumbers[someindex]
+
+var sometext=document.getElementById('numbereditvalue').innerHTML 
+if (someletter=='<')
+{
+if (sometext.length>0) {changetextvalue('numbereditvalue', sometext.slice(0, sometext.length-1)); return} else {return}
+}
+if (someletter=='clear') {changetextvalue('numbereditvalue', ''); return}
+// a number
+
+changetextvalue('numbereditvalue', sometext+someletter)
+checknumberlength()
+
+}
+
+function checknumberlength()
+{
+var somedetails=getnumbereditdetails(thenumbereditfield)
+var sometext=gettextvalue('numbereditvalue')
+if (sometext.length>somedetails[2])
+{
+sometext=sometext.slice(0, sometext.length-1)
+changetextvalue('numbereditvalue', sometext)
+changetextvalue('numbereditfeedback', 'Too many characters: max. '+somedetails[2])
+
+}
+
+
+}
+
+function changesign()
+{
+changetextvalue('numbereditfeedback', '&nbsp;')
+var sometext=document.getElementById('numbereditvalue').innerHTML 
+if (sometext.length>0)
+{
+if (sometext.slice(0,1)=='-') {sometext=sometext.slice(1)} else {sometext='-'+sometext}
+}
+else
+{
+sometext='-'
+}
+changetextvalue('numbereditvalue', sometext)
+checknumberlength()
+
+}
+var timer=null
+function showdefinefeedback(somemessage)
+{
+changetextvalue('definefeedback', somemessage)
+if (timer != null) {clearTimeout(timer)}
+timer= setTimeout('changetextvalue("definefeedback","&nbsp;")', 1000)
+}
+
+function startcounter()
+{
+if (thecounters[1][currentcounter][4]=='' || thecounters[1][currentcounter][3]=='' || thecounters[1][currentcounter][2]=='' || thecounters[1][currentcounter][0]=='') {showdefinefeedback('All fields must be defined to start'); return}
+// if (thecounters[1][currentcounter][4].slice(0,1)=='-') {showdefinefeedback('Target must be not be negative'); return}
+
+var currentdateformat=now()[0]
+thecounters[1][currentcounter][1]=currentdateformat
+showcurrent()
+}
+
+var dateofentry
+var liveweeklines
+
+
+function submitcurrent()
+{
+var somevalue=gettextvalue('currentvalue')
+var somecomment=gettextvalue('currentcomment')
+if (somevalue==='') {changetextvalue('currentfeedback', 'Error: No value defined'); return}
+if (somevalue==='0') {changetextvalue('currentfeedback', 'Error: Value must not be 0'); return}
+somevalue=somevalue*1
+submitentry2(somevalue, somecomment)
+}
+
+function submitentry2(somevalue, somecomment)
+{
+
+var somedate=dateofentry+''
+var somelist=thecounters[1][currentcounter][10]
+for (var i=0; i<somelist.length; i++)
+{
+if (somelist[i][0]==somedate) {thecounters[1][currentcounter][10][i][1]=thecounters[1][currentcounter][10][i][1]+somevalue}
+}
+thecounters[1][currentcounter][8]=thecounters[1][currentcounter][8]+somevalue
+var somemins=now()[5]
+if (somemins<10) {somemins='0'+somemins}
+var somenow=now()[0]+''+now()[4]+':'+somemins
+var sometimestamp=somedate+somenow
+thecounters[1][currentcounter][9]=[[somevalue+'', somecomment, sometimestamp]].concat(thecounters[1][currentcounter][9].slice(0,3))
+
+SetLocalVal('counters', wrapup(thecounters))
+showcurrent()
+
+
+}
+
+
+
+function showcurrent()
+{
+
+var somenow=now()[0]
+var sometext=''
+var somestartdate=thecounters[1][currentcounter][1]*1
+// firstopendate will be eventually be the first date that we count as open
+/*
+// lastaddition is the last date an addition was made  (so normally this will be the firstopendate) 
+var firstopendate
+var lastaddition=thecounters[1][currentcounter][9][0][2]
+
+if (lastaddition!='') 
+{
+lastaddition=lastaddition.slice(0,8)*1
+if (datetodaynum(lastaddition)<(datetodaynum(somenow)-6)) 
+{
+firstopendate=daynumtodate(datetodaynum(somenow)-6)  // no additions in last 6 days, so set firstopendate to be one week ago
+}
+else
+{
+firstopendate=lastaddition
+}
+}
+else // no additions made
+{
+firstopendate=daynumtodate(datetodaynum(somenow)-6)  // no additions, so set firstopendate to be one week ago
+} // end if (lastaddition!='')
+ */
+ 
+
+
+firstopendate=daynumtodate(datetodaynum(somenow)-6)
+
+// final check to ensure that firstopendate is not before startdate
+if (firstopendate<somestartdate) {firstopendate=somestartdate}
+dateofentry=somenow
+
+// next we must update the last week's records to reflect the fact that we are now at today, which may be after last day in that record
+var somelastdayused=thecounters[1][currentcounter][10][0][0]
+if (somelastdayused=='') // no submissions made
+{
+somelastdayused=somestartdate; 
+somemissingdays=datetodaynum(somenow)-datetodaynum(somestartdate)+1
+} 
+else 
+{
+somelastdayused=somelastdayused*1
+somemissingdays=datetodaynum(somenow)-datetodaynum(somelastdayused)
+}
+
+
+var sometotalmissingdays=somemissingdays
+
+if (somemissingdays>7) {somemissingdays=7}
+
+var somenewdays=[]
+for (var i=0; i<somemissingdays; i++)
+{
+somenewdays[i]=[''+daynumtodate(datetodaynum(somenow)-i)+'', 0]
+}
+
+var somelost=(somenewdays.concat(thecounters[1][currentcounter][10])).slice(7)
+
+updatemaxmin(somelost, sometotalmissingdays) // need to update max and min details for closed days
+
+var sometotaldays=(somenewdays.concat(thecounters[1][currentcounter][10])).slice(0,7)
+
+thecounters[1][currentcounter][10]=sometotaldays
+SetLocalVal('counters', wrapup(thecounters))
+// so now we have updated thecounters and recorded this as a cookie
+
+
+
+sometext='<table border=1 cellspacing=0 cellpadding=0 width=100% align=center valign=top>'
+
+var somebasiclist=thecounters[1][currentcounter][10]
+var somelist=[]
+for (var i=0; i<somebasiclist.length; i++)
+{
+somelist=[somebasiclist[i]].concat(somelist)
+}
+// somelist is the reverse of somebasiclist
+var somedate
+var sometotal
+var sometarget=thecounters[1][currentcounter][4]*1
+var someoveralltotal=thecounters[1][currentcounter][8]
+var somedeltaused=0
+var somepair // [date, total]
+var sometype=thecounters[1][currentcounter][5] //  0=min, 1=max
+var somecarry=thecounters[1][currentcounter][6] //  0=allow, 1=don't allow
+
+var somedatedetails
+var somedatetext
+var somebg1
+var somebg2
+var somebg3
+var somedelta
+var someexpected
+var sometotaltillday
+liveweeklines=[]
+
+
+for (var i=0; i<somelist.length; i++)
+{
+somepair=somelist[i]
+if (somepair[0]=='') 
+{
+sometext=sometext+'<tr ><td width=36% style="background-color:silver">&nbsp;</td><td width=32% style="background-color:silver">&nbsp;</td><td width=32% style="background-color:silver">&nbsp;</td></tr>'
+}
+else
+{
+somedate=somepair[0]*1
+somedatedetails=dateYYYYMonDDDay(somedate)
+somedatetext=somedatedetails[3]+'&nbsp;'+somedatedetails[1]+'&nbsp;'+somedatedetails[2]
+if (somecarry==1) 
+{
+somedelta=somepair[1]-sometarget
+}
+else 
+{
+someexpected=(datetodaynum(somedate)-datetodaynum(somestartdate)+1)*sometarget
+
+sometotaltillday=someoveralltotal
+for (var j=0; j<somebasiclist.length; j++)
+{
+if (somebasiclist[j][0]*1==somedate) {break}
+sometotaltillday=sometotaltillday-somebasiclist[j][1]
+} // end for
+somedelta=sometotaltillday-someexpected
+} // end else (somecarry=1)
+sometotal=somepair[1]
+
+if (sometype==1)
+{ // max
+if (sometotal<sometarget) {somebg2='#FF8888'} else {somebg2='lime'}
+if (somedelta<0) {somebg3='#FF8888'} else {somebg3='lime'}
+}
+else
+{ // min
+if (sometotal>sometarget) {somebg2='#FF8888'} else {somebg2='lime'}
+if (somedelta>0) {somebg3='#FF8888'} else {somebg3='lime'}
+}
+
+if (somedate==dateofentry) {somebg1='yellow'; changetextvalue('submitbutton', 'Submit: '+somedatetext.slice(9))} else {somebg1='white'}
+
+
+liveweeklines=liveweeklines.concat([i])
+
+sometext=sometext+'<tr ><td width=36% id="weekline'+i+'" style="text-align:left;background-color:'+somebg1+'" onClick="changedateentry('+i+', '+somedate+')">'+somedatetext+'</td><td width=32% style="text-align:center;background-color:'+somebg2+'" onClick="changedateentry('+i+', '+somedate+')">'+sometotal+'</td><td width=32% style="text-align:center;background-color:'+somebg3+'" onClick="changedateentry('+i+', '+somedate+')">'+somedelta+'</td></tr>'
+
+
+
+
+
+
+} // end (somepair[0]=='')
+
+} // end (var i=0; i<somelist.length; i++)
+
+
+
+sometext=sometext+'</table>'
+
+
+changetextvalue('currenttable', sometext)
+changetextvalue('currentheading', thecounters[1][currentcounter][2])
+var someminmax
+var somecarry
+if (thecounters[1][currentcounter][5]==0) {someminmax='min'} else {someminmax='max'}
+if (thecounters[1][currentcounter][6]==0) {somecarry='ave '} else {somecarry='day '}
+
+changetextvalue('currenttarget', 'Target: '+thecounters[1][currentcounter][4]+' '+thecounters[1][currentcounter][3]+' '+somecarry+someminmax+'')
+changetextvalue('currentunits', thecounters[1][currentcounter][3]+':')
+changetextvalue('currentvalue', '')
+changetextvalue('currentcomment', '')
+changetextvalue('currentfeedback', '&nbsp;')
+
+displaydiv(1)
+
+}
+
+
+
+function updatemaxmin(somelost, sometotalmissingdays)
+{
+var somemin=thecounters[1][currentcounter][7][0]
+var somemax=thecounters[1][currentcounter][7][1]
+if (sometotalmissingdays>somelost.length) {somelost=somelost.concat([['undefineddate', 0]])} // there must be some days with 0 as the total
+for (var i=0; i<somelost.length; i++)
+{
+if (somelost[i][0]!='')
+{
+
+if (somemin==='')
+{
+somemin=somelost[i][1]+''
+}
+else
+{
+if (somelost[i][1]<somemin*1) {somemin=somelost[i][1]+''}
+}
+
+if (somemax==='')
+{
+somemax=somelost[i][1]+''
+}
+else
+{
+if (somelost[i][1]>somemax*1) {somemax=somelost[i][1]+''}
+}
+}
+}
+thecounters[1][currentcounter][7]=[somemin, somemax]
+}
+
+function determinecurrentmaxmin()
+{
+var somemin=thecounters[1][currentcounter][7][0]
+var somemax=thecounters[1][currentcounter][7][1]
+var somelost=thecounters[1][currentcounter][10]  // somelost = lastweek
+for (var i=0; i<somelost.length; i++)
+{
+if (somelost[i][0]!='')
+{
+
+if (somemin==='')
+{
+somemin=somelost[i][1]+''
+}
+else
+{
+if (somelost[i][1]<somemin*1) {somemin=somelost[i][1]+''}
+}
+
+if (somemax==='')
+{
+somemax=somelost[i][1]+''
+}
+else
+{
+if (somelost[i][1]>somemax*1) {somemax=somelost[i][1]+''}
+}
+}
+}
+return [somemin, somemax]
+}
+
+
+
+
+
+
+
+
+
+
+
+function changedateentry(somei, somedate)
+{
+changetextvalue('currentfeedback', '&nbsp;')
+
+dateofentry=somedate
+var somedatedetails=dateYYYYMonDDDay(somedate)
+var somedatetext=somedatedetails[3]+'&nbsp;'+somedatedetails[1]+'&nbsp;'+somedatedetails[2]
+for (var i=0; i<liveweeklines.length; i++)
+{
+document.getElementById('weekline'+liveweeklines[i]).style.backgroundColor = 'white'
+}
+document.getElementById('weekline'+somei).style.backgroundColor = 'yellow'
+changetextvalue('submitbutton', 'Submit: '+somedatetext.slice(9))
+}
+
+
+function showmore()
+{
+if (gettextvalue('currentvalue')==='') {} else {changetextvalue('currentfeedback', 'Unsubmitted value: submit or clear'); return}
+var somenow=now()[0]
+var sometext=''
+var somestartdate=thecounters[1][currentcounter][1]*1
+// firstopendate will be eventually be the first date that we count as open
+
+
+firstopendate=daynumtodate(datetodaynum(somenow)-6)
+
+// final check to ensure that firstopendate is not before startdate
+if (firstopendate<somestartdate) {firstopendate=somestartdate}
+dateofentry=somenow
+
+
+
+
+sometext='<table border=1 cellspacing=0 cellpadding=0 width=100% align=center valign=top>'
+var somebasiclist=thecounters[1][currentcounter][9]
+var somelist=[]
+for (var i=0; i<somebasiclist.length; i++)
+{
+somelist=[somebasiclist[i]].concat(somelist)
+}
+// somelist is the reverse of somebasiclist
+
+var sometriple
+var somedate
+var somedatedetails
+var somedatetext
+var sometimestamp
+var sometimestampdetails
+var sometimestamptext
+var sometotal
+var somecomment
+var somebg1
+var someclick
+for (var i=0; i<somelist.length; i++)
+{
+sometriple=somelist[i]
+if (sometriple[2]=='') 
+{
+sometext=sometext+'<tr ><td id="rowa'+i+'" rowspan=2 valign=middle width=4% style="background-color:silver">'+(i+1)+'</td><td width=31% style="background-color:silver">&nbsp;</td><td width=33% style="background-color:silver">&nbsp;</td><td style="background-color:silver">&nbsp;</td></tr>'
+// sometext=sometext+'<tr ><td id="rowb'+i+'" width=36% style="background-color:silver">&nbsp;</td><td style="background-color:silver">&nbsp;</td><td style="background-color:silver">&nbsp;</td></tr>'
+sometext=sometext+'<tr  id="rowb'+i+'" style="text-align:left;background-color:silver"><td colspan=3>&nbsp;</td></tr>'
+}
+else
+{
+somedate=sometriple[2].slice(0,8)*1
+somedatedetails=dateYYYYMonDDDay(somedate)
+somedatetext=somedatedetails[3]+'&nbsp;'+somedatedetails[1]+'&nbsp;'+somedatedetails[2]
+sometimestamp=sometriple[2].slice(8,16)*1
+sometimestampdetails=dateYYYYMonDDDay(sometimestamp)
+sometimestamptext=sometimestampdetails[1]+'&nbsp;'+sometimestampdetails[2]+'&nbsp;'+sometriple[2].slice(16)
+sometotal=sometriple[0]
+somecomment=sometriple[1]
+somebgi='white'
+if (somedate<firstopendate) {somebg1='silver'; someclick=''} else {somebg1='white'; someclick='onClick="selectreverse('+i+')"'}
+sometext=sometext+'<tr  id="rowa'+i+'" '+someclick+' style="text-align:left;background-color:'+somebg1+'"><td rowspan=2 valign=middle width=4%>'+(i+1)+'</td><td width=31%>'+somedatetext+'</td><td width=33%>'+sometimestamptext+'</td><td align=center>'+sometotal+'</td></tr>'
+sometext=sometext+'<tr  id="rowb'+i+'" '+someclick+' style="text-align:left;background-color:'+somebg1+'"><td colspan=3>'+somecomment+'&nbsp;</td></tr>'
+} 
+
+} // end (var i=0; i<somelist.length; i++)
+
+
+
+sometext=sometext+'</table>'
+showstats()
+
+changetextvalue('moretable', sometext)
+changetextvalue('moreheading', thecounters[1][currentcounter][2])
+var someminmax
+var somecarry
+if (thecounters[1][currentcounter][5]==0) {someminmax='min'} else {someminmax='max'}
+if (thecounters[1][currentcounter][6]==0) {somecarry='ave '} else {somecarry='day '}
+
+changetextvalue('moretarget', 'Target: '+thecounters[1][currentcounter][4]+' '+thecounters[1][currentcounter][3]+' '+somecarry+someminmax+'')
+changetextvalue('reversebutton', '<table align=center border=1 width=100% cellpadding=0 cellspacing=0 style="align:center"><tr><td style="background-color:silver;text-align:center; color:white">Reverse</td></tr></table>')
+
+displaydiv(4)
+
+}
+
+function showstats()
+{
+var somenow=now()[0]
+var somestartdate=thecounters[1][currentcounter][1]*1
+var someplural='s'
+var sometotaldaysused=datetodaynum(somenow)-datetodaynum(somestartdate)+1
+if (sometotaldaysused==1) {someplural=''}
+
+var someave=thecounters[1][currentcounter][8]/(datetodaynum(somenow)-datetodaynum(somestartdate)+1)
+someave=Math.round(someave*1000)
+someave=someave/1000
+
+var somestats=thecounters[1][currentcounter][8]+' '+thecounters[1][currentcounter][3]+' over '+(datetodaynum(somenow)-datetodaynum(somestartdate)+1)+' day'+someplural+'.<br>Average='+someave+''
+var someminmax=determinecurrentmaxmin()
+var somemin=someminmax[0]; if (somemin==='') {somemin='?'}
+var somemax=someminmax[1]; if (somemax==='') {somemax='?'}
+somestats=somestats+'<br>Min.='+somemin+' Max.='+somemax
+
+changetextvalue('morestats', somestats)
+
+}
+
+function changebackgroundcolor(someid, somecolor)
+{
+document.getElementById(someid).style.backgroundColor = somecolor
+}
+
+function getbackgroundcolor(someid)
+{
+return document.getElementById(someid).style.backgroundColor
+}
+
+function selectreverse(somei)
+{
+showstats()
+for (var i=0; i<4; i++)
+{
+if (getbackgroundcolor('rowa'+i)=='yellow') {changebackgroundcolor('rowa'+i, 'white')}
+if (getbackgroundcolor('rowb'+i)=='yellow') {changebackgroundcolor('rowb'+i, 'white')}
+}
+changebackgroundcolor('rowa'+somei, 'yellow')
+changebackgroundcolor('rowb'+somei, 'yellow')
+changetextvalue('reversebutton', '<table width=100% align=center border=1 cellpadding=0 cellspacing=0><tr><td style="background-image:url(buttonbg.jpg);text-align:center" onClick="reverseentry('+(3-somei)+')" >Reverse '+(somei+1)+'</td></tr></table>')
+}
+
+function reverseentry(somei)
+{
+showstats()
+
+var somedetails=thecounters[1][currentcounter][9][somei]
+var somedate=somedetails[2].slice(0,8)*1
+dateofentry=somedate
+var somevalue=somedetails[0]*-1 // reverse the number
+submitentry2(somevalue, 'Reversal')
+}
+
+function startreset()
+{
+
+changetextvalue('morestats', '<table border=0 width=100% height=100% valign=middle cellspacing=0 cellpadding=0><tr valign=top align=left><td width=50%><br><table align=left valign=middle width=90% border=1 cellpadding=0 cellspacing=0 ><tr><td style="background-image:url(buttonbg.jpg);text-align:center" onClick="cancelreset()" >Cancel Reset</td></tr></table></td><td width=50%><br><table align=right valign=middle width=90% border=1 cellpadding=0 cellspacing=0 ><tr><td style="background-image:url(buttonbg.jpg);text-align:center" onClick="confirmreset()" >Confirm Reset</td></tr></table></td></tr></table>')
+
+}
+
+function cancelreset()
+{
+showstats()
+}
+
+function confirmreset()
+{
+thecounters[1][currentcounter][1]=''
+thecounters[1][currentcounter][7][0]=''
+thecounters[1][currentcounter][7][1]=''
+thecounters[1][currentcounter][8]=0
+
+for (var i=0; i<thecounters[1][currentcounter][9].length; i++)
+{
+thecounters[1][currentcounter][9][i]=['', '', '']
+}
+for (var i=0; i<thecounters[1][currentcounter][10].length; i++)
+{
+thecounters[1][currentcounter][10][i]=['', 0]
+}
+SetLocalVal('counters', wrapup(thecounters))
+displaycounter(currentcounter)
+}
+
+
+
+</SCRIPT>
+<script language="Javascript">
+
+
+
+// Date and time functions
+
+function now()
+{
+var currentdate = new Date()
+var currenthours=currentdate.getHours()
+var currentminutes=currentdate.getMinutes()
+var currentseconds=currentdate.getSeconds()
+var currentday = currentdate.getDate();
+var currentmonth = currentdate.getMonth()+1; 
+var currentyear = currentdate.getFullYear(); 
+// delete following line - just for testing
+// currentday=27
+
+return [10000*currentyear+100*currentmonth+currentday, currentyear, currentmonth, currentday, currenthours, currentminutes, currentseconds]
+}
+
+
+var aday=new Date(1970, 0, 1)
+
+function initializeaday(someday)
+{
+someday.setTime(0)
+someday.setUTCFullYear(1970)
+someday.setUTCMonth(0)
+someday.setUTCDate(1)
+
+return someday.getTime()
+}
+
+
+function datetodaynum(somedateformat)
+{
+
+var initmillisecs=initializeaday(aday)
+
+var someyear=Math.floor(somedateformat/10000)
+var somemonthandday=somedateformat-10000*someyear
+var somemonth=Math.floor(somemonthandday/100)
+var someday=somemonthandday-100*somemonth
+aday.setUTCFullYear(someyear)
+aday.setUTCMonth(somemonth-1)
+aday.setUTCDate(someday)
+
+return (Math.floor((aday.getTime()+initmillisecs)/(1000*60*60*24)))
+}
+
+function daynumtodate(someinteger)
+{
+var initmillisecs=initializeaday(aday)
+
+var somemilli=someinteger*1000*60*60*24
+aday.setTime(somemilli+initmillisecs)
+
+return 10000*aday.getUTCFullYear()+100*(aday.getUTCMonth()+1)+aday.getUTCDate()
+}
+
+function datetoweekday(somedateformat)
+{
+// 0=Sun, 1=Mon
+if (somedateformat!=Math.floor(somedateformat)) {return 'Invalid date'}
+var someyear=Math.floor(somedateformat/10000)
+var somemonthandday=somedateformat-10000*someyear
+var somemonth=Math.floor(somemonthandday/100)
+if (somemonth>12) {return 'Invalid date'}
+if (somemonth<1) {return 'Invalid date'}
+var someday=somemonthandday-100*somemonth
+if (someday>31) {return 'Invalid date'}
+if (someday<1) {return 'Invalid date'}
+aday.setFullYear(someyear)
+aday.setMonth(somemonth-1)
+aday.setDate(someday)
+var someJSday=aday.getDay()
+
+return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][someJSday]
+}
+
+function dateYYYYMonDDDay(somedateformat)
+{
+somedateformat=somedateformat+''
+var someyear=somedateformat.slice(0,4)*1
+var somemonth=somedateformat.slice(4,6)*1
+var somemon=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][somemonth-1]
+var somedate=somedateformat.slice(6,8)*1
+var someday=datetoweekday(somedateformat)
+return [someyear, somemon, somedate, someday]
+
+}
+
+
+</SCRIPT>
+<script language="Javascript">
+
+
+documentwrite('<form name="playform">')
+documentwrite('<div style="width:100%;height:'+Math.floor(scalef*5)+'px;display:block"></div>')
+
+documentwrite('<table border=1 cellpadding=0 cellspacing=0 width=100%><tr><td id="counterselect0" onClick="displaycounter(0)" style="background-color:white; text-align:center; font-weight:bold" width=* ><div id="heading0" style="overflow:hidden;width:'+Math.floor(scalef*45)+'px;height:'+Math.floor(scalef*12)+'px">0</div></td><td id="counterselect1" onClick="displaycounter(1)" style="background-color:white; text-align:center; font-weight:bold"  width=*><div id="heading1" style="overflow:hidden;width:'+Math.floor(scalef*45)+'px;height:'+Math.floor(scalef*12)+'px">0</div></td><td id="counterselect2" onClick="displaycounter(2)" style="background-color:white; text-align:center; font-weight:bold"  width=*><div id="heading2" style="overflow:hidden;width:'+Math.floor(scalef*45)+'px;height:'+Math.floor(scalef*12)+'px">0</div></td><td id="counterselect3" onClick="displaycounter(3)" style="background-color:white; text-align:center; font-weight:bold"  width=*><div id="heading3" style="overflow:hidden;width:'+Math.floor(scalef*45)+'px;height:'+Math.floor(scalef*12)+'px">0</div></td></tr></table>')
+documentwrite('<div style="width:100%;height:'+Math.floor(scalef*3)+'px;display:block"></div>')
+
+
+documentwrite('<div id="define" style="display:none">')
+documentwrite('<table border=0 cellspacing=0 cellpadding=0 width=100%><tr><td height='+Math.floor(scalef*198)+'>')
+
+documentwrite('<table border=0 cellspacing=0 cellpadding=0 width=100%  height=100% valign=top>')
+documentwrite('<tr valign=middle align=left><td width=40%><b>Heading:</b></td><td colspan=2 ><table border=1 width=100% height=100% cellpadding=0 cellspacing=0 style="align:left"><tr><td valign=middle id="countershortname" style="overflow:hidden;background-color:#FCF7F5;height:'+Math.floor(scalef*14)+'px" onClick="edittext('+"'countershortname'"+')"></td></tr></table></td></tr>')
+documentwrite('<tr valign=top align=left><td colspan=3 height='+Math.floor(scalef*5)+'></td></tr>')
+documentwrite('<tr valign=middle align=left><td><b>Description:</b></td><td colspan=2 ><table border=1 width=100% height=100% cellpadding=0 cellspacing=0 style="align:left"><tr><td valign=middle id="counterdescription" style="overflow:hidden;background-color:#FCF7F5;height:'+Math.floor(scalef*28)+'px" onClick="edittext('+"'counterdescription'"+')"></td></tr></table></td></tr>')
+documentwrite('<tr valign=top align=left><td colspan=3 height='+Math.floor(scalef*5)+'></td></tr>')
+documentwrite('<tr valign=middle align=left><td><b>Units:</b></td><td colspan=2 ><table border=1 width=100% height=100% cellpadding=0 cellspacing=0 style="align:left"><tr><td valign=middle id="counterunits" style="overflow:hidden;background-color:#FCF7F5;height:'+Math.floor(scalef*14)+'px" onClick="edittext('+"'counterunits'"+')"></td></tr></table></td></tr>')
+documentwrite('<tr valign=top align=left><td colspan=3 height='+Math.floor(scalef*5)+'></td></tr>')
+documentwrite('<tr valign=middle align=left><td><b>Target:</b></td><td colspan=2 ><table border=1 width=100% height=100% cellpadding=0 cellspacing=0 style="align:left"><tr><td valign=middle id="countertarget" style="overflow:hidden;background-color:#FCF7F5;height:'+Math.floor(scalef*14)+'px" onClick="editnumber('+"'countertarget'"+')"></td></tr></table></td></tr>')
+
+documentwrite('<tr valign=top align=left><td colspan=3 height='+Math.floor(scalef*5)+'></td></tr>')
+documentwrite('<tr valign=middle align=left><td><b>Aim:</b></td><td colspan=2><table cellspacing=0 cellpadding=0 width=100% border=1 align=left><tr>')
+documentwrite('<td width="50%" style="background-color:#333333;color:white;text-align:center; " onClick="setaim(0)">Minimize</td>')
+documentwrite('<td width="50%" style="background-color:#333333;color:white;text-align:center; " onClick="setaim(1)">Maximize</td>')
+documentwrite('</tr><tr>')
+documentwrite('<td width="50%" style=" text-align:center; "><img width="'+Math.floor(scalef*10)+'" height="'+Math.floor(scalef*10)+'"  name="aim0" src="unselected.gif" onClick="setaim(0)"></td>')
+documentwrite('<td width="50%" style=" text-align:center; "><img width="'+Math.floor(scalef*10)+'" height="'+Math.floor(scalef*10)+'"  name="aim1" src="unselected.gif" onClick="setaim(1)"></td>')
+documentwrite('</tr></table></td></tr>')
+documentwrite('<tr valign=top align=left><td colspan=3 height='+Math.floor(scalef*5)+'></td></tr>')
+
+documentwrite('<tr valign=middle align=left><td><b>Carry-over:</b></td><td colspan=2><table cellspacing=0 cellpadding=0 width=100% border=1 align=left><tr>')
+documentwrite('<td width="50%" style="background-color:#333333;color:white;text-align:center; " onClick="setcarry(0)">Allow</td>')
+documentwrite('<td width="50%" style="background-color:#333333;color:white;text-align:center; " onClick="setcarry(1)">Don\'t allow</td>')
+documentwrite('</tr><tr>')
+documentwrite('<td width="50%" style=" text-align:center; "><img width="'+Math.floor(scalef*10)+'" height="'+Math.floor(scalef*10)+'"  name="carry0" src="unselected.gif" onClick="setcarry(0)"></td>')
+documentwrite('<td width="50%" style=" text-align:center; "><img width="'+Math.floor(scalef*10)+'" height="'+Math.floor(scalef*10)+'"  name="carry1" src="unselected.gif" onClick="setcarry(1)"></td>')
+documentwrite('</tr></table></td></tr>')
+
+
+
+
+documentwrite('<tr valign=top align=left><td colspan=3 id="definefeedback" valign=middle style="text-align:center;color:red">&nbsp;</td></tr>')
+// documentwrite('<tr valign=top align=left><td colspan=3><table align=center border=1 cellpadding=0 cellspacing=0 style="align:center"><tr><td width='+Math.floor(scalef*100)+' style="background-image:url(buttonbg.jpg);text-align:center" onClick="startcounter()">Start Counter</td></tr></table></td></tr>')
+
+documentwrite('</table>')
+documentwrite('</td></tr>')
+documentwrite('<tr valign=top align=left><td><table align=center border=1 cellpadding=0 cellspacing=0 style="align:center"><tr><td width='+Math.floor(scalef*100)+' style="background-image:url(buttonbg.jpg);text-align:center" onClick="startcounter()">Start Counter</td></tr></table></td></tr>')
+
+documentwrite('</table>')
+documentwrite('</div>')
+
+documentwrite('<div id="current" style="display:none">')
+documentwrite('<table border=0 cellspacing=0 cellpadding=0 width=100%  valign=top><tr><td colspan=2 height='+Math.floor(scalef*198)+'>')
+documentwrite('<table border=0 cellspacing=0 cellpadding=0 width=100% height=100% valign=top>')
+documentwrite('<tr valign=top align=left><td colspan=3 style="height:'+Math.floor(scalef*12)+'px;text-align:left;overflow:hidden" id="currentheading"  valign=top></td></tr>')
+documentwrite('<tr valign=top align=left><td colspan=3 style="height:'+Math.floor(scalef*12)+'px;text-align:left;overflow:hidden" id="currenttarget"  valign=top></td></tr>')
+documentwrite('<tr valign=top align=left><td colspan=3 id="currenttable"></td></tr>')
+documentwrite('<tr valign=top align=left><td colspan=3 height='+Math.floor(scalef*2)+'></td></tr>')
+documentwrite('<tr valign=middle align=left><td width='+Math.floor(scalef*190*36/100)+'><b><div id="currentunits"></div></b></td><td colspan=2><table border=1 width=100% height=100% cellpadding=0 cellspacing=0 align=left valign=middle><tr><td valign=middle id="currentvalue" style="overflow:hidden;background-color:#FCF7F5;height:'+Math.floor(scalef*13)+'px" onClick="editnumber('+"'currentvalue'"+')" ></td></tr></table></td></tr>')
+documentwrite('<tr valign=top align=left><td colspan=3 height='+Math.floor(scalef*2)+'></td></tr>')
+documentwrite('<tr valign=middle align=left><td width='+Math.floor(scalef*190*36/100)+'><b>Comment:</b></td><td colspan=2 ><table valign=middle border=1 width=100% height=100% cellpadding=0 cellspacing=0 align=center><tr><td valign=middle id="currentcomment" style="overflow:hidden;background-color:#FCF7F5;height:'+Math.floor(scalef*26)+'px" onClick="edittext('+"'currentcomment'"+')" ></td></tr></table></td></tr>')
+
+
+
+
+documentwrite('<tr valign=top align=left><td colspan=3 height='+Math.floor(scalef*12)+' id="currentfeedback" style="text-align:center;color:red">&nbsp;</td></tr>')
+
+documentwrite('</table>')
+documentwrite('</td></tr>')
+documentwrite('<tr valign=top align=left><td style="width:'+Math.floor(scalef*68)+'px"><table align=left width=90% border=1 cellpadding=0 cellspacing=0 ><tr><td style="background-image:url(buttonbg.jpg);text-align:center" onClick="showmore()" >More</td></tr></table></td><td ><table width=100% align=center border=1 cellpadding=0 cellspacing=0><tr><td style="background-image:url(buttonbg.jpg);text-align:center" onClick="submitcurrent()" id="submitbutton">Submit</td></tr></table></td></tr>')
+
+documentwrite('</table>')
+
+documentwrite('</div>')
+
+documentwrite('<div id="textedit" style="display:none">')
+documentwrite('<table border=0 cellspacing=0 cellpadding=0 width=100% valign=top><tr><td height='+Math.floor(scalef*198)+'>')
+documentwrite('<table border=0 valign=top cellspacing=0 cellpadding=0 width=100%>')
+documentwrite('<tr valign=top align=left><td style="height:'+Math.floor(scalef*38)+'px"><table border=0 width=100% height=100%><tr><td  id="texteditheading" style="background-color:weight;text-align:center" valign=top></td></tr></table></td></tr>')
+documentwrite('<tr valign=top align=left><td style="height:'+Math.floor(scalef*32)+'px"><table border=1 width=100% height=100%><tr><td  id="texteditvalue" style="background-color:beige;font-size:'+Math.floor(scalef*12)+'px;text-align:center" valign=top></td></tr></table></td></tr>')
+documentwrite('<tr height='+Math.floor(scalef*5)+'><td></td></tr>')
+documentwrite('<tr valign=top align=left><td style="height:"'+Math.floor(scalef*25)+'px"><table border=0 width=100% height='+Math.floor(scalef*25)+'><tr><td  id="texteditfeedback" style="background-color:white;color:red;text-align:center" valign=top>&nbsp;</td></tr></table></td></tr>')
+documentwrite('<tr height='+Math.floor(scalef*10)+'><td></td></tr>')
+
+var someindex=0
+var someletter
+for (var i=0; i<3; i++)
+{
+documentwrite('<tr><td height="'+Math.floor(scalef*20)+'" ><table height="'+Math.floor(scalef*20)+'" align=center border=0 cellpadding=0 cellspacing=0><tr>')
+for (var j=0; j<9; j++)
+{
+someletter=theletters[someindex]
+documentwrite('<td id="key'+someletter+'" width="'+Math.floor(scalef*20)+'" height="'+Math.floor(scalef*20)+'" onClick="letterpress('+someindex+')">'+imageforkey(someletter)+'</td>')
+someindex++
+}
+documentwrite('</tr></table></td><\/tr>')
+}
+documentwrite('<tr><td height="'+Math.floor(scalef*20)+'" ><table align=center border=0 cellpadding=0 cellspacing=0><tr height="'+Math.floor(scalef*20)+'"><td id="shift" onClick="shifttext()" width="'+Math.floor(scalef*40)+'"  height="'+Math.floor(scalef*20)+'">'+imageforkey('shift')+'</td><td onClick="letterpress(27)" width="'+Math.floor(scalef*100)+'"   height="'+Math.floor(scalef*20)+'">'+imageforkey('space')+'</td><td onClick="letterpress(28)" width="'+Math.floor(scalef*40)+'"   height="'+Math.floor(scalef*20)+'">'+imageforkey('clear')+'</td></tr></table></td></tr>')
+
+
+
+documentwrite('</table>')
+documentwrite('</td></tr>')
+documentwrite('<tr valign=top align=left><td><table align=right border=1 cellpadding=0 cellspacing=0 style="align:center"><tr><td width='+Math.floor(scalef*60)+' style="background-image:url(buttonbg.jpg);color:black;text-align:center" onClick="submittextedit()">Done</td></tr></table><table align=left border=1 cellpadding=0 cellspacing=0 style="align:center" ><tr><td width='+Math.floor(scalef*60)+' style="background-image:url(buttonbg.jpg);text-align:center" onClick="canceltextedit()">Cancel</td></tr></table></td></tr>')
+
+documentwrite('</table>')
+
+documentwrite('</div>')
+
+documentwrite('<div id="numberedit" style="display:none">')
+documentwrite('<table border=0 cellspacing=0 cellpadding=0 width=100%  valign=top><tr><td height='+Math.floor(scalef*198)+'>')
+documentwrite('<table border=0 valign=top cellspacing=0 cellpadding=0 width=100%>')
+documentwrite('<tr valign=top align=left><td colspan=2 style="height:'+Math.floor(scalef*38)+'px"><table border=0 width=100% height=100%><tr><td  id="numbereditheading" style="background-color:weight;text-align:center" valign=top></td></tr></table></td></tr>')
+documentwrite('<tr valign=top align=left><td colspan=2 style="height:'+Math.floor(scalef*16)+'px"><table border=1 width=50% height=100% align=center><tr><td  id="numbereditvalue" style="background-color:beige;font-size:'+Math.floor(scalef*12)+'px;height:'+Math.floor(scalef*16)+'px;text-align:center" valign=middle></td></tr></table></td></tr>')
+documentwrite('<tr valign=top align=left><td colspan=2  id="numbereditunits" style="background-color:white;font-size:'+Math.floor(scalef*12)+'px;height:'+Math.floor(scalef*20)+'px;text-align:center" valign=middle></td></tr>')
+documentwrite('<tr valign=top align=left><td colspan=2 style="height:"'+Math.floor(scalef*12)+'px"><table border=0 width=100% height='+Math.floor(scalef*12)+' valign=middle><tr><td  id="numbereditfeedback" style="background-color:white;color:red;text-align:center" valign=middle>&nbsp;</td></tr></table></td></tr>')
+
+someindex=1
+var somenumber
+for (var i=0; i<3; i++)
+{
+documentwrite('<tr><td colspan=2 height="'+Math.floor(scalef*20)+'" ><table height="'+Math.floor(scalef*20)+'" align=center border=0 cellpadding=0 cellspacing=0><tr><td></td>')
+for (var j=0; j<3; j++)
+{
+somenumber=thenumbers[someindex]
+documentwrite('<td id="numberkey'+someletter+'" width="'+Math.floor(scalef*20)+'" height="'+Math.floor(scalef*20)+'" onClick="numberpress('+someindex+')">'+imagefornumberkey(somenumber)+'</td>')
+someindex++
+}
+documentwrite('<td></td></tr></table></td><\/tr>')
+}
+documentwrite('<tr><td colspan=2 height="'+Math.floor(scalef*20)+'" ><table align=center border=0 cellpadding=0 cellspacing=0><tr height="'+Math.floor(scalef*20)+'"><td id="shift" onClick="changesign()" width="'+Math.floor(scalef*40)+'"  height="'+Math.floor(scalef*20)+'">'+imagefornumberkey('sign')+'</td><td id="shift" onClick="numberpress(10)" width="'+Math.floor(scalef*20)+'"  height="'+Math.floor(scalef*20)+'">'+imagefornumberkey(thenumbers[10])+'</td><td onClick="numberpress(0)" width="'+Math.floor(scalef*20)+'"   height="'+Math.floor(scalef*20)+'">'+imagefornumberkey(thenumbers[0])+'</td><td onClick="numberpress(11)" width="'+Math.floor(scalef*20)+'"   height="'+Math.floor(scalef*20)+'">'+imagefornumberkey(thenumbers[11])+'</td><td id="shift" onClick="numberpress(12)" width="'+Math.floor(scalef*40)+'"  height="'+Math.floor(scalef*20)+'">'+imagefornumberkey(thenumbers[12])+'</td></tr></table></td></tr>')
+
+
+
+documentwrite('</table>')
+documentwrite('</td></tr>')
+documentwrite('<tr valign=top align=left><td><table align=right border=1 cellpadding=0 cellspacing=0 style="align:center" ><tr><td width='+Math.floor(scalef*60)+' style="background-image:url(buttonbg.jpg);text-align:center" onClick="submitnumberedit()">Done</td></tr></table><table align=left border=1 cellpadding=0 cellspacing=0 style="align:center" ><tr><td width='+Math.floor(scalef*60)+' style="background-image:url(buttonbg.jpg);text-align:center" onClick="cancelnumberedit()">Cancel</td></tr></table></td></tr>')
+
+documentwrite('</table>')
+
+
+documentwrite('</div>')
+
+documentwrite('<div id="more" style="display:none">')
+documentwrite('<table border=0 cellspacing=0 cellpadding=0 width=100% valign=top><tr><td colspan=3 height='+Math.floor(scalef*198)+'>')
+documentwrite('<table border=0 cellspacing=0 cellpadding=0 width=100%  height=100% valign=top>')
+documentwrite('<tr valign=top align=left><td colspan=3 style="height:'+Math.floor(scalef*12)+'px;text-align:left;overflow:hidden" id="moreheading"  valign=top></td></tr>')
+documentwrite('<tr valign=top align=left><td colspan=3 style="height:'+Math.floor(scalef*12)+'px;text-align:left;overflow:hidden" id="moretarget"  valign=top></td></tr>')
+documentwrite('<tr valign=top align=left><td colspan=3 id="moretable"></td></tr>')
+documentwrite('<tr valign=top align=left><td colspan=3 height='+Math.floor(scalef*2)+'></td></tr>')
+documentwrite('<tr valign=top align=left><td height='+Math.floor(scalef*48)+' colspan=3 id="morestats"></td></tr>')
+
+
+
+
+
+documentwrite('</table>')
+documentwrite('</td></tr>')
+documentwrite('<tr valign=top align=left><td width=33%><table align=left width=90% border=1 cellpadding=0 cellspacing=0 ><tr><td style="background-image:url(buttonbg.jpg);text-align:center" onClick="showcurrent()" >Back</td></tr></table></td><td id="reversebutton" width=34% ><table align=center border=1 width=100% cellpadding=0 cellspacing=0 style="align:center"><tr><td style="background-color:silver;text-align:center; color:white">Reverse</td></tr></table></td><td width=33%><table align=right width=90% border=1 cellpadding=0 cellspacing=0 ><tr><td style="background-image:url(buttonbg.jpg);text-align:center" onClick="startreset()" >Reset</td></tr></table></td></tr>')
+
+documentwrite('</table>')
+
+documentwrite('</div>')
+
+
+documentwrite('</form>')
+</script>
+
+</div></div>
+</td></tr></table>
+<script language="Javascript">documentwrite('<div style="height:'+heightspacer+'px;width:100%"></div>')</script>
+
+</div><div id="addivtotal" style="width:100%; display:none">
+<script language="Javascript">documentwrite('<div style="height:'+heightspacer+'px;width:100%"></div><table border=0 cellpadding=0 cellspacing=0 style="width:'+Math.floor(scalef*190)+'px;height:'+Math.floor(scalef*240)+'px" align=center>')</script>
+<tr><td valign=middle style="vertical-align:top">
+<div style="position:relative;left:0px;top:0px;height:100%;width:100%">
+<div style="position:absolute;left:0px;top:0px;height:100%;width:100%">
+<script language="Javascript">
+
+
+var startad=1
+
+function showstartad()
+{
+if (interruptsrequired==1 && thiscfpage!='ourproducts' && thiscfpage!=cfpackage )
+{
+document.getElementById('thegame').style.display = 'none'
+document.getElementById('addivtotal').style.display = 'inline'
+adcountdown(8)
+}
+else
+{
+document.getElementById('thegame').style.display = 'inline' 
+handleclickproblem()
+runonload()
+}
+}
+
+
+function showad()
+{
+if (restartconfirmationrequired==1)
+{
+displayrestartconfirmation()
+}
+else
+{
+showad2()
+}
+}
+
+function showad2()
+{
+if (interruptsrequired==1  && thiscfpage!='ourproducts' && thiscfpage!=cfpackage)
+{
+document.getElementById('thegame').style.display = 'none'
+document.getElementById('addivtotal').style.display = 'inline'
+adcountdown(8)
+}
+else
+{
+continueafterad()
+}
+
+}
+
+function showcountdownimages(somenum)
+{
+for (var i=0; i<8; i++)
+{
+document.images['cd'+i].src='unselected.gif'
+}
+for (var i=0; i<somenum; i++)
+{
+document.images['cd'+i].src='selected.gif'
+}
+}
+
+var adtimer=null
+function adcountdown(somenum)
+{
+showcountdownimages(somenum)
+if (somenum==0)
+{
+if (startad==1)
+{
+startad=0
+document.getElementById('addivtotal').style.display = 'none'
+document.getElementById('thegame').style.display = 'inline' 
+handleclickproblem()
+runonload()
+
+}
+else
+{
+document.getElementById('addivtotal').style.display = 'none'
+document.getElementById('thegame').style.display = 'inline' 
+handleclickproblem()
+continueafterad()
+}
+}
+else
+{
+if (adtimer != null) {clearTimeout(adtimer)}
+adtimer = setTimeout("adcountdown("+(somenum-1)+")",2000);
+}
+}
+
+
+documentwrite('<div style="height:'+Math.floor(scalef*3)+'px"></div><table style="background-color:beige" valign=middle align=center border=1 cellpadding=0 cellspacing=0 width='+Math.floor(scalef*160)+' height='+Math.floor(scalef*100)+'><tr><td align=center><b>Trial Version</b><br><br>The Compact Fun games and puzzles are available without these countdown interrupts and ads in the full <br><b>Compact Fun</b> <br>app, as well as other apps.</td></tr></table>')
+
+
+documentwrite('<br><table style="background-color:red" valign=middle align=center border=0 cellpadding=0 cellspacing=0 width='+(Math.floor(scalef*36)+Math.floor(scalef*10)+Math.floor(scalef*10))+' height='+(Math.floor(scalef*36)+Math.floor(scalef*10)+Math.floor(scalef*10))+' onClick="changepage(\'ourproducts\')"><tr><td><img width='+Math.floor(scalef*10)+'   name="cd1" src="selected.gif"></td><td align=center><img align=center width='+Math.floor(scalef*10)+'   name="cd0" src="selected.gif"></td><td><img width='+Math.floor(scalef*10)+'   name="cd7" src="selected.gif"></td></tr><tr><td valign=middle><img width='+Math.floor(scalef*10)+'   name="cd2" src="selected.gif"></td><td align=center><img  width='+Math.floor(scalef*36)+' src="cflogo.png" border=0></td><td valign=middle><img width='+Math.floor(scalef*10)+'   name="cd6" src="selected.gif"></td></tr><tr><td><img width='+Math.floor(scalef*10)+'   name="cd3" src="selected.gif"></td><td align=center><img align=center width='+Math.floor(scalef*10)+'   name="cd4" src="selected.gif"></td><td><img width='+Math.floor(scalef*10)+'   name="cd5" src="selected.gif"></td></tr></table>')
+
+documentwrite('<br><table style="background-color:beige" valign=middle align=center border=1 cellpadding=0 cellspacing=0 width='+Math.floor(scalef*140)+' height='+Math.floor(scalef*50)+'><tr><td align=center>To see details of these and other apps from TopAccolades press the button above.</td></tr></table>')
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+</td></tr></table>
+
+<script language="Javascript">documentwrite('<div style="height:'+heightspacer+'px;width:100%"></div>')</script>
+
+</div><div id="help" style="width:100%;display:none;background-color:white"><table bgcolor=white width=100% border=0 cellpadding=1><tr><td><script language="Javascript">var helpindexrequired=0;</script><br><script language="Javascript">documentwrite('<table align=left border=1 cellpadding=0 cellspacing=0><tr><td style="width:'+Math.floor(scalef*45)+'px;background-image:url(buttonbg.jpg);text-align:center"  onClick="togglehelp()">Back</td></tr></table>')</script>
+<br><p><script language="Javascript">
+if (helpindexrequired==1)
+{
+document.write('<a href="#intro">Introduction</a><br><a href="#defining">Defining and starting a counter</a><br><a href="#entering">Entering a count</a><br><a href="#terms">Terms of use</a><br>')}
+</script>
+
+
+<a name="intro"></a><p>If you're making a daily count of calorie intake, activity, steps or distance walked, money spent or just about anything else, then Daily Counter is for you.</p>
+<p>Daily Counter allows you to keep track of four separate counters, each with its own tab at the top (initially labelled Count A through to Count D).
+<p>For each counter, you specify a name, a description, the units of measurement (e.g. Calories, points, minutes, km or dollars), and a target or average number of these units that you're trying to achieve each day.  You also need to specify whether you are in general trying to minimize the total (e.g. for Calories when weight-watching, or money expenditure) or maximize it (e.g. for activity, steps or distance walked).  You can also choose whether you wish to allow a carry-over, so that if your count is over or under your target on some days, you can compensate for this on other days.  In other words, you would allow a carry-over if you're more concerned with the longer-term average than with achieving the daily target.
+<p>Once you start the counter, you can associate any number of individual counts for a day, and let the Daily Counter calculate the total count for that day.  You can also record a brief comment to remind yourself what a count was for.  The time at which you enter the count is also recorded to help you remember the context.
+<p>You have a complete week open at any time, which means you can enter counts not only for today, but also for any of the 6 previous days (as long as they are after the start of the count).
+<p>Daily Counter shows you the counts for the 7 days on a coloured background (green if you've achieved your daily target or red if you haven't). To the right of the daily total is shown your overall surplus or shortfall at that time compared to your target.  If you've allowed a carry-over this will, of course, be compared with your expected total over the complete period; in contrast, if no carry-over is allowed, this will be simply the difference between the daily count and the daily target.  Again, the red or green coloured background indicates whether or not you are achieving your target on or by that date.  You can also choose to see the total count from the time the counter was started, the average over this time, and the minimum and maximum counts entered for any day.
+<p>The last four counts entered are available for you to see (together with the associated time of entry and any associated comment).  You may choose to reverse any one of these if you've made a mistake (this counts as an extra count entered), or, alternatively, you can choose to enter a negative count if you only want to remove some of the count entered.
+<p>Each count may be reset at any time, which means that you can reset totals, averages etc. to zero, ready to start the count again.  This can be useful if you also make an associated count over a longer period, and this period has come to an end (e.g. you might be counting weight-watching points on a daily basis, but also allow a certain number of additional points over the full week).  You might also use the reset feature when you wish to change your target, or when you have deviated so far from your intended average that you wish to forget about the past and start again.  Alternatively, you might use the reset feature to replace this counter with a completely different one.
+
+
+<script language="Javascript">if (helpindexrequired==1) {document.write('<p><a href="#Top"><i>Return to top</i></a></p>')}</script>
+
+      <p><a name="defining"><span style="font-weight:bold">Defining and starting a counter</span></a></p>
+      <p>To define a particular counter, tap the coloured tab at the top. On this screen, you must enter a short name (which will also be shown on the tab), a description, the units and the target.  Simply tap in the relevant field, and this will open up the appropriate text or number edit screen. 
+<p><i>Text editing</i>
+<p>The text edit screen gives a brief description of what you are editing (together with the number of characters allowed), and shows the current contents of the field (if any). Enter the text using the keyboard at the bottom.  Use the red <i>&lt;</i> button to delete the last character, or the red <i>Clear</i> button to clear the text completely.  
+<p>Use the <i>a-A-1</i> button to change the keyboard from lower-case, to upper-case, to numbers and symbols, and back again to lower-case.  This will have a yellow background if lower-case letters are shown, a blue background for upper-case letters, and a green background for numbers and symbols.  Note: If a field is initially empty, upper-case letters will be displayed when the text edit screen is first opened, and automatically revert to lower-case letters after one character has been added.
+<p>Note: if you try to exceed the maximum number of characters, a red warning note is shown below the editing field.
+<p>Once you have finished editing, press the <i>Done</i> button.  Alternatively, press the <i>Cancel</i> button to leave the field you are editing unchanged.
+
+<p><i>Number editing</i>
+<p>The number edit screen gives a brief description of what you are editing (together with the number of characters allowed), and shows the current contents of the field (if any). Enter the number using the keyboard at the bottom.  Use the red <i>&lt;</i> button to delete the last character, or the red <i>Clear</i> button to clear the text completely.  Use the yellow <i>+/-</i> button to change from a positive to a negative number, or vice versa.
+<p>Note: if you try to exceed the maximum number of characters, a red warning note is shown below the editing field.
+<p>Once you have finished editing, press the <i>Done</i> button.  Alternatively, press the <i>Cancel</i> button to leave the field you are editing unchanged.
+<p>Note: if the number is considered invalid, a red error message is displayed.  In particular, note that a decimal point must have a numeral before and after it.
+<p>
+<p>Once you have entered the short name, description, units and target, which are mandatory, you should select the appropriate <i>Aim</i> (<i>Minimize</i> or <i>Maximize</i>) and <i>Carry-over</i> (<i>Allow</i> or <i>Don't Allow</i>), by tapping on your choice.
+<p>Once you are ready to start the counter, press the <i>Start Counter</i> button.  This fixes the start date as today (according to your system).
+<p>Note: At or just after midnight, the system tries to ensure that the latest date is displayed, by, in effect, automatically pressing the tab for the current counter.  If you happen to be in the text or number edit screen at that time, you will come out of this as if you had pressed its <i>Cancel</i> button. 
+
+<script language="Javascript">if (helpindexrequired==1) {document.write('<p><a href="#Top"><i>Return to top</i></a></p>')}</script>
+
+      <p><a name="entering"><span style="font-weight:bold">Entering a count</span></a></p>
+      <p>Once a counter has been started, you will be prompted to enter a count, and, if you wish, an associated comment.  Note: Near the top of the screen are shown the description, target and units, together with a reminder of whether a carry over is allowed ('day' means no carry-over, while 'ave' means carry-over allowed) and whether you are trying to maximize or minimize the count ('max' or 'min'). 
+<p>Initially, only one day will be displayed in the table near the top, with a yellow background, but once the counter has been running for more than one day, you will see the current day (always at the bottom of the list) highlighted with a yellow background, with the earlier dates, with white backgrounds, above this.  The yellow background signifies the entry date, i.e. the date for which you wish to enter a count.  If you wish to enter a count for an earlier date, press on that date and it will change to a yellow background.  At the same time, the <i>Submit...</i> button
+at the bottom right will display the date for which the next entry will be made.
+<p>Once you have specified the entry date, enter the count and, optionally, a comment by tapping on the appropriate field and using the relevant text or number editor, as previously. Once ready, press the <i>Submit...</i> button.  Assuming there are no errors (again displayed in red), the table at the top is updated and the counter is ready for your next entry.
+<p>Note: you can enter negative counts.  This might be to correct an earlier entry or to reflect some other benefit or reduction (e.g. if counting points for weight loss, you might have 'earned' points through exercise, so you can reflect these by adding a negative points count).
+
+<script language="Javascript">if (helpindexrequired==1) {document.write('<p><a href="#Top"><i>Return to top</i></a></p>')}</script>
+
+      <p><a name="more"><span style="font-weight:bold">More information and functionality</span></a></p>
+      <p>On the count entry screen, you will see a <i>More</i> button.  Pressing this takes you to a different screen.
+<p>On this screen, you will see a different table, this time showing you the last 4 entries made for this counter (1 is the earliest, 4 is the latest). Each of these entries shows the entry date (i.e. the date with which the count is associated), the date and time at which the entry was made, the count, and, beneath these, any associated comment.  All of these will be shown with a white background, unless the entry date is not within the last 7 days, in which case it will have a silver background to indicate that this entry is closed (and no further changes can be made for that date).
+<p>As well as reminding you of the last 4 entries, you are also able to reverse any of the open entries.  To do this, press on any one of these, and its background turns yellow.  At the same time, the <i>Reverse</i> button near the button, initially with a silver background, changes to show which of the 4 will be reversed if it is pressed.
+<p>Pressing the <i>Reverse</i> button adds a new entry for the relevant date, which is -1 times the original number input.  The comment for this is 'Reversal'.
+<p>Beneath the table is a statistics area, which shows you the total count and number of days over which this has been made, together with the average (up to 3 decimal places) and the minimum and maximum counts for any day.
+
+<p>Also on this screen, you will find the <i>Reset</i> button for the counter.  If you press this, the statistics are replaced by two buttons: one to cancel the reset, in case you made a mistake, and one to confirm it.  If you press the <i>Confirm Reset</i> button, numbers will be reset to zero for the count and you will be taken to the initial screen where the counter is defined so that you can make any further changes and then start the counter again.
+<p>Press the <i>Back</i> button to return to the count entry screen.
+<p>Note: When you shut Daily Counter and then open it again, it should open with the last counter you used displayed.
+      <p><span style="font-style:italic">Daily Counter was devised and developed by Dr. David Wolstenholme</span >
+
+
+<script language="Javascript">if (helpindexrequired==1) {documentwrite('<p><a href="#Top"><i>Return to top</i></a></p>')}</script>
+<a name="terms"></a>
+<p style="font-weight: bold;"><a name="terms">Terms of use</a></p>
+<p>This software may be used for personal purposes only.&nbsp;  It may not be used for commercial purposes.</p>
+<p>The software, code and script of this application may not be copied or be distributed to others.</p>
+<p>The software, code and script may not be altered in any way.</p>
+<p >Copyright of the software, code and script, and its
+help
+documentation, is held by TopAccolades Limited.&nbsp; No part of
+the software,
+code, script or documentation may be copied or used in another application or
+document.</p>
+<p >Although
+every effort has been made to ensure that this software functions
+as intended, TopAccolades Limited provides no warranty of
+merchantability, or
+fitness for a particular purpose, in relation to this application or
+its
+support.</p>
+<p >TopAccolades
+Limited shall not be liable for any damages whatsoever arising
+out of the use of or inability to use this application or the
+provision of
+or failure
+to provide support.</p>
+<p style="font-style: italic;">Copyright TopAccolades Limited<br>www.topaccolades.com</p>
+
+Version: 3.4 (20190411) <br>Scale: <script language="Javascript">documentwrite(scalef)</script><br><br>&nbsp;</td></tr></table></div>
+<script language="Javascript">documentwrite('<div id="theimages" style="width:100%;height:'+Math.floor(scalef*12)+'px;overflow:hidden;background-color:black"  onClick="openwebpage(\'http://i.compactfun.com/\')"><center>');
+var adsrequired=1
+
+function openwebpage(someurl)
+{
+document.location.href=someurl
+}
+
+var baseonelinermessages=[
+'Press ? for Help', '', 
+'Use device Back for menu/exit', '', 
+'TopAccolades Limited',
+'Specializing in Original & Classic...',
+'Game & Puzzle Apps',
+'']
+
+var admessages=[
+'<span style="color:magenta">Go to i.compactfun.com</span>',
+'<span style="color:magenta">Play many of our apps online.</span>',
+'<span style="color:magenta">Also download apps to install.</span>',
+'<span style="color:magenta">More details follow...</span>',
+'',
+'<span style="color:cyan">Try our Linxem app</span>',
+'<span style="color:cyan">A great new word game.</span>',
+'<span style="color:cyan">30 words presented to setter.</span>',
+'<span style="color:cyan">Setter selects 2 or more of these...</span>',
+'<span style="color:cyan">...and a new word that links them.</span>',
+'<span style="color:cyan">The linking word is called the Linxem</span>',
+'<span style="color:cyan">Solver presented with the Linxem...</span>',
+'<span style="color:cyan">... and same 30 words...</span>',
+'<span style="color:cyan">... and must identify selected words.</span>',
+'<span style="color:cyan">Try Linxem - Linxem Trial is free</span>',
+'',
+'<span style="color:cyan">Try our In The Dark app</span>',
+'<span style="color:cyan">A great new word game: 3-8 players.</span>',
+'<span style="color:cyan">18 words presented to all players.</span>',
+'<span style="color:cyan">One of these chosen as the Key Word.</span>',
+'<span style="color:cyan">All players but one are In The Know.</span>',
+'<span style="color:cyan">They are shown which is the Key Word.</span>',
+'<span style="color:cyan">The player In The Dark doesn\'t know.</span>',
+'<span style="color:cyan">Everyone gives a clue to Key Word.</span>',
+'<span style="color:cyan">Players identify who is In The Dark.</span>',
+'<span style="color:cyan">In The Dark Trial is free. Try it!</span>',
+'',
+'<span style="color:cyan">Try our Volcano app</span>',
+'<span style="color:cyan">Like Volcano in this app...</span>',
+'<span style="color:cyan">... but new interface, gestures...</span>',
+'<span style="color:cyan">... and game state memory.</span>',
+'<span style="color:cyan">Try Volcano - Volcano Trial is free</span>',
+'',
+'<span style="color:violet">For Birthdays & Anniversaries...</span>',
+'<span style="color:violet">For Valentine\'s Day...</span>',
+'<span style="color:violet">For Mother\'s & Father\'s Days...</span>',
+'<span style="color:violet">Try woweeday.com</span>',
+'<span style="color:violet">Make the day really special!</span>',
+'<span style="color:violet">We own the site in-the.world</span>',
+'<span style="color:violet">You add what you like before this.</span>',
+'<span style="color:violet">Define sites such as...</span>',
+'<span style="color:violet">sexiest-lover.in-the.world</span>',
+'<span style="color:violet">best-husband.in-the.world</span>',
+'<span style="color:violet">best-lover.in-the.world</span>',
+'<span style="color:violet">best-dad.in-the.world</span>',
+'<span style="color:violet">best-mother.in-the.world</span>',
+'<span style="color:violet">best.in-the.world</span>',
+'<span style="color:violet">jane-best-wife.in-the.world</span>',
+'<span style="color:violet">harry-sexiest.in-the.world</span>',
+'<span style="color:violet">Go to woweeday.com...</span>',
+'<span style="color:violet">...and make their day.</span>',
+'',
+'<span style="color:red">Sherlock is at the Bates Hotel</span>',
+'<span style="color:red">Vic has been murdered</span>',
+'<span style="color:red">Who killed Vic?</span>',
+'<span style="color:red">With what?  And where?</span>',
+'<span style="color:red">Ask Sherlock for clues...</span>',
+'<span style="color:red">Then try to solve them</span>',
+'<span style="color:red">Try our great, free logic puzzle...</span>',
+'<span style="color:red">Who Killed Vic?</span>',
+'',
+'<span style="color:magenta">Play Rummy against the system...</span>',
+'<span style="color:magenta">...or against a friend</span>',
+'<span style="color:magenta">Full animation of deals and moves</span>',
+'<span style="color:magenta">Game state remembered on exit</span>',
+'<span style="color:magenta">Try our free Rummy 7 app</span>',
+'',
+'<span style="color:cyan">Try our Kublitz Cube app</span>',
+'<span style="color:cyan">Turn the layers to get...</span>',
+'<span style="color:cyan">...the same colour on each side</span>',
+'<span style="color:cyan">Guidance on solving the Cube</span>',
+'<span style="color:cyan">Notation and mnemonics</span>',
+'<span style="color:cyan">Kublitz Cube - it\'s free</span>',
+'',
+'<span style="color:magenta">Try our Peg Solitaire app</span>',
+'<span style="color:magenta">Play with the full 32 pegs...</span>',
+'<span style="color:magenta">...or start with fewer pegs </span>',
+'<span style="color:magenta">Notation and mnemonics...</span>',
+'<span style="color:magenta">...to remember the solution</span>',
+'<span style="color:magenta">Peg Solitaire - it\'s free</span>',
+'',
+'<span style="color:lime">Try our Xword4x4 app</span>',
+'<span style="color:lime">Crossword game for 2-4 players</span>',
+'<span style="color:lime">Pass and Play mode</span>',
+'<span style="color:lime">No internet connection required</span>',
+'<span style="color:lime">You can even design the layout</span>',
+'<span style="color:lime">Or change letter numbers/values</span>',
+'<span style="color:lime">Try our free <span style="color:white">Xword4x4</span> app</span>',
+'',
+'<span style="color:cyan">Download our Word Ladder app</span>',
+'<span style="color:cyan">One word at the top...</span>',
+'<span style="color:cyan">...one at the bottom.</span>',
+'<span style="color:cyan">Fill in the 4 blank words in between...</span>',
+'<span style="color:cyan">...changing one letter at a time.</span>',
+'<span style="color:cyan">Word Ladder (TopAccolades) - free</span>',
+'',
+'<span style="color:cyan">Download our Flagalot app</span>',
+'<span style="color:cyan">A memory game  based around flags.</span>',
+'<span style="color:cyan">4-9 flags/card depending on level.</span>',
+'<span style="color:cyan">Tap on the flag on this & last card.</span>',
+'<span style="color:cyan">Flagalot - it\'s free</span>',
+'',
+'<span style="color:cyan">Exercise your brain;</span>',
+'<span style="color:cyan">10 sets of exercises;</span>',
+'<span style="color:cyan">5 exercises in each set...</span>',
+'<span style="color:cyan">Word power...</span>',
+'<span style="color:cyan">Verbal comprehension...</span>',
+'<span style="color:cyan">Mental arithmetic...</span>',
+'<span style="color:cyan">Memory...</span>',
+'<span style="color:cyan">Pattern-matching...</span>',
+'<span style="color:cyan">Great brain-training exercises...</span>',
+'<span style="color:cyan">Try our <span style="color:white">BrainBoxFun</span> app now</span>',
+''
+
+]
+
+if (adsrequired==1) {baseonelinermessages=baseonelinermessages.concat(admessages)}
+
+var onelinermessages=baseonelinermessages
+documentwrite('<div id="oneliner" style="font-size='+Math.floor(scalef*9)+'px;text-align:center;font-weight:bold;color:white;background-color:black; width:100%">'+onelinermessages[0]+'</div><br><br>&nbsp;')
+var clickproblemtimer=null
+function handleclickproblem()
+{
+if (clickproblemtimer != null) {clearTimeout(clickproblemtimer)}
+clickproblemtimer=setTimeout("modifyoneliner()",50);
+
+}
+
+function modifyoneliner()
+{
+changetextvalue('oneliner', document.getElementById('oneliner').innerHTML)
+// document.getElementById('oneliner').innerHTML = document.getElementById('oneliner').innerHTML 
+}
+
+currentoneliner=0
+function changeoneliner()
+{
+currentoneliner++
+if (currentoneliner==onelinermessages.length) {currentoneliner=0}
+changetextvalue('oneliner', onelinermessages[currentoneliner])
+// document.getElementById('oneliner').innerHTML = onelinermessages[currentoneliner]
+if (onelinertimer != null) {clearTimeout(onelinertimer)}
+onelinertimer=setTimeout("changeoneliner()",5000);
+
+}
+var onelinertimer=null
+onelinertimer=setTimeout("changeoneliner()",5000);
+
+
+</script>
+
+</span></div></td></tr></table></div></body></html>
