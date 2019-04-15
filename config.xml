@@ -3,11 +3,11 @@
 <!-- config.xml reference: https://build.phonegap.com/docs/config-xml -->
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
-        id        = "com.topaccolades.inthedark"
+        id        = "com.topaccolades.inthedarktrial"
         versionCode = "10"
         version   = "1.0">
 
-    <name>In The Dark</name>
+    <name>In The Dark Trial</name>
 
     <description>
         Word game: All players but one are In The Know and see which of the display words is the Key Word. All players give a clue to this. Players then select the player who is In The Dark. Points won and lost.
