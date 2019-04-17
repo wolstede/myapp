@@ -1,0 +1,2716 @@
+<!DOCTYPE HTML><html><head><title>Volcano</title>
+<meta name = "viewport" content = "user-scalable=no,width=device-width" />
+
+<script language="Javascript">
+var appname='volcano'
+var appversion='1.3 (20190417)'
+// localStorage.clear()
+var restartconfirmationrequired=1
+var adsrequired=0
+/*
+var thedate = new Date();
+var thenow = thedate.getTime();
+ 
+var thelater=thenow+2000
+
+while (thedate.getTime()<thelater)
+{
+thedate=new Date()
+}
+*/
+
+function documentwrite(someitem)
+{
+document.write(someitem)
+}
+
+
+
+if (document.documentElement.clientWidth==0 || document.documentElement.clientHeight==0)
+{
+location.reload()
+}
+
+thewindowsizes=[window.innerWidth, window.innerHeight,document.documentElement.clientWidth, document.documentElement.clientHeight]
+
+var scalef
+var screenwidth=document.documentElement.clientWidth
+var screenheight=document.documentElement.clientHeight
+var overallwidthscale=screenwidth/240
+var overallheightscale=screenheight/360
+if (overallwidthscale<overallheightscale) {scalef=Math.floor(100*overallwidthscale)/100} else {scalef=Math.floor(100*overallheightscale)/100}
+if (scalef<1.0) {scalef=1.0}
+var pushdown=0
+if (scalef*370 < screenheight)
+{
+pushdown=Math.floor((screenheight-(scalef*370))/2)
+}
+pushdown=0
+documentwrite('<style type="text/css">      \nbody {color: black; background-color: white; font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; text-align: left}      \nh1 {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: bold; font-style: normal; text-align: left} \nh2 {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: italic; text-align: left} \np {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; text-align: left} \ndt {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; text-align: left} \ndd {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; text-align: left} \nli {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; text-align: left} \ntable {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; text-align: left} \ntd {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; } \ntextarea {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; overflow:hidden;} \ninput {font-family: sans-serif; font-size: '+(scalef*10)+'px; font-weight: normal; font-style: normal; }  \n * {-webkit-tap-highlight-color: rgba(0, 0, 0, 0);}\n</style> \n')
+
+</script>
+
+</head>
+<body onLoad="runonload()" TOPMARGIN=0 LEFTMARGIN=0 MARGINHEIGHT=0 MARGINWIDTH=0 style="background-color:#DDFFFF; width:100%; height:100%">
+<SCRIPT LANGUAGE="JavaScript">
+
+
+var dialogueborder='border-style:outset;border-width:'+Math.floor(scalef*4)+'px;border-color:silver;border-radius:'+Math.floor(scalef*15)+'px;'
+
+// Local storage
+// SetLocalVal and GetLocalVal - use cookies if available, if not local storage
+// Reason: for testing, local storage doesn't seem to work.  On devices, local storage works but not always cookies.  Should cover everything.
+
+var daystoExpire = 2000;
+var expirydate = new Date(); 
+expirydate.setTime(expirydate.getTime() + (daystoExpire*24*60*60*1000));
+
+
+function GetCookie(name) 
+{  
+var thecookie=document.cookie
+var namestring = name+'='  
+var cookieval = null
+var cookievalbeg=-1
+var cookievalend=thecookie.length
+for (var beg=0; beg<thecookie.length; beg++)
+{
+var end=beg+namestring.length
+if (thecookie.substring(beg, end) == namestring)
+{
+cookievalbeg=end
+}
+}
+if (cookievalbeg > -1)
+{
+cookievalend=thecookie.indexOf(';', cookievalbeg) // look for next ; after beginning of value
+if (cookievalend == -1) (cookievalend = thecookie.length)
+cookieval = unescape(thecookie.substring(cookievalbeg, cookievalend))
+} 
+
+return cookieval
+}
+
+
+function SetCookie(name, val) 
+{  
+var cookiestring = name+'='+escape(val)+'; expires='+ expirydate.toGMTString()
+document.cookie=cookiestring
+}
+
+var usecookies=1
+SetCookie('dummy', 'answer')
+if (GetCookie('dummy')==null) {usecookies=0}
+
+// For this app cookies not adequate, so must use local storage, so set usecookies to 0
+usecookies=0
+</script>
+<script language="Javascript">
+// checks whether local storage works.  Often doesn't with Internet Explorer
+var localstorageworks=0
+localStorage.setItem('testcheck', '43')
+if (localStorage.getItem('testcheck')=='43') {localstorageworks=1}
+
+</script>
+<script language="Javascript">
+
+
+</script>
+<script language="Javascript">
+var localstoragesubstitute=[]
+
+function SetLocalStorageSubstitute(someitem, someval)
+{
+someval=someval+''
+var someset=0
+for (var i=0; i<localstoragesubstitute.length; i++)
+{
+if (localstoragesubstitute[i][0]==someitem)
+{
+localstoragesubstitute[i][1]=someval
+someset=1
+break
+}
+}
+if (someset==0) {localstoragesubstitute=localstoragesubstitute.concat([[someitem, someval]])}
+}
+
+function GetLocalStorageSubstitute(someitem)
+{
+for (var i=0; i<localstoragesubstitute.length; i++)
+{
+if (localstoragesubstitute[i][0]==someitem)
+{
+return localstoragesubstitute[i][1]
+}
+}
+return null
+}
+</script>
+<script language="Javascript">
+
+function SetLocalVal(somename, someval)
+{
+if (usecookies==1) 
+{
+SetCookie(somename, someval)
+}
+else
+{
+if (localstorageworks==1)
+{
+localStorage.setItem(appname+somename, someval)
+}
+else
+{
+SetLocalStorageSubstitute(somename, someval)
+}
+}
+}
+
+function GetLocalVal(somename)
+{
+if (usecookies==1) 
+{
+return GetCookie(somename)
+}
+else
+{
+if (localstorageworks==1)
+{
+return localStorage.getItem(appname+somename)
+}
+else
+{
+return GetLocalStorageSubstitute(somename)
+}
+}
+}
+
+// end Local Storage
+
+
+
+
+function continueafterad()
+{
+showingads=0
+continuegame()
+}
+
+
+
+function changetextvalue(someitem, someval)
+{
+document.getElementById(someitem).innerHTML = someval
+}
+
+function gettextvalue(someitem)
+{
+return document.getElementById(someitem).innerHTML
+}
+
+function changebgcolor(someitem, somecolor)
+{
+document.getElementById(someitem).style.backgroundColor=somecolor
+}
+
+function genintegers(somenum)
+{
+var someresult=[]
+for (var i=1; i<=somenum; i++)
+{
+someresult[i-1]=i
+}
+return someresult
+}
+
+function member(someitem, somelist)
+{
+for (var i=0; i<somelist.length; i++)
+{
+if (someitem==somelist[i]) {return true}
+}
+return false
+}
+
+function randomnumber(num) {
+// returns a random number from 1 to num
+var ran=Math.round(Math.random()*num)
+if (ran == 0) {ran = num}  // ran initially 0 to num - but 0 and num have half the probability of the other numbers
+return ran
+}
+
+function shufflearray(somearray)
+{
+
+var temparray=somearray
+var shuffled=new Array()
+var packsize=somearray.length
+var ran
+
+for (var i=0; i<packsize; i++)
+{
+ran = randomnumber(temparray.length)
+shuffled[i] = temparray[ran-1]
+temparray = removeElement(ran-1, temparray)
+}
+return shuffled
+}
+
+function removeElement(index, somearray)
+{
+var beg=somearray.slice(0, index)
+var end=[]
+if (index+1 < somearray.length) {end = somearray.slice(index+1)}
+return beg.concat(end)
+}
+
+function removeitem(someitem, somearray)
+{
+var somebeg=[]
+var someend=[]
+for (var i=0; i<somearray.length; i++)
+{
+if (somearray[i]==someitem) {return somearray.slice(0, i).concat(somearray.slice(i+1))}
+}
+return somearray
+}
+
+function copylist(somelist)
+{
+var somereturn=[]
+for (var i=0; i<somelist.length; i++)
+{
+somereturn[i]=somelist[i]
+}
+return somereturn
+}
+
+function addelementatend(someelement, somearray)
+{
+return somearray.concat([someelement])
+}
+
+function tailarray(somearray)
+{
+return somearray.slice(1, somearray.length)
+}
+
+function headarray(somearray)
+{
+return somearray[0]
+}
+
+
+
+</script>
+<script language="Javascript">
+
+/*
+function settextvalue(somename, someval)
+{
+changetextvalue(somename, someval)
+SetLocalVal('textvalue'+somename, escape(someval))
+}
+
+function resettextvalue(somename)
+{
+changetextvalue(somename, unescape(GetLocalVal('textvalue'+somename)))
+}
+*/
+
+function graphicfor(somename)
+{
+if (somename=='blank') {return ''}
+// return '<div style="position:relative"><img width='+Math.floor(scalef*50)+' height='+Math.floor(scalef*20)+' src="blackwordbg.png" style="display:block"><div style="position:absolute;top:0px;left:0px;width:100%;height:100%;display:inline"><table border=0 cellspacing=0 cellpadding=0 align=center valign=middle ><tr height='+Math.floor(scalef*20)+'><td align=center valign=middle style="text-align:center;font-weight:bold;color:white">'+somename+'</td></tr></table></div></div>'
+
+return '<div style="position:relative; width:'+Math.floor(scalef*50)+'px"><img width='+Math.floor(scalef*50)+' height='+Math.floor(scalef*20)+' src="greybluebutton.png" style="display:block"><div style="position:absolute;top:0px;left:0px;width:100%;height:100%;display:inline"><table border=0 cellspacing=0 cellpadding=0 align=center valign=middle ><tr height='+Math.floor(scalef*20)+'><td align=center valign=middle style="font-size:'+Math.floor(scalef*10)+'px;text-align:center;font-weight:bold;color:white">'+somename+'</td></tr></table></div></div>'
+}
+
+function greyedoutgraphicfor(somename)
+{
+if (somename=='blank') {return ''}
+// return '<div style="position:relative"><img width='+Math.floor(scalef*50)+' height='+Math.floor(scalef*20)+' src="blackwordbg.png" style="display:block"><div style="position:absolute;top:0px;left:0px;width:100%;height:100%;display:inline"><table border=0 cellspacing=0 cellpadding=0 align=center valign=middle ><tr height='+Math.floor(scalef*20)+'><td align=center valign=middle style="text-align:center;font-weight:bold;color:white">'+somename+'</td></tr></table></div></div>'
+
+return '<div style="position:relative; width:'+Math.floor(scalef*50)+'px"><img width='+Math.floor(scalef*50)+' height='+Math.floor(scalef*20)+' src="whitebutton.png" style="display:block"><div style="position:absolute;top:0px;left:0px;width:100%;height:100%;display:inline"><table border=0 cellspacing=0 cellpadding=0 align=center valign=middle ><tr height='+Math.floor(scalef*20)+'><td align=center valign=middle style="font-size:'+Math.floor(scalef*10)+'px;text-align:center;font-weight:bold;color:silver">'+somename+'</td></tr></table></div></div>'
+}
+
+function GetLocalList(somename)
+{
+var somestore=GetLocalVal(somename)
+if (somestore==null) {return []}
+return eval('['+somestore+']')
+}
+
+function GetLocalString(somename)
+{
+var somestore=GetLocalVal(somename)
+if (somestore==null) {return ''}
+return somestore
+}
+
+function GetLocalNum(somename)
+{
+var somestore=GetLocalVal(somename)
+return somestore*1
+}
+
+function GetLocalEval(somename)
+{
+var somestore=GetLocalVal(somename)
+return eval(somestore)
+}
+
+
+</script>
+<script language="Javascript">
+
+
+
+// code only for touch control
+var thetouchstart
+var thetouches
+function definetouchareas()
+{
+if ("ontouchstart" in window)
+{
+var somelist=['left_left', 'left_right', 'left_up', 'left_down', 'left_fire', 'left_clockwise', 'left_anticlockwise', 'right_left', 'right_right', 'right_up', 'right_down', 'right_fire', 'right_clockwise', 'right_anticlockwise', 'cellboard']
+var sometouchzone
+thetouchstart=[]
+thetouches=0
+for (var i=0; i<somelist.length; i++)
+{
+sometouchzone=document.getElementById(somelist[i]);
+sometouchzone.addEventListener("touchstart", starttouch, false);
+sometouchzone.addEventListener("touchend", endtouch, false);
+sometouchzone.addEventListener("touchmove", movetouch, false);
+}
+}
+}
+
+function starttouch(event)
+{
+event.preventDefault();
+var somefingers=event.touches.length
+var somey=event.touches[0].pageY
+var somex=event.touches[0].pageX
+thetouchstart=[somey, somex, event.currentTarget.id]
+thetouches=somefingers
+}
+
+function movetouch(event)
+{
+
+event.preventDefault();
+if (thetouches==1)
+{
+var somey=event.touches[0].pageY
+var somex=event.touches[0].pageX
+thetouchstart=[thetouchstart[0], thetouchstart[1], thetouchstart[2], somey, somex]
+}
+}
+
+function endtouch(event)
+{
+event.preventDefault();
+if (event.touches.length==0)
+{
+if (thetouches==1)
+{
+if (thetouchstart.length==3) // a tap not a slide
+{
+// alert(['touch', 1*thetouchstart[2].slice(4)])
+handlethetouch(thetouchstart[2], ['tap'])
+}
+else // a slide
+{
+var somediffy=thetouchstart[3]-thetouchstart[0]
+var somediffx=thetouchstart[4]-thetouchstart[1]
+if (Math.abs(somediffy)<3*scalef && Math.abs(somediffx)<3*scalef) // if very small move treat as tap
+{
+// alert(['slide', 1*thetouchstart[2].slice(4)])
+handlethetouch(thetouchstart[2], ['tap'])
+}
+else
+{
+handlethetouch(thetouchstart[2], ['slide', somediffy, somediffx])
+}
+}
+thetouchstart=[]
+thetouches=0
+}
+}
+}
+
+function handlethetouch(someid, someaction)
+{
+
+if (member(someid, ['left_fire', 'right_fire'])==true && someaction[0]=='tap') {notefire()}
+if (someid=='cellboard' && tapfire==1 && someaction[0]=='tap') {notefire()}
+if (member(someid, ['left_left', 'right_left'])==true && someaction[0]=='tap') {notemoveplug(-1, 0)}
+if (member(someid, ['left_right', 'right_right'])==true && someaction[0]=='tap') {notemoveplug(1, 0)}
+if (member(someid, ['left_up', 'right_up'])==true && someaction[0]=='tap') {notemoveplug(0, -1)}
+if (member(someid, ['left_down', 'right_down'])==true && someaction[0]=='tap') {notemoveplug(0, 1)}
+if (member(someid, ['left_clockwise', 'right_clockwise'])==true && someaction[0]=='tap') {noterotate(1)}
+if (member(someid, ['left_anticlockwise', 'right_anticlockwise'])==true && someaction[0]=='tap') {noterotate(-1)}
+if (someid=='cellboard' && someaction[0]=='slide')
+{
+somediffy=someaction[1]
+somediffx=someaction[2]
+if (Math.abs(somediffy)>2*Math.abs(somediffx)) {somediffx=0}
+if (Math.abs(somediffx)>2*Math.abs(somediffy)) {somediffy=0}
+if (somediffy>0) {somediffy=1}
+if (somediffy<0) {somediffy=-1}
+if (somediffx>0) {somediffx=1}
+if (somediffx<0) {somediffx=-1}
+
+if (member(0, [somediffx, somediffy])==true) 
+{notemoveplug(somediffx, somediffy)}
+else
+{
+if (somediffx==somediffy) {noterotate(1)} else {noterotate(-1)}
+}
+
+
+}
+}
+
+// end code for touch events of main cells
+
+
+
+
+
+
+
+
+
+
+
+
+
+function messagedisplay(messagetext)
+{
+changetextvalue('statusmessage', messagetext)
+
+}
+
+
+</script>
+<script language="Javascript">
+
+
+function copyarray(somearray)
+{
+var temparray=[]
+for (var i=0; i<somearray.length; i++)
+{
+temparray[i]=copysimplevalues(somearray[i])
+}
+return temparray
+}
+
+function copysimplevalues(somearray)
+{
+var temparray=[]
+for (var i=0; i<somearray.length; i++)
+{
+temparray[i]=somearray[i]
+}
+return temparray
+}
+
+function uniquelist(somearray)
+{
+var somereturn=[]
+for (var i=0; i<somearray.length; i++)
+{
+if (member(somearray[i], somereturn)==false) {somereturn=somereturn.concat([somearray[i]])}
+}
+return somereturn
+}
+
+
+
+
+function backtogame()
+{
+restartthegame()
+}
+
+function selectthegame()
+{
+
+if (showingads==1 || showinghelp==1 || preventbuttonactions==1) {return}
+if (timer != null) {clearTimeout(timer)}
+
+var sometext='<br><table border=0 cellpadding='+Math.floor(scalef*3)+' cellspacing=0 style="'+dialogueborder+'width:100%;background-color:lemonchiffon"><tr><td>'
+sometext=sometext+'<br><table align=center cellspacing=2 cellpadding=1 border=0>'
+sometext=sometext+'<tr><td align=left colspan=2 valign=top><b>Start new game:</b><br></i></td><td align=center valign=top>'+centralimage()+'</td></tr>'
+sometext=sometext+'<tr><td align=left colspan=2>&nbsp;</td><td>&nbsp;</td></tr>'
+sometext=sometext+'<tr><td align=left colspan=2>&nbsp;</td><td>&nbsp;</td></tr>'
+sometext=sometext+'<tr><td align=left colspan=2>Level 1 (slowest)</td><td onClick="startnewgame(1)" align=center>'+graphicfor('Play')+'</td></tr>'
+if (adsrequired==0)
+{
+sometext=sometext+'<tr><td align=left colspan=2>Level 2</td><td onClick="startnewgame(2)" align=center>'+graphicfor('Play')+'</td></tr>'
+sometext=sometext+'<tr><td align=left colspan=2>Level 3</td><td onClick="startnewgame(3)" align=center>'+graphicfor('Play')+'</td></tr>'
+sometext=sometext+'<tr><td align=left colspan=2>Level 4 (fastest)</td><td onClick="startnewgame(4)" align=center>'+graphicfor('Play')+'</td></tr>'
+}
+else
+{
+sometext=sometext+'<tr><td align=left colspan=2 style="color:silver" >Level 2</td><td align=center style="color:silver">'+greyedoutgraphicfor('Play')+'</td></tr>'
+sometext=sometext+'<tr><td align=left colspan=2 style="color:silver" >Level 3</td><td align=center style="color:silver">'+greyedoutgraphicfor('Play')+'</td></tr>'
+sometext=sometext+'<tr><td align=left colspan=2 style="color:silver" >Level 4 (fastest)</td><td align=center style="color:silver">'+greyedoutgraphicfor('Play')+'</td></tr>'
+
+}
+var someimg='unselected.gif'
+if (tapfire==1) {someimg='selected.gif'}
+sometext=sometext+'<tr><td align=left colspan=2>Allow missile firing by tapping on main frame</td><td align=center valign=middle><img onClick="changetapfire()" name="tapfire" src="'+someimg+'" height='+Math.floor(scalef*10)+' width='+Math.floor(scalef*10)+'></td></tr>'
+sometext=sometext+'<tr><td align=left colspan=2>&nbsp;</td><td>&nbsp;</td></tr>'
+if (playstate=='play')
+{
+sometext=sometext+'<tr><td align=left colspan=2>Back to game</td><td onClick="backtogame()">'+graphicfor('Back')+'</td></tr>'
+}
+else
+{
+sometext=sometext+'<tr><td align=left colspan=2>&nbsp;</td><td>&nbsp;</td></tr>'
+}
+
+sometext=sometext+'</table></td></tr></table>'
+
+document.getElementById('theboard').style.display='none'
+changetextvalue('output', sometext)
+document.getElementById('output').style.display='block'
+
+}
+
+
+function startnewgame(somespeed)
+{
+
+if (timer != null) {clearTimeout(timer)}
+
+cyclespeed=[300, 225, 150, 75][somespeed-1]
+newblockfrequency=[8,9,10,11][somespeed-1]
+newvolcanogame()
+showcurrentad()
+document.getElementById('theboard').style.display='block'
+document.getElementById('output').style.display='none'
+
+
+
+}
+
+
+var volcanostatus
+// volcanostatus: [numflagsdisplayed, speedlevel (1=numcards, 2=numcards-1 seconds), highscore, quizscore]
+
+
+</script>
+
+
+
+<script language="Javascript">
+
+
+
+
+// Start main app code
+
+// All code copyright of TopAccolades Limited
+
+
+
+
+
+
+</script>
+
+
+
+<script language="Javascript">
+
+
+
+
+
+var resetadbreakcounter=9
+var adbreakcounter
+
+
+
+
+
+function openwebpage(someurl)
+{
+document.location.href=someurl
+}
+
+var displayadnum=0
+var displayhelptexts=
+[
+'<table width=100% border=0 bgcolor=cyan  onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="icon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*9)+'px"><b>Help</b> gives help<br><b>New</b> starts new game</td></tr></table>',
+'<table width=100% border=0 bgcolor=cyan  onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="icon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*9)+'px">Eruption prevented by plugging crater completely up to ground level. Additional blocks above ground permissible.</td></tr></table>',
+'<table width=100% border=0 bgcolor=cyan  onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="icon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*9)+'px">Eruption caused by piercing magma, shooting down white craft, or 50 blocks falling on ground/crater.</td></tr></table>',
+'<table width=100% border=0 bgcolor=cyan  onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="icon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*9)+'px"><span style="font-weight:bold">TopAccolades</span><br>Apps and web services</td></tr></table>',
+'<table width=100% border=0 bgcolor="lightblue" onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="compactfuniconlarge.png" align=center valign=middle  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b> i.compactfun.com</b><br>This app and other apps are also accessible online from many devices at i.compactfun.com</td></tr></table>'
+
+]
+
+var displayadtexts=displayhelptexts
+
+var displayupgradetexts=
+[
+]
+
+var displayapptexts=
+[
+
+'<table width=100% border=0 bgcolor=cyan onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="linxemicon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Linxem - Try the app now</b><br>A game for 2-4 players. 30 words displayed. Setter selects 2-8 words and gives a connecting word. Solver must identify selected words from this.</td></tr></table>',
+'<table width=100% border=0 bgcolor="#FF8888" onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="inthedarkicon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>In The Dark - Try the app now</b><br>Words shown. One is the Key Word, shown to all except In The Dark player. Players must give clue and try to identify who\'s In The Dark.</td></tr></table>',
+'<table width=100% border=0 bgcolor=beige onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="pentadicon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Pentad - Dowload the app now</b><br>Includes Word Pentad (make words from letters) and Poker Pentad (make poker hands), both on a 5x5 board!</td></tr></table>',
+'<table width=100% border=0 bgcolor=limegreen onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="xword4x4icon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Xword<sup>4x4</sup> - Dowload the app now</b><br>Great Play & Pass crossword puzzle for up to 4 players. Define your own board layouts!</td></tr></table>',
+'<table width=100% border=0 bgcolor=lightsteelblue onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*40)+'"><img src="volcanoicon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Volcano -  Try the app now!</b><br>Falling block game. Try to plug the volcano before it erupts.</td></tr></table>',
+/*
+'<table width=100% border=0 bgcolor="#FF8888" onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="csisherlock144.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Who Killed Vic? -  Dowload the app now!</b><br>Vic has been killed.  Try to solve who killed Vic, with what, and where, in this great interactive logic puzzle.</td></tr></table>',
+*/
+'<table width=100% border=0 bgcolor=limegreen onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*40)+'"><img src="rummyicon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Rummy 7 -  Dowload the app now!</b><br>Play 7-card Rummy against the system or another player.  Full animation.</td></tr></table>',
+'<table width=100% border=0 bgcolor=cyan onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*40)+'"><img src="kublitzcubeicon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Kublitz Cube -  Download the app now!</b><br>Separated cubelets let you see/know all sides without turning the puzzle cube.  Guide, tools & notation to help you solve it</td></tr></table>',
+'<table width=100% border=0 bgcolor=limegreen onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*40)+'"><img src="pegsolitaireicon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Peg Solitaire -  Download the app now!</b><br>Play the full puzzle or a cut-down version.  Guide and notation to help you solve and remember the full puzzle</td></tr></table>',
+'<table width=100% border=0 bgcolor=lightsteelblue onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*40)+'"><img src="numberskullicon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Numberskull -  Dowload the app now!</b><br>Puzzle to solve 6 equations, results given across and down, using 9 numbers and operators. Can you do it?</td></tr></table>',
+'<table width=100% border=0 bgcolor=cyan onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*40)+'"><img src="flagaloticon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Flagalot -  Download the app now!</b><br>A memory game and flag quiz in one app. Identify which flag also appeared on the previous page, or try the flag quiz.</td></tr></table>',
+'<table width=100% border=0 bgcolor=limegreen onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*40)+'"><img src="wordladdericon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Word Ladder -  Download the app now!</b><br>Move fromm one 4-letter word to another, a letter at a time, e.g. SUNK, BUNK, BANK, BASK, BASH, MASH.</td></tr></table>',
+'<table width=100% border=0 bgcolor=lightsteelblue onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*40)+'"><img src="numbersgameicon.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Numbers Game -  Download the app now!</b><br>Given 6 numbers, try to derive the target using the four common arithmetic operators. With solution feature.</td></tr></table>',
+'<table width=100% border=0 bgcolor=lightblue onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="compactfuniconlarge.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Compact Fun -  Download the app now!</b><br>31 classic/original games and puzzles in one app: words, numbers, logic, blocks, strategy...</td></tr></table>',
+'<table width=100% border=0 bgcolor=lightblue onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="compactfuniconlarge.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Compact Fun -  Download the app now!</b><br>Includes Rummy, 4-in-a-line, Pentad, Letters & Numbers Games, Turncoat and Yak</td></tr></table>',
+'<table width=100% border=0 bgcolor=lightblue onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="compactfuniconlarge.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Compact Fun -  Download the app now!</b><br>Includes Hangman, WordSearch, Pentad, Linkword Snap and Word Ladder</td></tr></table>',
+'<table width=100% border=0 bgcolor=lightblue onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="compactfuniconlarge.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Compact Fun -  Download the app now!</b><br>Includes Step Challenge, Pyramid Numbers, Sudoku and Numberskull </td></tr></table>',
+'<table width=100% border=0 bgcolor=lightblue onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="compactfuniconlarge.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Compact Fun -  Download the app now!</b><br>Includes Sudoku, Memory Pairs, Master Code, Mystery Clues and Bidinca </td></tr></table>',
+'<table width=100% border=0 bgcolor=lightblue onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="compactfuniconlarge.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Compact Fun -  Download the app now!</b><br>Includes Peg Solitaire, Towers of Hanoi, Poker Pentad, Mancala and Code 4x6 </td></tr></table>',
+'<table width=100% border=0 bgcolor=cyan onClick="openwebpage(\'http://i.compactfun.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="bbflogo.png" align=center valign=middle  width="'+Math.floor(scalef*36)+'"  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>BrainBoxFun -  Download the app now!</b><br>10 brain-training exercises inc.: memory, verbal comprehension, pattern recognition, word power and mental arithmetic</td></tr></table>'
+
+
+]
+
+var displaywmltexts=
+[
+'<table width=100% border=0 bgcolor="#FFCCCC" onClick="openwebpage(\'http://www.woweeday.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="woweedayicon.png" align=center valign=middle  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Woweeday<span style="color:silver">.com</span></b><br>Dedicate one of our many personal home pages to someone you love for a Birthday, Anniversary, Valentine\'s, Mother\'s Day or Father\'s Day.</td></tr></table>',
+'<table width=100% border=0 bgcolor="#FFCCCC" onClick="openwebpage(\'http://www.woweeday.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="woweedayicon.png" align=center valign=middle  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Woweeday<span style="color:silver">.com</span></b><br>Our personal web site addresses all take the form:<br><b><span style="color:#FF0000"><i></i>Defined by you</span>.<span style="color:green">in-the.world</span></b></td></tr></table>',
+'<table width=100% border=0 bgcolor="#FFCCCC" onClick="openwebpage(\'http://www.woweeday.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="woweedayicon.png" align=center valign=middle  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Woweeday<span style="color:silver">.com</span></b><br>Examples: <b><span style="color:#FF0000">best-wife</span>.<span style="color:green">in-the.world</span><br><span style="color:#FF0000">jan-sexiest</span>.<span style="color:green">in-the.world</span><br><span style="color:#FF0000">gary-top-guy</span>.<span style="color:green">in-the.world</span>, <span style="color:#FF0000">greatest</span>.<span style="color:green">in-the.world</span></b></td></tr></table>',
+'<table width=100% border=0 bgcolor="#FFCCCC" onClick="openwebpage(\'http://www.woweeday.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="woweedayicon.png" align=center valign=middle  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Woweeday<span style="color:silver">.com</span></b><br>More examples: <b><span style="color:#FF0000">best-mom</span>.<span style="color:green">in-the.world</span><br><span style="color:#FF0000">best-dad</span>.<span style="color:green">in-the.world</span><br><span style="color:#FF0000">sam-sexiest</span>.<span style="color:green">in-the.world</span></b></td></tr></table>',
+'<table width=100% border=0 bgcolor="#FFCCCC" onClick="openwebpage(\'http://www.woweeday.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="woweedayicon.png" align=center valign=middle  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Woweeday<span style="color:silver">.com</span></b><br><span style="color:purple"><b>Wowee! Imagine your loved one\'s thrill at seeing such a home page dedicated to them.</b></span></td></tr></table>'
+]
+
+var displayllatexts=
+[
+'<table width=100% border=0 bgcolor=lightblue onClick="openwebpage(\'http://www.letterlookalikes.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="A_1_colour.jpg" align=center valign=middle  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px"><b>Letter Lookalikes</b><br>Photos resembling letters, numbers and symbols</td></tr></table>',
+'<table width=100% border=0 bgcolor=lightblue onClick="openwebpage(\'http://www.letterlookalikes.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="E_1_colour.jpg" align=center valign=middle  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px">Frames for names and wishes for birthdays, anniversaries, Valentine\'s Day, Mother\'s Day, etc.</td></tr></table>',
+'<table width=100% border=0 bgcolor=lightblue onClick="openwebpage(\'http://www.letterlookalikes.com/\')"><tr><td align=center valign=middle  width="'+Math.floor(scalef*36)+'"><img src="H_5_colour.jpg" align=center valign=middle  height="'+Math.floor(scalef*36)+'"></td><td style="text-align:center;font-size:'+Math.floor(scalef*8)+'px">Pictures that say 1000s of words<br><b>www.letterlookalikes.com</b></td></tr></table>'
+]
+
+
+if (adsrequired==1)
+{
+displayadtexts=
+displayhelptexts.concat(displayupgradetexts).concat(displaywmltexts).concat(displayapptexts)
+}
+else
+{
+displayadtexts=displayhelptexts
+}
+
+
+
+
+
+function showcurrentad()
+{
+if (displayadtexts.length>0)
+{
+changetextvalue('currentadtext', currentadtext())
+}
+}
+
+function increaseadnum()
+{
+displayadnum++
+if (displayadnum>=displayadtexts.length) {displayadnum=0}
+}
+
+function currentadtext()
+{
+var sometext='<div style="width:100%;height:'+Math.floor(scalef*3)+'px"></div><table width=100% border=0 align=center bgcolor=silver><tr><td align=center>'+displayadtexts[displayadnum]+'</td></tr></table>'
+increaseadnum()
+return sometext
+}
+
+
+
+
+function mydecision(somemessage, someok, somecancel)
+{
+
+document.getElementById('theboard').style.display='none'
+changetextvalue('output', '<br><table width=95% height='+Math.floor(scalef*100)+' border=0 cellpadding=0 cellspacing=0 align=center bgcolor=lemonchiffon style="'+dialogueborder+'"><tr><td align=center><table border=0 align=center><tr><td  height='+Math.floor(scalef*50)+' align=center valign=middle colspan=2><br>'+centralimage()+'</td></tr><tr><td  colspan=2 align=center height='+Math.floor(scalef*75)+' align=center valign=middle style="font-size:'+Math.floor(scalef*12)+'px;font-weight:bold">'+somemessage+'</td></tr><tr height='+Math.floor(scalef*3)+'><td colspan=2></td></tr><tr><td  onClick="'+somecancel+'" align=center>'+graphicfor('Cancel')+'</td><td onClick="'+someok+'" align=center><br>'+graphicfor('OK')+'<br></td></tr></table></td></tr></table>')
+document.getElementById('output').style.display='block'
+
+}
+
+
+
+
+
+
+
+
+/*
+// Different version in this?
+function ith(someitem, somearray)
+{
+for (var i=0; i<somearray.length; i++)
+{
+if (someitem===somearray[i]) {return i}
+
+}
+
+}
+*/
+
+
+function splitliston(someitem, somelist)
+{
+var someindex
+for (var i=0; i<somelist.length; i++)
+{
+if (somelist[i]==someitem) 
+{
+someindex=i
+break
+}
+}
+var somebeg=somelist.slice(0, someindex)
+var someend=somelist.slice(someindex+1)
+return([somebeg, someend])
+}
+
+
+var preventbuttonactions=0
+
+
+</script>
+
+<script language="Javascript">
+
+function runonload()
+{
+if (adsrequired==0)
+{
+runonloadproper()
+}
+else
+{
+document.getElementById('theboard').style.display='none'
+preventbuttonactions=1
+var somemessage='<span style="color:red;font-weight:bold">Trial Version</span><br><br>This is a free trial version of Volcano. Only Level 1, the slowest level, is available to play.<br><br>You may, of course, upgrade to the full version at any time so that Levels 2-4 are available.'
+somemessage=somemessage+'<br><br><table align=center border=0><tr><td onClick="continuerunonload()" width='+Math.floor(scalef*50)+'>'+graphicfor('OK')+'</td></tr></table><br>'
+
+changetextvalue('output',  '<br><table width=100% height='+Math.floor(scalef*100)+' border=1 cellpadding=0 cellspacing=0  align=center bgcolor=lemonchiffon><tr><td><table width=100% border=0><tr><td height='+Math.floor(scalef*50)+' align=center valign=middle><br>'+centralimage()+'</td></tr><table></td></tr><tr><td  height='+Math.floor(scalef*75)+' align=center valign=middle>'+somemessage+'</td></tr><tr height='+Math.floor(scalef*3)+'><td></td></tr></table>')
+
+document.getElementById('output').style.display='inline'
+
+
+}
+
+}
+
+function continuerunonload()
+{
+preventbuttonactions=0
+runonloadproper()
+}
+
+function runonloadproper()
+{
+
+if (GetLocalVal('restartactions')==null) // first use
+{
+
+document.getElementById('theboard').style.display='none'
+
+var someadvicetext=''
+if (localstorageworks==0) {someadvicetext='<span style="color:red">Certain storage functionality is not available. The application will still work, but the state will not be saved when you exit, so next time you\'ll need to start again.<br></span>'}
+var somemessage='<b>Welcome to Volcano from TopAccolades</b><br><br>Catch falling blocks with white craft, and build a plug to fit crater. Lower it into crater to prevent eruption.<br><br><b>Key buttons</b><table width=95% border=0 align=center bgcolor="#8888FF"><tr><td valign=top style="font-weight:bold;text-align:left">New</td><td valign=top>Start a new game.</td></tr><tr><td valign=top style="font-weight:bold;text-align:left">Help</td><td valign=top>Get general help during play, including advice on what causes an eruption.  Find out about firing missiles to shape the plug or destroy blocks.</td></tr></table><br>'+someadvicetext+'Tap <b>New</b> button above now to begin.'
+changetextvalue('output',  '<br><table width=100% height='+Math.floor(scalef*100)+' border=1 cellpadding=0 cellspacing=0  align=center bgcolor=lemonchiffon><tr><td><table width=100% border=0><tr><td height='+Math.floor(scalef*50)+' align=center valign=middle><br>'+centralimage()+'</td></tr><table></td></tr><tr><td  height='+Math.floor(scalef*75)+' align=center valign=middle>'+somemessage+'</td></tr><tr height='+Math.floor(scalef*3)+'><td></td></tr></table>')
+
+document.getElementById('output').style.display='block'
+
+return
+}
+// above says always give welcome message to start a new game when first loaded
+// otherwise continue game
+
+restartthegame()
+// showcurrentad()
+}
+
+function restartthegame()
+{
+document.getElementById('theboard').style.display='block'
+document.getElementById('output').style.display='none'
+
+piecearray = []
+temppiecearray=[]
+crater=shufflearray([2, 4, 3, 1, 3, 2, 1])
+plug=[[(width-1)/2, (height-1)/2], [[0, []]]]
+piecestoredisplay=[]
+
+setupvolcanoboard()
+
+lastmoverequest=['nothing']
+blockarray=[]
+noteshoot=false
+thismoveactual=['nothing']
+vaporizedthistime=[]
+vaporizedlasttime=[]
+
+bulletsmoving=[[], [], []]
+bulletsgone=[[], [], []]
+score=50
+
+
+piecearray=copyvalues(temppiecearray)
+
+var someactions=eval(GetLocalVal('restartactions'))
+for (var i=0; i<someactions.length; i++)
+{
+eval(someactions[i])
+}
+if (playstate=='play')
+{
+redisplayboard()
+showcurrentad()
+if (timer != null) {clearTimeout(timer)}
+
+timer= setTimeout('movecycle('+(1-movecycleindex)+')', 1000)
+}
+else
+{
+selectthegame()
+}
+}
+
+
+
+</script>
+
+<script language="Javascript">
+
+
+var showingads=0
+var thecdimage='<table style="background-color:red" valign=middle align=center border=0 cellpadding=0 cellspacing=0><tr height='+Math.floor(scalef*10)+' valign=bottom><td valign=bottom><img width='+Math.floor(scalef*10)+'   name="cd1" src="selected.gif" valign=bottom style="display:block"></td><td align=center valign=bottom><img valign=bottom align=center width='+Math.floor(scalef*10)+'   name="cd0" src="selected.gif" style="display:block"></td><td valign=bottom><img width='+Math.floor(scalef*10)+'   name="cd7" src="selected.gif"  valign=bottom style="display:block"></td></tr><tr height='+Math.floor(scalef*10)+' valign=middle><td valign=middle><img width='+Math.floor(scalef*10)+'   name="cd2" src="selected.gif" valign=middle style="display:block"></td><td align=center><img  width='+Math.floor(scalef*36)+' src="rummyicon.png" border=0 style="display:block"></td><td valign=middle><img width='+Math.floor(scalef*10)+'   name="cd6" src="selected.gif" valign=middle style="display:block"></td></tr><tr height='+Math.floor(scalef*10)+' valign=middle><td><img width='+Math.floor(scalef*10)+'   name="cd3" src="selected.gif" valign=middle style="display:block"></td><td align=center valign=middle><img valign=middle align=center width='+Math.floor(scalef*10)+'   name="cd4" src="selected.gif" style="display:block"></td><td valign=middle><img width='+Math.floor(scalef*10)+'   name="cd5" src="selected.gif" valign=middle style="display:block"></td></tr></table>'
+
+
+
+
+
+
+
+</script>
+
+<script language="Javascript">
+var suitimages=[]
+function titleimage(somename)
+{
+var sometext=''
+var someindex=0
+sometext=sometext+'<div style="position:relative;top:0px;left:0px" onClick="stoptimer()"><table border=0 cellspacing=0 cellpadding=0 align=center valign=middle bgcolor=black>'
+
+sometext=sometext+'<tr>'
+for (var i=0; i<5; i++)
+{
+sometext=sometext+'<td><img src="blackshade.png" style="display:block" width='+Math.floor(scalef*20)+' height='+Math.floor(scalef*20)+'></td>'
+}
+sometext=sometext+'</tr>'
+
+sometext=sometext+'</table><table border=0 width=100% height='+Math.floor(scalef*20)+' style="position:absolute;top:0px;left:0px"><tr><td style="text-align:center;font-size:'+Math.floor(scalef*14)+'px;color:#FF5555;font-weight:bold;" valign=middle>'+somename+'</td></tr></table></div>' 
+return sometext
+}
+
+
+
+function centralimage()
+{
+var sometext=''
+var someindex=0
+sometext=sometext+'<table border=1 cellpadding=0 cellspacing=0><tr><td><table border=0 cellspacing=0 cellpadding=0 align=center valign=middle bgcolor=black>'
+sometext=sometext+'<tr><td><img src="icon.png" width='+Math.floor(scalef*50)+'  height='+Math.floor(scalef*50)+' style="display:block"></td></tr>'
+
+
+sometext=sometext+'</table></td></tr></table>' 
+return sometext
+}
+
+
+</script>
+
+<script language="javascript">
+// Main volcano code
+
+
+
+var linkedpieces=[]
+var checkedvertically=[]
+var checkedhorizontally=[]
+
+
+var timer
+
+
+function findconnectedpieces(somepiece, somecolour)
+{
+linkedpieces=[somepiece]
+checkedvertically=[]
+checkedhorizontally=[]
+findlinkedpieces([somepiece], somecolour)
+return linkedpieces
+}
+
+function findlinkedpieces(somearray, selectedcolour)
+{
+
+for (var i=0; i<somearray.length; i++)
+{
+somepiece=somearray[i]
+if (ismember(somepiece, checkedvertically)==false)
+{
+collectvertically(somepiece, selectedcolour, 1)
+collectvertically(somepiece, selectedcolour, -1)
+checkedvertically=checkedvertically.concat([somepiece])
+
+}
+if (ismember(somepiece, checkedhorizontally)==false)
+{
+collecthorizontally(somepiece, selectedcolour, 1)
+collecthorizontally(somepiece, selectedcolour, -1)
+checkedhorizontally=checkedhorizontally.concat([somepiece])
+}
+}
+if (linkedpieces.length > somearray.length) // i.e. more pieces found
+{
+findlinkedpieces(linkedpieces, selectedcolour)
+}
+}
+
+function collectvertically(somepiece, selectedcolour, direction)
+{
+
+var coli=somepiece[0]
+var rowi=somepiece[1]
+rowi=rowi+direction
+
+if (rowi > -1 && rowi < height)
+{
+if (temppiecearray[coli][rowi]==selectedcolour)
+{
+if (ismember([coli, rowi], linkedpieces) == false)
+	{linkedpieces=linkedpieces.concat([[coli, rowi]])} // add to collection if not already there
+collectvertically([coli, rowi], selectedcolour, direction) // carry on looking
+}
+}
+}
+
+function collecthorizontally(somepiece, selectedcolour, direction)
+{
+
+var coli=somepiece[0]
+var rowi=somepiece[1]
+coli=coli+direction
+
+if (coli > -1 && coli < width)
+{
+if (temppiecearray[coli][rowi]==selectedcolour)
+{
+if (ismember([coli, rowi], linkedpieces) == false)
+	{linkedpieces=linkedpieces.concat([[coli, rowi]])} // add to collection if not already there
+collecthorizontally([coli, rowi], selectedcolour, direction) // carry on looking
+}
+}
+}
+
+
+function ismember(element, somearray) // for lists of pairs
+{
+var check = false
+var i = 0
+while (i<somearray.length && !check){check = (somearray[i][0]==element[0] && somearray[i][1]==element[1]); i++};
+return check
+
+}
+
+
+var startarray=[]
+
+function copyvalues(somearray)
+{
+var temparray=[]
+for (var i=0; i<somearray.length; i++)
+{
+temparray[i]=[]
+for (var j=0; j<somearray[i].length; j++)
+{
+temparray[i][j]=somearray[i][j]
+}
+}
+return temparray
+}
+
+var secondtimer
+
+
+
+var piecearray = []
+var temppiecearray=[]
+var height=25
+var width=15
+var blocksize=Math.floor(scalef*11)
+var plugwidth=7
+var grounddepth=7
+var leftgunpositions=[2, 14]
+var rightgunpositions=[8]
+var score=50
+var playstate="wait"
+function newvolcanogame()
+{
+
+restartconfirmationrequired=1
+
+playstate="play"
+newgame1()
+
+}
+
+function newgame1()
+{
+piecearray = []
+temppiecearray=[]
+crater=shufflearray([2, 4, 3, 1, 3, 2, 1])
+plug=[[(width-1)/2, (height-1)/2], [[0, []]]]
+piecestoredisplay=[]
+newblockindex=0
+setupvolcanoboard()
+
+lastmoverequest=['nothing']
+blockarray=[]
+noteshoot=false
+thismoveactual=['nothing']
+vaporizedthistime=[]
+vaporizedlasttime=[]
+
+bulletsmoving=[[], [], []]
+bulletsgone=[[], [], []]
+score=50
+
+
+piecearray=copyvalues(temppiecearray)
+
+
+redisplayboard()
+
+movecycleindex=1
+showscore()
+savethestate()
+if (timer != null) {clearTimeout(timer)}
+
+timer= setTimeout('movecycle(0)', 1000)
+}
+
+function setupboard()
+{
+
+var piecename
+documentwrite('<table border=1 align=center width='+(width*blocksize)+' height='+(height*blocksize)+' cellspacing=0 cellpadding=0 style="background-color:black" id="cellboard"><tr><td><div style="position:relative;display:block;width:'+(width*blocksize)+'px;height:'+(height*blocksize)+'px;background-color:black">');
+
+for (var i=0; i<height; i++)
+{
+
+for (var j=0; j<width; j++)
+{
+piecename='piece'+j+'_'+i
+documentwrite('<img  src="blank.png" name="'+piecename+'" width='+blocksize+' height='+blocksize+' style="display:block;position:absolute;top:'+(i*blocksize)+'px;left:'+(j*blocksize)+'px;width:'+(1*blocksize)+'px;height:'+(1*blocksize)+'px;">')
+}
+}
+
+
+documentwrite('</div></td></tr></table>')
+
+}
+
+
+
+function setupvolcanoboard()
+{
+// first set up all cells to be blank and edges and top grey
+var initcolour
+
+for (var i=0; i<width; i++)
+{
+temppiecearray[i]=[]
+for (var j=0; j<height; j++)
+{
+if (j==0) {initcolour="grey"} else
+{
+if (i==0) {initcolour="grey"} else
+{
+if (i==(width-1)) {initcolour="grey"}
+else
+{initcolour="blank"}
+}
+}
+temppiecearray[i][j]=initcolour
+}
+}
+
+var sidewidth=(width-plugwidth-2)/2
+for (var i=1; i<1+sidewidth; i++)
+{
+for (var j=height-grounddepth+sidewidth-i; j<height; j++)
+{
+temppiecearray[i][j]="green"
+}
+}
+
+for (var i=width-(1+sidewidth); i<width-1; i++)
+{
+for (var j=height-grounddepth+i-(width-(1+sidewidth)); j<height; j++)
+{
+temppiecearray[i][j]="green"
+}
+}
+
+for (var i=sidewidth+1; i<width-(sidewidth+1); i++)
+{
+temppiecearray[i][height-1]="red"
+
+}
+
+for (var i=0; i<leftgunpositions.length; i++)
+{
+temppiecearray[0][leftgunpositions[i]]="magenta"
+}
+
+for (var i=0; i<rightgunpositions.length; i++)
+{
+temppiecearray[width-1][rightgunpositions[i]]="magenta"
+}
+
+
+for (var i=0; i<plugwidth; i++)
+{
+for (var j=0; j<grounddepth-1-crater[i]; j++)
+{
+temppiecearray[1+sidewidth+i][height-2-j]="purple"
+}
+}
+
+
+enterplugintoarray()
+
+}
+
+var crater=shufflearray([2, 4, 3, 1, 3, 2, 1])
+
+var plug=[[(width-1)/2, (height-1)/2], [[0, []]]]
+function enterplugintoarray()
+{
+var corecol=plug[0][0]
+var corerow=plug[0][1]
+var agglomarray=plug[1]
+var chunkcol
+var chunkrow
+var blockcol
+temppiecearray[corecol][corerow]="white"
+for (var i=0; i<agglomarray.length; i++)
+{
+chunkcol=corecol+agglomarray[i][0]
+blockcol=agglomarray[i][1]
+for (var j=0; j<blockcol.length; j++)
+{
+chunkrow=corerow+blockcol[j]
+temppiecearray[chunkcol][chunkrow]="brown"
+
+}
+
+
+}
+
+}
+
+
+function validtranslate(somehoriz, somevert)
+{
+var somevalid=true
+var corecol=plug[0][0]
+var corerow=plug[0][1]
+var agglomarray=[[0, [0]]].concat(plug[1])  // all blocks in plug including core
+var chunkcol
+var chunkrow
+var blockcol
+
+for (var i=0; i<agglomarray.length; i++)
+{
+chunkcol=corecol+agglomarray[i][0]
+blockcol=agglomarray[i][1]
+for (var j=0; j<blockcol.length; j++)
+{
+chunkrow=corerow+blockcol[j]
+if (member(piecearray[chunkcol+somehoriz][chunkrow+somevert], ["brown", "blank", "white", "yellow", "copper"])==false)
+	{somevalid=false; break}
+
+if (piecearray[chunkcol+somehoriz][chunkrow+somevert]== "copper")
+	{
+	if (atleastonenotsolid(somehoriz, somevert, chunkcol, chunkrow)==false) {somevalid=false; break}
+	}
+
+}
+}
+
+return somevalid
+
+}
+
+
+function atleastonenotsolid(somehoriz, somevert, chunkcol, chunkrow)
+{
+
+if (somehoriz==1) // movement to right
+{
+return atleastoneblankorbullethoriz(chunkcol, chunkrow, 1, width-1)
+}
+if (somehoriz==-1) // movement to left
+{
+return atleastoneblankorbullethoriz(chunkcol, chunkrow, -1, 0)
+}
+if (somevert==1) // movement down
+{
+return atleastoneblankorbulletvert(chunkcol, chunkrow, 1, height-1)
+}
+if (somevert==-1) // movement up
+{
+return atleastoneblankorbulletvert(chunkcol, chunkrow, -1, 0)
+}
+}
+
+
+
+function atleastoneblankorbullethoriz(chunkcol, chunkrow, somehoriz, someextreme)
+{
+var somevalid=false
+{
+for (var i=chunkcol+somehoriz; i!=someextreme; i=i+somehoriz)
+{
+if (member(piecearray[i][chunkrow], ["blank", "yellow"])==true)
+{
+somevalid=true; break
+}
+}
+}
+return somevalid
+}
+
+function atleastoneblankorbulletvert(chunkcol, chunkrow, somevert, someextreme)
+{
+var somevalid=false
+{
+for (var i=chunkrow+somevert; i!=someextreme; i=i+somevert)
+{
+if (member(piecearray[chunkcol][i], ["blank", "yellow"])==true)
+{
+somevalid=true; break
+}
+}
+}
+return somevalid
+}
+
+
+
+
+
+function validrotate(somedir)
+{
+
+var somevalid=true
+var minx=0
+var maxx=0
+var miny=0
+var maxy=0
+var somearray=plug[1]
+var corecol=plug[0][0]
+var corerow=plug[0][1]
+var chunkcol
+var chunkrow
+
+minx=somearray[0][0]
+maxx=somearray[somearray.length-1][0]
+
+for (var i=0; i<somearray.length; i++)
+{
+if (somearray[i].length>0)
+{
+if (somearray[i][1][0]<miny) {miny=somearray[i][1][0]}
+if (somearray[i][1][somearray[i][1].length-1]>maxy) {maxy=somearray[i][1][somearray[i][1].length-1]}
+}
+}
+// make all mins and maxes non-negative
+miny=miny*-1
+minx=minx*-1
+
+// first check that all cells in rectangle around current position are brown, white or blank
+for (var i=minx*-1; i<=maxx; i++)
+{
+chunkcol=corecol+i
+for (var j=miny*-1; j<=maxy; j++)
+{
+chunkrow=corerow+j
+if (member(piecearray[chunkcol][chunkrow], ["blank", "brown", "white"])==false)
+	{somevalid=false; break}
+
+}
+
+}
+
+
+
+if (somedir==1)
+{
+// first check full rectangle surrounding new position
+if (rotationinframe(1, corecol, corerow, minx, maxx, miny, maxy)==false) {somevalid=false} else {
+for (var i=maxy*-1; i<=miny; i++)
+{
+chunkcol=corecol+i
+for (var j=minx*-1; j<=maxx; j++)
+{
+chunkrow=corerow+j
+if (member(piecearray[chunkcol][chunkrow], ["blank", "brown", "white"])==false)
+	{somevalid=false; break}
+
+}
+
+}
+
+// then check for pass-through rectangles in corner (in practice max 2 each rotation)
+
+if (minx>miny && minx>maxy) 
+{
+if (okforrotate(corecol, corerow, minx*-1, minx*-1, minx-maxy, minx-miny)==false)
+{somevalid=false}
+}
+if (maxx>miny && maxx>maxy) 
+{
+if (okforrotate(corecol, corerow, miny+1, maxy+1, maxx-miny, maxx-maxy)==false)
+{somevalid=false}
+}
+if (miny>minx && miny>maxx) 
+{
+if (okforrotate(corecol, corerow, maxx+1, miny*-1, miny-maxx, miny-minx)==false)
+{somevalid=false}
+}
+if (maxy>minx && maxy>maxx) 
+{
+if (okforrotate(corecol, corerow, maxy*-1, maxx+1, maxy-minx, maxy-maxx)==false)
+{somevalid=false}
+}
+}} // end if for somedir==1
+else // somedir=-1
+{
+// first check full rectangle surrounding new position
+if (rotationinframe(-1, corecol, corerow, minx, maxx, miny, maxy)==false) {somevalid=false} else {
+
+for (var i=miny*-1; i<=maxy; i++)
+{
+chunkcol=corecol+i
+for (var j=maxx*-1; j<=minx; j++)
+{
+chunkrow=corerow+j
+if (member(piecearray[chunkcol][chunkrow], ["blank", "brown", "white"])==false)
+	{somevalid=false; break}
+
+}
+
+}
+
+// then check for pass-through rectangles in corner (in practice max 2 each rotation)
+
+
+if (minx>miny && minx>maxy) 
+{
+if (okforrotate(corecol, corerow, minx*-1, maxy+1, minx-miny, minx-maxy)==false)
+{somevalid=false}
+}
+if (maxx>miny && maxx>maxy) 
+{
+if (okforrotate(corecol, corerow, maxy+1, maxx*-1, maxx-maxy, maxx-miny)==false)
+{somevalid=false}
+}
+if (miny>minx && miny>maxx) 
+{
+if (okforrotate(corecol, corerow, miny*-1, miny*-1, miny-minx, miny-maxx)==false)
+{somevalid=false}
+}
+if (maxy>minx && maxy>maxx) 
+{
+if (okforrotate(corecol, corerow, maxx+1, minx+1, maxy-maxx, maxy-minx)==false)
+{somevalid=false}
+}
+}} // end if for somedir==-1
+return somevalid
+}
+
+function rotationinframe(somedir, corecol, corerow, minx, maxx, miny, maxy)
+{
+if (somedir==1)
+{
+if (corecol+miny<width && corecol-maxy>0 && corerow-minx>0 && corerow+maxx<height)
+{return true} else {return false}
+}
+
+if (somedir==-1)
+{
+if (corecol+maxy<width && corecol-miny>0 && corerow-maxx>0 && corerow+minx<height)
+{return true} else {return false}
+}
+}
+
+var piecestoredisplay=[]
+
+function okforrotate(corecol, corerow, startx, starty, somewidth, someheight)
+{
+var chunkcol
+var chunkrow
+var somevalid=true
+for (i=startx; i<startx+somewidth; i++)
+{
+chunkcol=corecol+i
+for (j=starty; j<starty+someheight; j++)
+{
+chunkrow=corerow+j
+
+if (piecearray[chunkcol][chunkrow]!="blank")
+	{somevalid=false; break}
+
+
+
+}
+}
+
+return somevalid
+}
+
+
+
+function removeplugfromarray()
+{
+var corecol=plug[0][0]
+var corerow=plug[0][1]
+var agglomarray=plug[1]
+var chunkcol
+var chunkrow
+var blockcol
+temppiecearray[corecol][corerow]="blank"
+for (var i=0; i<agglomarray.length; i++)
+{
+chunkcol=corecol+agglomarray[i][0]
+blockcol=agglomarray[i][1]
+for (var j=0; j<blockcol.length; j++)
+{
+chunkrow=corerow+blockcol[j]
+temppiecearray[chunkcol][chunkrow]="blank"
+
+}
+
+
+}
+
+}
+
+
+
+function moveplug(somehoriz, somevert)
+{
+if (validtranslate(somehoriz, somevert)==true)
+{
+removeplugfromarray()
+
+plug[0][0]=plug[0][0]+somehoriz
+plug[0][1]=plug[0][1]+somevert
+
+enterplugintoarray()
+return true
+}
+else 
+{return false}
+
+}
+
+
+function rotateplug(somedir)
+{
+if (validrotate(somedir)==true)
+{
+removeplugfromarray()
+
+plug[1]=rotatecolumns(plug[1], somedir)
+
+enterplugintoarray()
+
+return true
+}
+else 
+{return false}
+}
+
+
+
+function rotatecolumns(somearray, somedir)
+{
+var miny=0
+var maxy=0
+for (var i=0; i<somearray.length; i++)
+{
+if (somearray[i].length>0)
+{
+if (somearray[i][1][0]<miny) {miny=somearray[i][1][0]}
+if (somearray[i][1][somearray[i][1].length-1]>maxy) {maxy=somearray[i][1][somearray[i][1].length-1]}
+}
+}
+var rotatedarray=[]
+if (somedir==1)
+{
+for (var i=maxy*-1; i<=miny*-1; i++)
+{
+rotatedarray[i+maxy]=[i, []]
+}
+
+for (var i=0; i<somearray.length; i++)
+{
+for (var j=0; j<somearray[i][1].length; j++)
+{
+
+rotatedarray[(somearray[i][1][j]*-1)+maxy][1]=insertvalintoarray(somearray[i][0], rotatedarray[(somearray[i][1][j]*-1)+maxy][1])
+}
+}
+}
+
+else // somedir=-1
+{
+for (var i=miny; i<=maxy; i++)
+{
+rotatedarray[i-miny]=[i, []]
+}
+
+for (var i=0; i<somearray.length; i++)
+{
+for (var j=0; j<somearray[i][1].length; j++)
+{
+
+rotatedarray[(somearray[i][1][j])-miny][1]=insertvalintoarray(-1*somearray[i][0], rotatedarray[(somearray[i][1][j])-miny][1])
+}
+}
+}
+
+return rotatedarray
+}
+
+function pairprintout(somearray)
+{
+var sometext=""
+for (var i=0; i<somearray.length; i++)
+{
+sometext=sometext+'['+somearray[i][0]+', ['+somearray[i][1]+']],'
+}
+return sometext
+}
+
+
+function insertvalintoarray(someval, somearray)
+{
+if (somearray.length>0)
+{
+if (someval < somearray[0])
+	{
+	return [someval].concat(somearray)
+	}
+	else
+	{
+	return [somearray[0]].concat(insertvalintoarray(someval, tailarray(somearray)))
+	}
+}
+else
+{
+return [someval]
+}
+
+}
+
+function redisplayboard()
+{
+
+
+var piecename
+var bordersize
+var piececolour
+
+for (var i=0; i<width; i++)
+    {
+for (var j=0; j<height; j++)
+{
+piecename='piece'+i+'_'+j
+document.images[piecename].src=piecearray[i][j]+'.png'
+// document.all[piecename].bgColor=colourcode(piecearray[i][j])
+// piececolour=piecearray[i][j]
+// if (member(piececolour, ["blank", "red", "grey"])==true) {bordersize=0} else {bordersize=1}
+// document.all[piecename].border=bordersize
+
+}
+	
+    }
+
+}
+
+function updateboard()
+{
+
+var piecename
+var bordersize
+var piececolour
+
+for (var i=0; i<width; i++)
+{
+for (var j=0; j<height; j++)
+{
+if (piecearray[i][j] != temppiecearray[i][j])
+{
+piecename='piece'+i+'_'+j
+document.images[piecename].src=temppiecearray[i][j]+'.png'
+// document.all[piecename].bgColor=colourcode(temppiecearray[i][j])
+// piececolour=temppiecearray[i][j]
+// if (member(piececolour, ["blank", "red", "grey"])==true) {bordersize=0} else {bordersize=1}
+// document.all[piecename].border=bordersize
+piecearray[i][j] = temppiecearray[i][j]
+}
+}
+
+}
+var i
+var j
+// now, restore vaporized images to new state.  Show current colour.
+for (var n=0; n<vaporizedlasttime.length; n++)
+{
+i=vaporizedlasttime[n][0]
+j=vaporizedlasttime[n][1]
+piecename='piece'+i+'_'+j
+document.images[piecename].src=piecearray[i][j]+'.png'
+
+// document.all[piecename].bgColor=colourcode(piecearray[i][j])
+// piececolour=piecearray[i][j]
+// if (member(piececolour, ["blank", "red", "grey"])==true) {bordersize=0} else {bordersize=1}
+// document.all[piecename].border=bordersize
+}
+
+// lastly, temporarily show vaporized blocks
+
+for (var n=0; n<vaporizedthistime.length; n++)
+{
+i=vaporizedthistime[n][0]
+j=vaporizedthistime[n][1]
+piecename='piece'+i+'_'+j
+document.images[piecename].src='explosion.png'
+// document.all[piecename].bgColor="#871F78"
+// document.all[piecename].border=1
+}
+
+}
+
+function createnewblock()
+{
+var rannum=randomnumber(width-4)+1
+if (temppiecearray[rannum][1]=="blank" && temppiecearray[rannum][2]=="blank")
+{
+blockarray=blockarray.concat([[rannum, 0]])
+}
+showcurrentad()
+}
+
+var lastmoverequest=['nothing']
+var blockarray=[]
+var cyclespeed=300
+var noteshoot=false
+var thismoveactual=['nothing']
+var newblockindex=0
+var newblockfrequency=10
+var vaporizedthistime=[]
+var vaporizedlasttime=[]
+var movecycleindex
+
+var dummy
+function movecycle(somenum)
+{
+movecycleindex=somenum
+if (playstate=="play")
+{
+displaymessage("Game on")
+thismoveactual=[]
+for (var i=0; i<lastmoverequest.length; i++)
+{
+thismoveactual[i]=lastmoverequest[i]
+}
+temppiecearray=copyvalues(piecearray)
+if (thismoveactual[0]=='translate')
+{
+if (moveplug(thismoveactual[1], thismoveactual[2])==false) {thismoveactual=["nothing"]}
+}
+if (thismoveactual[0]=='rotate')
+{
+if (rotateplug(thismoveactual[1])==false) {thismoveactual=["nothing"]}
+}
+
+
+
+if (thismoveactual[0]=='translate')
+{dealwithinitialblockcollisions(thismoveactual[1], thismoveactual[2])}
+
+if (somenum==0) 
+{
+if (newblockindex==4)
+{createnewblock()}
+newblockindex++
+if (newblockindex==newblockfrequency) {newblockindex=0}
+}
+
+if (somenum==0) {moveblocksdown()}
+
+if (noteshoot==true) {shoot()}
+movebullets()
+ensuregunsrightcolour()
+showscore()
+
+updateboard()
+vaporizedlasttime=copyvalues(vaporizedthistime)
+lastmoverequest=['nothing']
+thismoveactual=['nothing']
+noteshoot=false
+
+
+if (checkforwin()==true) {playstate="won"}
+savethestate()
+
+if (timer != null) {clearTimeout(timer)}
+
+timer= setTimeout('movecycle('+(1-somenum)+')', cyclespeed)
+}
+else
+{
+savethestate()
+if (playstate=="stop") {showvolcano()} else if (playstate=="won") {displaywin()}}
+}
+
+function savethestate()
+{
+var somestatus=['piecearray='+convertlisttotext('listtext', piecearray), 'score='+score, 'tapfire='+tapfire, 'cyclespeed='+cyclespeed, 'newblockindex='+newblockindex, 'newblockfrequency='+newblockfrequency, 'blockarray='+convertlisttotext('listnumber', blockarray), 'playstate='+'"'+playstate+'"', 'vaporizedlasttime='+convertlisttotext('listnumber', vaporizedlasttime), 'crater='+convertlisttotext('number', crater), 'plug='+'[['+plug[0]+'], '+convertlisttotext('plugarray', plug[1])+']', 'movecycleindex='+movecycleindex, 'bulletsmoving='+convertlisttotext('listlistnumber', bulletsmoving)]
+var sometext='['
+for (var i=0; i<somestatus.length; i++)
+{
+sometext=sometext+"'"+somestatus[i]+"', "
+}
+sometext=sometext+"'dummy=0']"
+SetLocalVal('restartactions', sometext)
+
+
+}
+
+function convertlisttotext(somename, somelist)
+{
+var sometext='['
+var somearray=convertitemstotext(somename, somelist)
+sometext=sometext+somearray
+sometext=sometext+']'
+return sometext
+}
+
+
+function convertitemstotext(somename, somelist)
+{
+var somereturn=[]
+if (somename=='plugarray')
+{
+for (var i=0; i<somelist.length; i++)
+{
+somereturn[i]='['+somelist[i][0]+', '+convertlisttotext('number', somelist[i][1])+']'
+}
+}
+if (somename=='number')
+{
+for (var i=0; i<somelist.length; i++)
+{
+somereturn[i]=somelist[i]
+}
+}
+
+if (somename=='text')
+{
+for (var i=0; i<somelist.length; i++)
+{
+somereturn[i]='"'+somelist[i]+'"'
+}
+}
+
+if (somename=='listnumber')
+{
+for (var i=0; i<somelist.length; i++)
+{
+somereturn[i]=convertlisttotext('number', somelist[i])
+}
+}
+
+if (somename=='listtext')
+{
+for (var i=0; i<somelist.length; i++)
+{
+somereturn[i]=convertlisttotext('text', somelist[i])
+}
+}
+
+if (somename=='listlistnumber')
+{
+for (var i=0; i<somelist.length; i++)
+{
+somereturn[i]=convertlisttotext('listnumber', somelist[i])
+}
+}
+
+if (somename=='listlisttext')
+{
+for (var i=0; i<somelist.length; i++)
+{
+somereturn[i]=convertlisttotext('listtext', somelist[i])
+}
+}
+
+
+
+return somereturn
+}
+
+
+
+function emptytextornumber(someval)
+{
+if (someval==='') {return '""'} else {return someval}
+}
+
+
+function dealwithinitialblockcollisions(somehoriz, somevert)
+{
+var tempblockarray=copyvalues(blockarray)
+for (var i=0; i<tempblockarray.length; i++)
+{
+dealwithsingleinitialblockcollisions(tempblockarray[i][0], tempblockarray[i][1], somehoriz, somevert)
+}
+
+}
+
+function dealwithsingleinitialblockcollisions(blockcol, blockrow, somehoriz, somevert)
+{
+if (member(temppiecearray[blockcol][blockrow], ["white", "brown"])==true)
+{
+removefallingblock(blockcol, blockrow)
+stickblocktoplug(blockcol, blockrow, somehoriz, somevert)
+}
+}
+
+function stickblocktoplug(blockcol, blockrow, somehoriz, somevert)
+{
+var stuckblockcol=blockcol+somehoriz
+var stuckblockrow=blockrow+somevert
+var newplugposcol=stuckblockcol-plug[0][0]
+var newplugposrow=stuckblockrow-plug[0][1]
+
+stickblockinplugarray(newplugposcol, newplugposrow)
+
+temppiecearray[stuckblockcol][stuckblockrow]="brown"
+}
+
+function stickblockinplugarray(newplugposcol, newplugposrow)
+{
+var temparray=plug[1]
+for (var i=0; i<temparray.length; i++)
+{
+if (temparray[i][0]==newplugposcol)
+{
+plug[1][i][1]=insertvalintoarray(newplugposrow, plug[1][i][1])
+}
+}
+if (newplugposcol<temparray[0][0])
+{
+plug[1]=[[newplugposcol, [newplugposrow]]].concat(plug[1])
+}
+if (newplugposcol>temparray[temparray.length-1][0])
+{
+plug[1]=plug[1].concat([[newplugposcol, [newplugposrow]]])
+}
+}
+
+function removefallingblock(blockcol, blockrow)
+{
+blockarray=removepairfromarray([blockcol, blockrow], blockarray)
+}
+
+function removepairfromarray(somepair, somearray)
+{
+if (somearray.length==0)
+{
+return []
+}
+else
+	{
+if (somearray[0][0]==somepair[0] && somearray[0][1]==somepair[1])
+{
+return tailarray(somearray)
+}
+
+else
+{
+return [somearray[0]].concat(removepairfromarray(somepair, tailarray(somearray)))
+}
+	}
+}
+
+
+
+function moveblocksdown()
+{
+var tempblockarray=copyvalues(blockarray)
+// fallenblocks=[]
+for (var i=0; i<tempblockarray.length; i++)
+{
+dealwithsingleblock(tempblockarray[i][0], tempblockarray[i][1])
+}
+}
+
+function dealwithsingleblock(blockcol, blockrow)
+{
+// change the current position of the falling block to blank, unless it's already been changed to something
+// else (e.g. by plug movement), in which case it will not be copper in temppiecearray
+if (temppiecearray[blockcol][blockrow]=="copper") {temppiecearray[blockcol][blockrow]="blank"}
+var i=ith([blockcol, blockrow], blockarray)
+// next deal with a block colliding with the plug - and stick it on
+if (member(temppiecearray[blockcol][blockrow+1], ["white", "brown"])==true)
+{
+removefallingblock(blockcol, blockrow)
+stickblocktoplug(blockcol, blockrow, 0, 0)
+}
+else
+{
+if (temppiecearray[blockcol][blockrow+1]=="green")
+{
+removefallingblock(blockcol, blockrow)
+decrementscore(1)
+}
+else
+{
+if (temppiecearray[blockcol][blockrow+1]=="purple")
+{
+removefallingblock(blockcol, blockrow)
+temppiecearray[blockcol][blockrow+1]="blank"
+decrementscore(1)
+if ([blockrow+1]==height-2)
+{playstate="stop"}
+
+}
+else
+// simply move it down
+{
+
+temppiecearray[blockcol][blockrow+1]="copper"
+blockarray[i][1]=blockarray[i][1]+1
+}
+}
+}
+}
+
+function ith(somepair, somearray)
+{
+var someresult
+for (var i=0; i<somearray.length; i++)
+{
+if (somepair[0]==somearray[i][0] && somepair[1]==somearray[i][1])
+{
+someresult=i; break
+}
+}
+return someresult
+}
+
+function removefallenblocks()
+{
+var numfallen=fallenblocks.length
+for (var i=0; i<numfallen; i++)
+{
+blockarray=removeElement(fallenblocks[i]-i, blockarray)
+}
+
+}
+
+// note: middle array a dummy
+var bulletsmoving=[[], [], []]
+var bulletsgone=[[], [], []]
+
+function movebullets()
+{
+var arrayi
+vaporizedthistime=[]
+// first check for any plug pieces or falling blocks moved into last bullet position
+for (var dir=-1; dir<=1; dir++)
+{
+arrayi=dir+1
+
+bulletsgone[arrayi]=[]
+for (var i=0; i<bulletsmoving[arrayi].length; i++)
+{
+if (member(temppiecearray[bulletsmoving[arrayi][i][0]][bulletsmoving[arrayi][i][1]], ["white", "brown"])==true)
+{
+bulletsgone[arrayi]=addelementatend(i, bulletsgone[arrayi])
+removeblockfromplug(bulletsmoving[arrayi][i][0], bulletsmoving[arrayi][i][1])
+}
+if (temppiecearray[bulletsmoving[arrayi][i][0]][bulletsmoving[arrayi][i][1]]=="copper")
+{
+bulletsgone[arrayi]=addelementatend(i, bulletsgone[arrayi])
+removefallingblock(bulletsmoving[arrayi][i][0], bulletsmoving[arrayi][i][1])
+vaporizedthistime=vaporizedthistime.concat([[bulletsmoving[arrayi][i][0], bulletsmoving[arrayi][i][1]]])
+temppiecearray[bulletsmoving[arrayi][i][0]][bulletsmoving[arrayi][i][1]]="blank"
+}
+}
+removebulletsgone(arrayi)
+}
+
+// next check for any plug pieces or falling blocks moved into or already in new bullet position
+for (var dir=-1; dir<=1; dir++)
+{
+
+arrayi=dir+1
+
+bulletsgone[arrayi]=[]
+for (var i=0; i<bulletsmoving[arrayi].length; i++)
+{
+if (member(temppiecearray[bulletsmoving[arrayi][i][0]+dir][bulletsmoving[arrayi][i][1]], ["white", "brown"])==true)
+{
+bulletsgone[arrayi]=addelementatend(i, bulletsgone[arrayi])
+removeblockfromplug(bulletsmoving[arrayi][i][0]+dir, bulletsmoving[arrayi][i][1])
+
+if (temppiecearray[bulletsmoving[arrayi][i][0]][bulletsmoving[arrayi][i][1]]=="yellow")
+{
+temppiecearray[bulletsmoving[arrayi][i][0]][bulletsmoving[arrayi][i][1]]="blank"
+}
+}
+if (temppiecearray[bulletsmoving[arrayi][i][0]+dir][bulletsmoving[arrayi][i][1]]=="copper")
+{
+bulletsgone[arrayi]=addelementatend(i, bulletsgone[arrayi])
+removefallingblock(bulletsmoving[arrayi][i][0]+dir, bulletsmoving[arrayi][i][1])
+vaporizedthistime=vaporizedthistime.concat([[bulletsmoving[arrayi][i][0]+dir, bulletsmoving[arrayi][i][1]]])
+temppiecearray[bulletsmoving[arrayi][i][0]+dir][bulletsmoving[arrayi][i][1]]="blank"
+if (temppiecearray[bulletsmoving[arrayi][i][0]][bulletsmoving[arrayi][i][1]]=="yellow")
+{
+temppiecearray[bulletsmoving[arrayi][i][0]][bulletsmoving[arrayi][i][1]]="blank"
+}
+}
+}
+removebulletsgone(arrayi)
+}
+
+// next remove any bullets reaching extremes
+for (var dir=-1; dir<=1; dir++)
+{
+
+arrayi=dir+1
+
+bulletsgone[arrayi]=[]
+for (var i=0; i<bulletsmoving[arrayi].length; i++)
+{
+
+if (temppiecearray[bulletsmoving[arrayi][i][0]+dir][bulletsmoving[arrayi][i][1]]!="blank") // can only be extremes after all other removals
+{
+bulletsgone[arrayi]=addelementatend(i, bulletsgone[arrayi])
+temppiecearray[bulletsmoving[arrayi][i][0]][bulletsmoving[arrayi][i][1]]="blank"
+}
+}
+removebulletsgone(arrayi)
+}
+
+// last just move any remaining bullets
+for (var dir=-1; dir<=1; dir++)
+{
+
+arrayi=dir+1
+
+for (var i=0; i<bulletsmoving[arrayi].length; i++)
+{
+if (temppiecearray[bulletsmoving[arrayi][i][0]][bulletsmoving[arrayi][i][1]]=="yellow")
+{
+temppiecearray[bulletsmoving[arrayi][i][0]][bulletsmoving[arrayi][i][1]]="blank"
+}
+temppiecearray[bulletsmoving[arrayi][i][0]+dir][bulletsmoving[arrayi][i][1]]="yellow"
+bulletsmoving[arrayi][i][0]=bulletsmoving[arrayi][i][0]+dir
+
+}
+}
+}
+
+function removeblockfromplug(somecol, somerow)
+{
+var corecol=plug[0][0]
+var corerow=plug[0][1]
+var diffcol=somecol-corecol
+var diffrow=somerow-corerow
+if (diffcol==0 && diffrow==0) 
+{
+playstate="stop"
+document.images['piece'+somecol+'_'+somerow].src='explosion.png'
+
+// document.all['piece'+somecol+'_'+somerow].bgColor="#871F78"
+}
+else
+{
+removeoneblockfromplug(diffcol, diffrow)
+}
+removelooseblocksfromplug()
+}
+
+function removelooseblocksfromplug()
+{
+corepiece=plug[0]
+var remainingarray=findconnectedpieces(corepiece, "brown")
+var existingplug=plug[1]
+var chunkrow
+var chunkcol
+var disconnections=[]
+for (var i=0; i<existingplug.length; i++)
+{
+chunkcol=corepiece[0]+existingplug[i][0]
+for (var j=0; j<existingplug[i][1].length; j++)
+{
+chunkrow=corepiece[1]+existingplug[i][1][j]
+if (ismember([chunkcol, chunkrow], remainingarray)==false)
+	{disconnections=disconnections.concat([[chunkcol, chunkrow]])}
+}
+}
+for (var i=0; i<disconnections.length; i++)
+{
+removeoneblockfromplug(disconnections[i][0]-corepiece[0], disconnections[i][1]-corepiece[1])
+}
+}
+
+function removeoneblockfromplug(diffcol, diffrow)
+{
+for (var i=0; i<plug[1].length; i++)
+{
+if (plug[1][i][0]==diffcol)
+{
+plug[1][i][1]=removethiselement(diffrow, plug[1][i][1])
+
+break
+}
+}
+temppiecearray[plug[0][0]+diffcol][plug[0][1]+diffrow]="blank"
+vaporizedthistime=vaporizedthistime.concat([[[plug[0][0]+diffcol], [plug[0][1]+diffrow]]])
+}
+
+function removethiselement(someelement, somearray)
+{
+if (somearray[0]==someelement)
+{
+return tailarray(somearray)
+}
+else
+{
+return [somearray[0]].concat(removethiselement(someelement, tailarray(somearray)))
+}
+
+}
+
+
+function removebulletsgone(arrayi)
+{
+var numgone=bulletsgone[arrayi].length
+for (var i=0; i<numgone; i++)
+{
+bulletsmoving[arrayi]=removeElement(bulletsgone[arrayi][i]-i, bulletsmoving[arrayi])
+}
+}
+
+
+
+
+function notefire()
+{
+noteshoot=true
+}
+
+function shoot()
+{
+for (var i=0; i<leftgunpositions.length; i++)
+{
+bulletsmoving[2]=addelementatend([0, leftgunpositions[i]], bulletsmoving[2])
+}
+
+for (var i=0; i<rightgunpositions.length; i++)
+{
+bulletsmoving[0]=addelementatend([width-1, rightgunpositions[i]], bulletsmoving[0])
+}
+}
+
+function ensuregunsrightcolour()
+{
+for (var i=0; i<leftgunpositions.length; i++)
+{
+temppiecearray[0][leftgunpositions[i]]="magenta"
+}
+
+for (var i=0; i<rightgunpositions.length; i++)
+{
+temppiecearray[width-1][rightgunpositions[i]]="magenta"
+}
+}
+
+function noterotate(somedir)
+{
+lastmoverequest=['rotate', somedir]
+
+}
+
+function notemoveplug(somex, somey)
+{
+lastmoverequest=['translate', somex, somey]
+}
+
+
+
+
+function colourcode(somecolour)
+{
+var somecode
+if (somecolour=="red") {somecode="#FF0000"}
+if (somecolour=="white") {somecode="#FFFFFF"}
+if (somecolour=="blank") {somecode="#000000"}
+if (somecolour=="grey") {somecode="#C0C0C0"}
+if (somecolour=="green") {somecode="#00FF00"}
+if (somecolour=="yellow") {somecode="#FFFF00"}
+if (somecolour=="brown") {somecode="#A62A2A"}
+if (somecolour=="copper") {somecode="#236B8E"}
+if (somecolour=="purple") {somecode="#871F78"}
+if (somecolour=="cyan") {somecode="#00FFFF"}
+if (somecolour=="explosion") {somecode="#4F2F4F"}
+if (somecolour=="magenta") {somecode="#FF00FF"}
+
+
+return somecode
+}
+
+
+function displaymessage(sometext)
+{
+changetextvalue('messagedisplay', sometext)
+}
+
+function showscore()
+{
+changetextvalue('score', score)
+}
+
+function decrementscore(someval)
+{
+score=score-someval
+if (score<=0) {playstate="stop"}
+}
+
+var cellstowipeout=[]
+
+function showvolcano()
+{
+cellstowipeout=[]
+playstate="stop"
+restartconfirmationrequired=0
+
+displaymessage("Eruption: Lost!")
+// score=0
+// showscore()
+for (var col=0; col<width; col++)
+{
+for (var row=0; row<height; row++)
+{
+if (member(piecearray[col][row], ["blank", "white", "brown", "yellow", "copper"])==true)
+{
+cellstowipeout=cellstowipeout.concat([[col, row]])
+}
+}
+}
+cellstowipeout=shufflearray(cellstowipeout)
+clearfunnel()
+turnemred()
+}
+
+function clearfunnel()
+{
+var i=(width-1)/2
+var piecename
+var sidewidth=(width-plugwidth-2)/2
+
+for (var wi=sidewidth+1; wi<width-(sidewidth+1); wi++)
+{
+if (piecearray[wi][height-2]=="blank")
+{
+i=wi
+}
+}
+for (var j=height-2; j>height-grounddepth; j--)
+{
+piecename='piece'+i+'_'+j
+document.images[piecename].src="red.png"
+// document.all[piecename].bgColor=colourcode("red")
+// document.all[piecename].border=0
+}
+
+}
+
+function stoptimer()
+{
+/*
+if (timer != null) 
+{clearTimeout(timer)}
+*/
+}
+
+function turnemred()
+{
+var piecename
+if (cellstowipeout.length > 10)
+{
+for (var i=0; i<10; i++)
+{
+piecename='piece'+cellstowipeout[i][0]+'_'+cellstowipeout[i][1]
+document.images[piecename].src="red.png"
+// document.all[piecename].bgColor=colourcode("red")
+// document.all[piecename].border=0
+}
+cellstowipeout=cellstowipeout.slice(10, cellstowipeout.length)
+if (timer != null) {clearTimeout(timer)}
+
+timer= setTimeout('turnemred()', cyclespeed)
+}
+else
+{
+for (var i=0; i<cellstowipeout.length; i++)
+{
+piecename='piece'+cellstowipeout[i][0]+'_'+cellstowipeout[i][1]
+document.images[piecename].src="red.png"
+
+// document.all[piecename].bgColor=colourcode("red")
+// document.all[piecename].border=0
+}
+}
+}
+
+function checkforwin()
+{
+var sidewidth=(width-plugwidth-2)/2
+var somevalid=true
+for (var j=height-grounddepth; j<height-1; j++)
+{
+for (var i=sidewidth+1; i<width-(sidewidth+1); i++)
+{
+
+if (member(piecearray[i][j], ["brown", "white", "purple"])==false)
+{
+// if (i==width && j==height-grounddepth) {true} else {alert([i, j])}
+somevalid=false; break}
+
+}
+if (somevalid==false) {break}
+}
+return somevalid
+}
+
+function displaywin()
+{
+var piecename
+displaymessage('Plugged: Won!')
+restartconfirmationrequired=0
+
+for (var i=1; i<width-1; i++)
+{
+for (var j=1; j<height-1; j++)
+{
+if (member(piecearray[i][j], ["green", "purple", "red", "brown", "white"])==false)
+piecename='piece'+i+'_'+j
+document.images[piecename].src="sky.png"
+}
+}
+var sunx=(width-1)/2
+var suny=1
+var sunarray=[[sunx, suny], [sunx+1, suny], [sunx-1, suny], [sunx, suny+1]]
+for (var i=0; i<sunarray.length; i++)
+{
+piecename='piece'+sunarray[i][0]+'_'+sunarray[i][1]
+document.images[piecename].src="sun.png"
+}
+
+}
+
+var tapfire=0
+function changetapfire()
+{
+tapfire=1-tapfire
+if (tapfire==0)
+{
+document.images['tapfire'].src="unselected.gif"
+}
+else
+{
+document.images['tapfire'].src="selected.gif"
+}
+savethestate()
+}
+
+
+var thedivs=['maingame', 'more']
+function displaydiv(somediv)
+{
+for (var i=0; i<thedivs.length; i++)
+{
+document.getElementById(thedivs[i]).style.display = 'none'
+
+
+}
+document.getElementById(thedivs[somediv]).style.display = 'inline'
+handleclickproblem()
+
+}
+
+
+
+// static
+
+documentwrite('<div style="width:100%;height:'+Math.floor(scalef*360)+'px;background-color:#DDFFFF"><table border=0 align=center valign=top cellspacing=0 cellpadding=0 width='+Math.floor(scalef*230)+'>')
+documentwrite('<tr height='+Math.floor(scalef*3)+'><td width='+Math.floor(scalef*50)+'><img src="empty.png" width='+Math.floor(scalef*50)+'  height='+Math.floor(scalef*2)+' style="display:block"></td><td width='+Math.floor(scalef*10)+'><img src="empty.png" width='+Math.floor(scalef*10)+'  height='+Math.floor(scalef*2)+' style="display:block"></td><td colspan=3></td><td width='+Math.floor(scalef*10)+'><img src="empty.png" width='+Math.floor(scalef*10)+'  height='+Math.floor(scalef*2)+' style="display:block"></td><td width='+Math.floor(scalef*50)+'><img src="empty.png" width='+Math.floor(scalef*50)+'  height='+Math.floor(scalef*2)+' style="display:block"></td></tr>')
+documentwrite('<tr height='+Math.floor(scalef*20)+'><td width='+Math.floor(scalef*50)+' onClick="selectthegame()">'+graphicfor('New')+'</td><td width='+Math.floor(scalef*10)+'><img src="empty.png" width='+Math.floor(scalef*10)+'></td><td colspan=3 style="text-align:center;font-weight:bold;color:red;font-size:'+Math.floor(scalef*14)+'px">'+titleimage('Volcano')+'</td><td width='+Math.floor(scalef*10)+'><img src="empty.png" width='+Math.floor(scalef*10)+'></td><td width='+Math.floor(scalef*50)+' onClick="showhelp()">'+graphicfor('Help')+'</td></tr>')
+documentwrite('<tr ><td colspan=7 style="width:'+Math.floor(scalef*230)+'px;text-align:left;color:black;font-size:'+Math.floor(scalef*10)+'px"><div style="height:'+(pushdown+Math.floor(scalef*3))+'px;width='+Math.floor(scalef*230)+'px"></div></td></tr>')
+documentwrite('<tr ><td colspan=7 style="width:'+Math.floor(scalef*230)+'px;text-align:left;color:black;font-size:'+Math.floor(scalef*10)+'px"><div style="display:inline;width:100%" id="maingame">')
+
+
+documentwrite('<div id="theboard" style="display:block; background-color:#222222;height:'+Math.floor(scalef*285)+'px">')
+
+documentwrite('<div style="display:block;height:'+Math.floor(scalef*2)+'px"></div><table style="background-color:#222222" height='+(height*blocksize)+' width=100% border=0 cellspacing=0 cellpadding=0><tr><td width='+Math.floor(scalef*35)+' align=center>')
+documentwrite('<div style="width:100%;height:'+Math.floor(scalef*10)+'px;display:block"></div><table border=0 cellspacing=0 cellpadding=0 align=center><tr><td align=center onMouseDown="notemoveplug(0, -1)" id="left_up"><img style="display:block" height='+Math.floor(scalef*20)+'  width='+Math.floor(scalef*20)+'  src="up.png"></td></tr></table>')
+documentwrite('<div style="width:100%;height:'+Math.floor(scalef*10)+'px;display:block"></div><table border=0 cellspacing=0 cellpadding=0 align=center><tr><td width='+Math.floor(scalef*20)+'  align=center onMouseDown="noterotate(1)"  id="left_clockwise"><img style="display:block" height='+Math.floor(scalef*20)+'  width='+Math.floor(scalef*20)+'  src="clockwise.png"></td></tr></table>')
+documentwrite('<div style="width:100%;height:'+Math.floor(scalef*10)+'px;display:block"></div><table border=0 cellspacing=0 cellpadding=0 align=center><tr><td width='+Math.floor(scalef*20)+'  align=center onMouseDown="notemoveplug(1, 0)" id="left_right"><img style="display:block" height='+Math.floor(scalef*20)+'  width='+Math.floor(scalef*20)+'  src="right.png"></td></tr></table>')
+documentwrite('<div style="width:100%;height:'+Math.floor(scalef*10)+'px;display:block"></div><table border=0 cellspacing=0 cellpadding=0 align=center><tr><td width='+Math.floor(scalef*20)+'  align=center onMouseDown="notefire()" id="left_fire"><img style="display:block" height='+Math.floor(scalef*20)+'  width='+Math.floor(scalef*20)+'  src="fire.png"></td></tr></table>')
+documentwrite('<div style="width:100%;height:'+Math.floor(scalef*10)+'px;display:block"></div><table border=0 cellspacing=0 cellpadding=0 align=center><tr><td width='+Math.floor(scalef*20)+'  align=center onMouseDown="notemoveplug(-1, 0)" id="left_left"><img style="display:block" height='+Math.floor(scalef*20)+'  width='+Math.floor(scalef*20)+'  src="left.png"></td></tr></table>')
+documentwrite('<div style="width:100%;height:'+Math.floor(scalef*10)+'px;display:block"></div><table border=0 cellspacing=0 cellpadding=0 align=center><tr><td width='+Math.floor(scalef*20)+'  align=center onMouseDown="noterotate(-1)"  id="left_anticlockwise"><img style="display:block" height='+Math.floor(scalef*20)+'  width='+Math.floor(scalef*20)+'  src="anticlockwise.png"></td></tr></table>')
+documentwrite('<div style="width:100%;height:'+Math.floor(scalef*10)+'px;display:block"></div><table border=0 cellspacing=0 cellpadding=0 align=center><tr><td align=center onMouseDown="notemoveplug(0, 1)" id="left_down"><img style="display:block" height='+Math.floor(scalef*20)+'  width='+Math.floor(scalef*20)+'  src="down.png"></td></tr></table>')
+documentwrite('<br></td><td><table border=0 align=center cellspacing=0 cellpadding=0><tr><td>')
+
+
+
+setupboard()
+
+
+
+documentwrite('</td></tr></table></td><td  width='+Math.floor(scalef*35)+'>')
+documentwrite('<div style="width:100%;height:'+Math.floor(scalef*10)+'px;display:block"></div><table border=0 cellspacing=0 cellpadding=0 align=center><tr><td align=center onMouseDown="notemoveplug(0, -1)" id="right_up"><img style="display:block" height='+Math.floor(scalef*20)+'  width='+Math.floor(scalef*20)+'  src="up.png"></td></tr></table>')
+documentwrite('<div style="width:100%;height:'+Math.floor(scalef*10)+'px;display:block"></div><table border=0 cellspacing=0 cellpadding=0 align=center><tr><td width='+Math.floor(scalef*20)+'  align=center onMouseDown="noterotate(-1)"  id="right_anticlockwise"><img style="display:block" height='+Math.floor(scalef*20)+'  width='+Math.floor(scalef*20)+'  src="anticlockwise.png"></td></tr></table>')
+documentwrite('<div style="width:100%;height:'+Math.floor(scalef*10)+'px;display:block"></div><table border=0 cellspacing=0 cellpadding=0 align=center><tr><td width='+Math.floor(scalef*20)+'  align=center onMouseDown="notemoveplug(-1, 0)" id="right_left"><img style="display:block" height='+Math.floor(scalef*20)+'  width='+Math.floor(scalef*20)+'  src="left.png"></td></tr></table>')
+documentwrite('<div style="width:100%;height:'+Math.floor(scalef*10)+'px;display:block"></div><table border=0 cellspacing=0 cellpadding=0 align=center><tr><td width='+Math.floor(scalef*20)+'  align=center onMouseDown="notefire()" id="right_fire"><img style="display:block" height='+Math.floor(scalef*20)+'  width='+Math.floor(scalef*20)+'  src="fire.png"></td></tr></table>')
+documentwrite('<div style="width:100%;height:'+Math.floor(scalef*10)+'px;display:block"></div><table border=0 cellspacing=0 cellpadding=0 align=center><tr><td width='+Math.floor(scalef*20)+'  align=center onMouseDown="notemoveplug(1, 0)" id="right_right"><img style="display:block" height='+Math.floor(scalef*20)+'  width='+Math.floor(scalef*20)+'  src="right.png"></td></tr></table>')
+documentwrite('<div style="width:100%;height:'+Math.floor(scalef*10)+'px;display:block"></div><table border=0 cellspacing=0 cellpadding=0 align=center><tr><td width='+Math.floor(scalef*20)+'  align=center onMouseDown="noterotate(1)"  id="right_clockwise"><img style="display:block" height='+Math.floor(scalef*20)+'  width='+Math.floor(scalef*20)+'  src="clockwise.png"></td></tr></table>')
+documentwrite('<div style="width:100%;height:'+Math.floor(scalef*10)+'px;display:block"></div><table border=0 cellspacing=0 cellpadding=0 align=center><tr><td align=center onMouseDown="notemoveplug(0, 1)" id="right_down"><img style="display:block" height='+Math.floor(scalef*20)+'  width='+Math.floor(scalef*20)+'  src="down.png"></td></tr></table><br></td></tr>')
+documentwrite('<tr><td colspan=3 valign=bottom>')
+documentwrite('<div id="messagedisplay" style="display:none;text-align: center; color:white">Press New</div><div id="score" style="display:block;text-align: center; color:white">&nbsp;</div>')
+
+documentwrite('</td></tr></table><div style="display:block;width:100%" id="currentadtext"> </div></div>')
+
+
+
+
+documentwrite('<div id="output" style="display:none;height:'+Math.floor(scalef*285)+'px;width:100%"></div>')
+// documentwrite('<div style="width:100%" id="currentadtext"> </div>')
+
+
+documentwrite('</div></td></tr>')
+
+documentwrite('<tr ><td colspan=7 style="height:'+Math.floor(scalef*2)+'px;width:'+Math.floor(scalef*230)+'px;text-align:left;color:black;font-size:'+Math.floor(scalef*10)+'px"><div style="height:'+Math.floor(scalef*2)+'px;width='+Math.floor(scalef*230)+'px"></div></td></tr>')
+documentwrite('<tr ><td colspan=7 style="width:'+Math.floor(scalef*230)+'px;text-align:left;color:black;font-size:'+Math.floor(scalef*10)+'px" ><div style="display:none;width:100%" id="help">')
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+<script language="Javascript">
+
+
+var showinghelp=0
+
+
+function showhelp()
+{
+if (showinghelp==1) {hidehelp();return}
+// if (volcanostatus==0) {return}
+if (showingads==1 || preventbuttonactions==1) {return}
+if (timer != null) {clearTimeout(timer)} // stops timer and game
+
+showinghelp=1
+
+document.getElementById('maingame').style.display='none'
+document.getElementById('help').style.display='inline'
+}
+
+function hidehelp()
+{
+
+document.getElementById('maingame').style.display='inline'
+document.getElementById('help').style.display='none'
+showinghelp=0
+var somedisp=document.getElementById('theboard').style.display
+
+if (somedisp=='block' || somedisp=='inline')
+{
+backtogame() // go back to game if theboard is being displayed
+}
+}
+
+
+</script>
+<div id="helpback" style="display:inline">
+<script language="Javascript">documentwrite('<table align=center border=0><tr><td onClick="hidehelp()" width='+Math.floor(scalef*50)+'>'+graphicfor('Back')+'</td></tr></table>')</script>
+</div>
+
+<div id="helpgeneral" style="display:inline">
+      <p>The scenario (bearing little relation to reality) is that there is a volcano known to be close to eruption. The dark, smoke-filled, brooding sky emphasizes the imminence of the danger. The volcano has a crater, and seismologists believe that eruption can be prevented by completely filling the crater, i.e. by plugging the volcano. This is a delicate and dangerous operation. You are in control of a flying craft (the white block) designed to catch blocks (blue) being dropped from above, so that you gradually build up a plug that will fill the crater, with no gaps, up to the level of rim of the volcano. As the falling blocks are incorporated into the plug, they change colour to become brown, so that you know which blocks form the body of the plug. Once you have formed a plug of the right shape (as shown in the image below), you must then lower the plug into the crater and prevent the eruption. Remember that you will normally have to turn the plug upside down before lowering it into the crater once you have created it.</p>
+<script language="Javascript">documentwrite('<p style="text-align:center"><img src="icon.png" height='+Math.floor(scalef*150)+'  width='+Math.floor(scalef*150)+'></p>')</script>
+<p>If a block is not caught by the craft and, instead, falls into the crater (denoted by purple blocks), the impact destroys part of the natural plug (a purple block is removed) - and, of course, also changes the shape of the plug required to fill the crater. And if the falling blocks break through the plug material to expose the magma (red) an eruption takes place and the game is over. Any blocks that fall onto the rim of the volcano or the mountain side (green blocks) are themselves destroyed, but the mountain itself is not destroyed by the impact. However, each impact, whether onto the mountain or into the crater, increases the chance of eruption. If fifty blocks crash to the ground an eruption takes place - and, again, the game is over.</p>
+
+<p>You are also able to launch missiles (yellow) from the missile launchers at the sides (magenta blocks). These fly horizontally and can be used both to destroy falling blocks, and so prevent dangerous impacts on the ground, and to remove blocks that form part of the plug you have created, if the shape is wrong. But make sure you don't accidentally shoot down the craft as the explosion caused by this will trigger an eruption. Note: if you remove a block from the plug and this leaves other blocks in the plug no longer with a means of connection, direct or indirect, to the craft, then these unattached blocks are also removed.</p>
+
+
+<p><a name="objective"></a><b>Objective</b></p>
+
+<p>Your primary objective is to plug the volcano by creating the right-shaped plug and moving it into the crater so that it fits perfectly, with no missing blocks up to the level of the volcano rim. The plug may have additional blocks attached to it above the rim level. This plugging must be carried out before an eruption takes place. When you successfully prevent eruption, the sky turns blue and the sun comes out.</p>
+<p>Overall, there are three ways in which an eruption can be triggered, which ends the game and fills the sky with red magma: 
+<ul>
+<li>falling blocks pierce the natural plug and expose the magma underneath;
+<li>the craft is shot down by a missile;
+<li>there are 50 impacts from falling blocks on the mountain and crater. 
+</ul>
+</p> 
+<p>A secondary objective is to minimize the number of impacts on the crater and mountain before the volcano is plugged. The score indicates how many impacts remain before an eruption will be triggered from these, so you should try to maximize the score.  The score is shown just below the main frame (initially 50).</p>
+ 
+       <p><a name="controls"></a><b>Controls and actions</b></p>
+<p>There are seven different control buttons.  One set of these is found on each side.</p>
+<p>After starting the game (by tapping the <i>New</i> button), you move the plug (initially just the white craft) by tapping the up-, down-, right- or left-arrow buttons to change its position in the direction of the arrow.  You can also rotate the plug by 90 degrees by tapping the clockwise or anticlockwise (also called counterclockwise) rotation buttons.  The pivot point for the rotation is the white block representing the craft.
+</p>
+<p>You can move the plug in a given direction only if there is space to do so (you can move into the path of a missile, but this will damage the plug).  One point to note is that if you try to move the plug onto a falling block, there must be space for the plug including the newly attached block to move in the required direction.
+</p>
+<p>You can rotate the plug only if there is nothing in the way of the rotation.  This means not only that the final position after rotation should be free of obstructions (including falling blocks and missiles), 
+but that the space passed through during the rotation should also be free of obstructions.  
+These spaces are simplified by assuming that the plug has a simple rectangular shape (which just covers the plug) and considering the complete rectangle that encompasses the initial and final positions, and making the assumption that the 
+corners passed through by the rotation must be free of obstructions.  So, if the initial position is as shown by the blue rectangle (with a white pivot block), and the final position by the red rectangle, with the overlap shown in brown, then, if the rotation is clockwise, the corners passed through by the rotation are shaded grey.  These and the blue and red rectangles must be free of obstructions.</p>
+<script language="Javascript">
+documentwrite('<table border=0 cellspacing=0 cellpadding=0 align=center><tr><td bgcolor=#FFFFFF width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td><td bgcolor=#0000FF width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td><td bgcolor=#0000FF width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td><td bgcolor=#0000FF width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td><td bgcolor=#C0C0C0 width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td><td bgcolor=#C0C0C0 width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td></tr><tr><td bgcolor=#FFFFFF width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td><td bgcolor=#0000FF width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td><td bgcolor=#0000FF width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td><td bgcolor=#0000FF width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td><td bgcolor=#C0C0C0 width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td><td bgcolor=#C0C0C0 width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td></tr><tr><td bgcolor=#FF0000 width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td><td bgcolor=#A62A2A width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td><td bgcolor=#A62A2A width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td><td bgcolor=#A62A2A width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td><td bgcolor=#FF0000 width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td><td bgcolor=#FF0000 width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td></tr><tr><td bgcolor=#FF0000 width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td><td bgcolor=#A62A2A width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td><td bgcolor=#FFFFFF width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td><td bgcolor=#A62A2A width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td><td bgcolor=#FF0000 width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td><td bgcolor=#FF0000 width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td></tr><tr><td bgcolor=#FF0000 width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td><td bgcolor=#A62A2A width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td><td bgcolor=#A62A2A width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td><td bgcolor=#A62A2A width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td><td bgcolor=#FF0000 width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td><td bgcolor=#FF0000 width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td></tr><tr><td bgcolor=#C0C0C0 width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td><td bgcolor=#0000FF width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td><td bgcolor=#0000FF width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td><td bgcolor=#0000FF width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td><td bgcolor=#FFFFFF width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td><td bgcolor=#FFFFFF width='+Math.floor(scalef*25)+' height='+Math.floor(scalef*25)+' border=0>&nbsp;</td></tr></table>')
+</script>
+<p>Note: for a block to become part of the plug, or to have an impact on the crater or mountain, it is necessary for relative motion of the block and the other surface to cause overlap, not for the two just to be next to each other.  The same is true for missiles to affect the plug or falling blocks.  This means that, for example, even when a block or missile appears to be adjacent to the plug it may have no effect if the plug is moved away.  It also means that blocks or missiles can slide past other objects.</p>
+
+<p>To fire missiles, tap on one of the red buttons.  This fires missiles from all the missile launchers at the same time - so be wary.</p>
+<p>Movements of falling blocks, plug and missiles occur at the end of a cycle, but please note that falling blocks move at only half the speed of missiles and the plug (every two cycles). You may specify only one movement or rotation of the plug in a cycle, so if, for example, you tap a rotation button then a movement button during one cycle, only the last one, the movement, will be executed.  Missiles will not be fired if this will result in adjacent missiles; there is always a gap between missiles. 
+
+<p>If you have a touch-sensitive screen, you may use gestures on the main playing frame (with silver sides and top) instead of these buttons. Use up, down, left and right gestures to move the plug/white craft.  Use diagonal gestures to rotate the plug: SE or NW for clockwise, SW or NE for anticlockwise. Hint: to help remember these directions, swipe from the middle of the frame towards a relevant rotation button.  Assuming you have selected this as an option when starting the game (see below), you may tap on the main frame to fire missiles.     
+       <p><a name="newgame"></a><b>New Game</b></p>
+             
+      <p>A new game, with a new crater shape, may be generated at any time by tapping on the <i>
+      New </i>button.  You will be asked to select the speed, 1-4 (4 fastest), by tapping the appropriate <i>Play</i> button. The initial crater varies in shape, but always requires a total plug size of 16 blocks to fill it.  If you tap <i>New</i> accidentally during a game, just tap the <i>Back</i> button to return to the game.</p>
+<p>Before tapping <i>Play</i>, you may change the option concerned with allowing missiles to be fired by tapping on the main frame (assuming you have a touch-sensitive screen).  This has been made an option as it can be easy to fire missiles accidentally when trying to control the white craft.  You may also change this setting at any time mid-game by tapping the <i>New</i> button, selecting the desired option, then tapping <i>Back</i> to return to the game.
+<br><br><span style="font-weight:bold">Button graphics</span>
+<br><br>The control button images are in the public domain and were downloaded or adapted from http://www.wpclipart.com.
+
+<p><span style="font-weight: bold">About Volcano</span>
+
+<p>Volcano has been designed and developed by Dr David Wolstenholme.
+<p><span style="font-weight: bold">Terms of use</span><p>This software may be used for personal purposes only.  It may not be used for commercial purposes.</p> 
+<p>The software, code and script of this application may not be copied or be distributed to others.</p> 
+<p>The software, code and script may not be altered in any way.</p> 
+<p >Copyright of the software, code and script, and its help documentation, is owned by TopAccolades Limited. No part of the software, code, script or documentation may be copied or used in another application or document.</p> 
+<p >Although every effort has been made to ensure that this software functions as intended, TopAccolades Limited provides no warranty of merchantability, or fitness for a particular purpose, in relation to this application or its support.</p> 
+<p >TopAccolades Limited shall not be liable for any damages whatsoever arising out of the use of or inability to use this application or the provision of or failure to provide support.</p> 
+<p style="font-style: italic;">Copyright TopAccolades Limited<br>www.topaccolades.com</p>
+<p><br>Version <script language="Javascript">documentwrite(appversion)</script><br>
+Scale <script language="Javascript">documentwrite(scalef); documentwrite('<br>W='+screenwidth+', H='+screenheight)</script>
+
+
+
+
+
+
+</div>
+
+<script language="Javascript">
+
+documentwrite('</div></td></tr></table></div>')
+
+var remoteads=[]
+
+if (GetLocalVal('remoteads')==null)
+{
+// default remoteads
+SetLocalVal('remoteads', 'remoteads=[]')
+}
+
+if (GetLocalVal('lastremoteadstime')==null) {SetLocalVal('lastremoteadstime', 0)}
+
+// if (Date.now()-(1*GetLocalVal('lastremoteadstime'))>0)
+// If it's more than 5 days since last remote ad update, then we download it.
+// However, if there's no internet access, then this loading can hang the app up.  So, we set the last time of download to be 4 days ago
+// then try to reload.  If it fails and hangs up, we're showing a Reload button, which will reload the page, this time without needing to upload the remote ad (now < 4 days ago)
+// However, if we have no local storage, this won't work, as it would just end up at the reload button again.  In this case, we essentially do nothing, inc. no remote ad upload (safer), and go to auto runonload
+
+</script>
+<script language="Javascript">
+/*
+// Now decided not to use remote ads.
+if (Date.now()-(1*GetLocalVal('lastremoteadstime'))>(5*24*60*60*1000)) // if more than 5 days
+{
+if (localstorageworks==1)
+{
+document.getElementById('theboard').style.display='none'
+changetextvalue('output',  '<br><br><table width=80% height='+Math.floor(scalef*100)+' border=1 cellpadding=0 cellspacing=0  align=center bgcolor=white><tr><td><table width=100% border=0><tr><td  bgcolor=lemonchiffon height='+Math.floor(scalef*75)+' align=center valign=middle>Internet access is required for certain updates, which is currently not available.  Please tap the Reload button and a further attempt will be made after 24 hours.</td></tr><tr height='+Math.floor(scalef*3)+'><td></td></tr><tr><td><table border=0 align=center><tr><td onClick="location.reload()">'+graphicfor('Reload')+'</td></tr></table></td></tr></table></td></tr></table>')
+
+SetLocalVal('lastremoteadstime', Date.now()-(4*24*60*60*1000)) // in case of problems loading, ensures that it will work for next day, as lasttime now set to 4 days ago, so can reload and it should work fine
+documentwrite('<sc'+'ript src="http://www.compactfun.com/remoteads/largeadsuntimed.js?time='+Date.now()+'"></sc'+'ript>')
+// ?time=current time above helps to ensure that the javascript is reloaded and that a cached version is not used
+}
+}
+*/
+</script>
+<script language="javascript">
+definetouchareas()
+
+</script>
+
+
+
+</body></html>
